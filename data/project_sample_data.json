@@ -1,0 +1,131 @@
+{
+   "projects":[
+      {
+         "id":"5df14899-0c33-4164-a46e-f9d9fea3e377",
+         "number":"1",
+         "label":"Test-Projekt 1",
+         "description":"Das ist das erste Test-Projekt.",
+         "manager":"Christian Sitzwohl",
+         "employees":[
+            "Islam Hemida",
+            "Martin Guevara-Kunerth"
+         ],
+         "customer":"Campus02",
+         "costCenter":"Intern",
+         "milestones":[
+            {
+               "date":"2020-12-09",
+               "label":"Start",
+               "description":"Projektstart"
+            },
+            {
+               "date":"2021-14-09",
+               "label":"Ende",
+               "description":"Projektabschluss"
+            }
+         ]
+      },
+      {
+         "id":"a333602e-7fee-45ae-a828-20c5026582b7",
+         "number":"2",
+         "label":"Test-Projekt 2",
+         "description":"Schon wieder ein Test-Projekt.",
+         "manager":"Thorsten Mustermensch",
+         "employees":[
+            "Michael Lamprecht",
+            "Marian Korosec",
+            "Samuel Angerer"
+         ],
+         "customer":"Intern",
+         "costCenter":"Intern",
+         "milestones":[
+            {
+               "date":"2020-11-09",
+               "label":"Kick-off",
+               "description":"Kick-off Meeting"
+            }
+         ]
+      },
+      {
+         "id":"8cbb40af-9bf1-48bc-85cc-3bcdeb213e1e",
+         "number":"3",
+         "label":"Test-Projekt 3",
+         "description":"Es wird noch immer fleißig getestet! Brav ;)",
+         "manager":"Karl Karlson",
+         "employees":[
+         ],
+         "customer":"Carlsberg",
+         "costCenter":"Event-Management",
+         "milestones":[
+            {
+               "date":"2020-11-09",
+               "label":"Start",
+               "description":"Projektstart"
+            },
+			{
+               "date":"2021-01-06",
+               "label":"Haupt-Event",
+               "description":"Veranstaltung XY"
+            },
+            {
+               "date":"2021-01-09",
+               "label":"Ende",
+               "description":"Projektabschluss"
+            }
+         ]
+      },
+      {
+         "id":"94fc362e-d33c-4435-adcb-4530c9d33029",
+         "number":"4",
+         "label":"Test-Projekt 4",
+         "description":"Hier folgt eine sehr kreative Beschreibung dieses Projekts, das ohnehin nur zu Testzwecken angelegt wurd.",
+         "manager":"Christian Sitzwohl",
+         "employees":[
+            "Michael Lamprecht",
+            "Marian Korosec"
+         ],
+         "customer":"TU Graz",
+         "costCenter":"Extern",
+         "milestones":[
+            {
+               "date":"2020-11-09",
+               "label":"Start",
+               "description":"Projektstart"
+            },
+            {
+               "date":"2021-01-09",
+               "label":"Ende",
+               "description":"Projektabschluss"
+            }
+         ]
+      },
+      {
+         "id":"559d91ee-ef57-4e71-9d52-49a1eaeab2bb",
+         "number":"5",
+         "label":"Test-Projekt 5",
+         "description":"Unser erstes gemeinsames agiles Projekt.",
+         "manager":"Michael Lamprecht",
+         "employees":[
+            "Christian Sitzwohl",
+            "Marian Korosec",
+            "Samuel Angerer",
+            "Islam Hemida",
+            "Martin Martin Guevara-Kunerth"
+         ],
+         "customer":"Snickers vs Mars",
+         "costCenter":"Studenten",
+         "milestones":[
+            {
+               "date":"2020-11-09",
+               "label":"Start",
+               "description":"Projektstart"
+            },
+            {
+               "date":"2021-01-09",
+               "label":"Ende",
+               "description":"Projektabschluss"
+            }
+         ]
+      }
+   ]
+}

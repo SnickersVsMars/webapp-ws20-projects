@@ -1,3 +1,8 @@
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
 body {
     font-family: Calibri, serif;
 }
@@ -16,6 +21,7 @@ body {
 .navbar-light .navbar-nav .nav-link {
     display: flex;
     align-items: center;
+    font-weight: 700;
 }
 
 .navbar-light .navbar-nav .nav-link:focus,
@@ -37,26 +43,38 @@ body {
 }
 
 .breadcrumb {
-    background-color: #384046;
-    color: white;
     line-height: 1;
     margin: 0;
     border-radius: 0;
+    padding: 0;
 }
 
 .breadcrumb ul {
     margin: 0;
 }
 
+.breadcrumb li {
+    padding: 1rem 2.5rem 1rem 0;
+    position: relative;
+}
+
 .breadcrumb a {
     color: white;
     text-decoration: none;
+    display: inline-block;
 }
 
 .breadcrumb a:after {
-    content: ">";
-    margin-left: 10px;
-    font-size: 20px;
+    content: "chevron_right";
+    font-family: "Material Icons";
+    position: absolute;
+    font-size: 1.3rem;
+    right: 0.5rem;
+    top: 14px;
+}
+
+.breadcrumb li:last-of-type a:after {
+    content: "";
 }
 
 .breadcrumb li {
@@ -77,14 +95,21 @@ body {
 }
 
 .project-attribute-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #666;
     margin-bottom: 0;
+    line-height: 1;
 }
 
 .project-attribute-text {
     font-size: 1.3rem;
     font-weight: 700;
+}
+
+#employees ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 1rem;
 }
 
 .employee-icon {
@@ -102,6 +127,7 @@ body {
     background-color: #384046;
     align-self: start;
     border-radius: 0.75rem;
+    background-color: #d4002d;
 }
 
 .overview .card:hover{

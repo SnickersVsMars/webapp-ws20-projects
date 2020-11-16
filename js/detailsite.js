@@ -27,9 +27,6 @@ $.ajax({
 });
 //project sample data mit id ansprechen
 
-
-
-
 function employeesList (employees) {
     if (employees.length > 0) {
         document.getElementById("employees").appendChild(makeUL(employees));
@@ -57,7 +54,6 @@ function milestonesTable (milestones) {
     if (milestones.length > 0) {
         document.getElementById("milestones").appendChild(makeTable(milestones));
     }
-
 }
 
 function makeTable (array) {
@@ -74,31 +70,43 @@ function makeTable (array) {
 
         // CREATE DYNAMIC TABLE.
         var table = document.createElement("table");
-        table.className = "table";
+        table.className = "table table-hover table-striped";
 
         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
-        var tr = table.insertRow(-1);                   // TABLE ROW.
+        let thead = table.createTHead();
+        thead.className = 'thead-dark';
+
+        let tr = thead.insertRow(-1);                   // TABLE ROW.
 
         for (var i = 0; i < col.length; i++) {
             var th = document.createElement("th");      // TABLE HEADER.
-            th.innerHTML = col[i];
+            th.className='thead-dark';
+
+            if(col[i] === 'date')
+                th.innerHTML = 'Datum';
+            else if(col[i] === 'label')
+                th.innerHTML = 'Bezeichnung';
+            else if(col[i] === 'description')
+                th.innerHTML = 'Beschreibung';
             tr.appendChild(th);
         }
 
-        // ADD JSON DATA TO THE TABLE AS ROWS.
+        var tbody = table.createTBody();
+
+    // ADD JSON DATA TO THE TABLE AS ROWS.
         for (var i = 0; i < array.length; i++) {
 
-            tr = table.insertRow(-1);
+            tr = tbody.insertRow(-1);
 
             for (var j = 0; j < col.length; j++) {
                 var tabCell = tr.insertCell(-1);
-                tabCell.innerHTML = array[i][col[j]];
+
+                if(j===0)
+                    tabCell.innerHTML = new Date(array[i][col[j]]).toLocaleDateString();
+                else
+                    tabCell.innerHTML = array[i][col[j]];
             }
         }
         return table;
 }
-
-
-
-

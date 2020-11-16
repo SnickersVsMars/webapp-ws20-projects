@@ -103,3 +103,8 @@ body {
     align-self: start;
     border-radius: 0.75rem;
 }
+
+.overview .card:hover{
+    background: whitesmoke;
+    cursor: pointer;
+}

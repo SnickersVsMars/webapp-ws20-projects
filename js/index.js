@@ -19,7 +19,8 @@ $.ajax({
             overview.appendChild(card);
             var cards = document.getElementsByClassName('card');
             cards[cards.length-1].addEventListener("click",()=>showDetail(project.id));
-        })
+        });
+        document.getElementById("busy-indicator").hidden = true;
     }
 });
 

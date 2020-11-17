@@ -18,95 +18,47 @@ $.ajax({
                 document.getElementById("costCenter").innerHTML=`${project.costCenter}`;
                 document.getElementById("breadcrumb").innerHTML=`${project.number}`;
 
-                employeesList(project.employees);
-                milestonesTable(project.milestones);
+                fillEmployess(project.employees);
+                fillMilestones(project.milestones);
             }
 
+            document.getElementById("busy-indicator").hidden=true;
         })
     }
 });
-//project sample data mit id ansprechen
 
-function employeesList (employees) {
-    if (employees.length > 0) {
-        document.getElementById("employees").appendChild(makeUL(employees));
-    }
-}
+function fillEmployess(employees) {
+    if (employees == null || employees == 'undefined' || employees.length < 1)
+        return;
 
-function makeUL(array) {
-    // Create the list element:
-    var list = document.createElement('ul');
+    let ul = document.getElementById("employees");
 
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < employees.length; i++) {
         // Create the list item:
-        var item = document.createElement('li');
+        let item = document.createElement('li');
 
         // Set its contents:
-        item.appendChild(document.createTextNode(array[i]));
+        item.innerText = employees[i];
 
         // Add it to the list:
-        list.appendChild(item);
-    }
-    // Finally, return the constructed list:
-    return list;
-}
-function milestonesTable (milestones) {
-    if (milestones.length > 0) {
-        document.getElementById("milestones").appendChild(makeTable(milestones));
+        ul.appendChild(item);
     }
 }
 
-function makeTable (array) {
-        // EXTRACT VALUE FOR HTML HEADER.
-        // ('Book ID', 'Book Name', 'Category' and 'Price')
-        var col = [];
-        for (var i = 0; i < array.length; i++) {
-            for (var key in array[i]) {
-                if (col.indexOf(key) === -1) {
-                    col.push(key);
-                }
-            }
-        }
+function fillMilestones(milestones) {
+    if (milestones == null || milestones == 'undefined' || milestones.length < 1)
+        return;
 
-        // CREATE DYNAMIC TABLE.
-        var table = document.createElement("table");
-        table.className = "table table-hover table-striped";
-
-        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-
-        let thead = table.createTHead();
-        thead.className = 'thead-dark';
-
-        let tr = thead.insertRow(-1);                   // TABLE ROW.
-
-        for (var i = 0; i < col.length; i++) {
-            var th = document.createElement("th");      // TABLE HEADER.
-            th.className='thead-dark';
-
-            if(col[i] === 'date')
-                th.innerHTML = 'Datum';
-            else if(col[i] === 'label')
-                th.innerHTML = 'Bezeichnung';
-            else if(col[i] === 'description')
-                th.innerHTML = 'Beschreibung';
-            tr.appendChild(th);
-        }
-
-        var tbody = table.createTBody();
+    let tbody = document.getElementById("table-milestone-body");
+    tbody.innerHTML = '';
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
-        for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < milestones.length; i++) {
 
-            tr = tbody.insertRow(-1);
+        let tr = tbody.insertRow();
 
-            for (var j = 0; j < col.length; j++) {
-                var tabCell = tr.insertCell(-1);
-
-                if(j===0)
-                    tabCell.innerHTML = new Date(array[i][col[j]]).toLocaleDateString();
-                else
-                    tabCell.innerHTML = array[i][col[j]];
-            }
-        }
-        return table;
+        tr.insertCell().innerHTML = new Date(milestones[i].date).toLocaleDateString();
+        tr.insertCell().innerHTML = milestones[i].label;
+        tr.insertCell().innerHTML = milestones[i].description;
+    }
 }

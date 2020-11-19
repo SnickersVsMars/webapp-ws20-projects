@@ -4,7 +4,8 @@ html {
 }
 
 body {
-    font-family: Calibri, serif;
+    font-family: Calibri, sans-serif;
+    font-display: swap;
 }
 
 .navbar {
@@ -17,11 +18,11 @@ body {
     height: 100%;
 }
 
-.navbar-light .navbar-nav .nav-link,
 .navbar-light .navbar-nav .nav-link {
     display: flex;
     align-items: center;
-    font-weight: 700;
+    color: #272f35;
+    padding: 1.5rem;
 }
 
 .navbar-light .navbar-nav .nav-link:focus,
@@ -81,8 +82,7 @@ body {
     display: inline-block;
 }
 
-.breadcrumb a:hover,
-.breadcrumb span:hover {
+.breadcrumb a:hover {
     opacity: 0.7;
     cursor: pointer;
 }
@@ -95,22 +95,24 @@ body {
 }
 
 .project-attribute-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: #666;
     margin-bottom: 0;
     line-height: 1;
+    margin-top: 1.5rem;
 }
+
 
 .project-attribute-text {
     font-size: 1.3rem;
     font-weight: 700;
 }
 
-#employees {
-    list-style: none;
-    margin: 0;
-    padding-left: 1rem;
-}
+/*#employees {*/
+/*    list-style: none;*/
+/*    margin: 0;*/
+/*    padding-left: 1rem;*/
+/*}*/
 
 .employee-icon {
     align-self: center;
@@ -150,4 +152,8 @@ body {
     width: 4rem;
     height: 4rem;
     border-width: 0.5rem;
+}
+
+table tbody tr td:last-of-type{
+    min-width: 300px;
 }

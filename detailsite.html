@@ -13,19 +13,28 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="img/favicon.ico">
 
     <title>FH JOANNEUM Projekte</title>
+    <meta name="description" content="Detail site of a project of the FH-Joanneum" />
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-md navbar-light">
-        <a href="#" class="navbar-brand">
-            <img src="img/fh_logo.jpg" height="70" alt="Logo-Fh-Joanneum">
+        <a href="index.html"
+           class="navbar-brand">
+            <img src="img/FHJ_Logo_100mm_rgb_web.png" width="170"
+                 height="73"
+                 alt="Logo-Fh-Joanneum">
         </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <button type="button"
+                class="navbar-toggler"
+                data-toggle="collapse" aria-label="toggle navbar"
+                data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse"
+             id="navbarCollapse">
             <div class="navbar-nav">
-                <a href="index.html" class="nav-item nav-link">Projekte</a>
+                <a href="index.html"
+                   class="nav-item nav-link">Projekte</a>
             </div>
         </div>
     </nav>
@@ -35,7 +44,7 @@
         <ul>
             <li><a href="index.html">FH JOANNEUM</a></li>
             <li><a href="index.html">PROJEKTE</a></li>
-            <li><a href="">PROJEKT <span id="breadcrumb"></span></a></li>
+            <li><a id="breadcrumb" href=""></a></li>
         </ul>
     </div>
 </div>
@@ -70,7 +79,7 @@
                 </div>
                 <div class="col-sm-6">
                     <p class="project-attribute-title">Firmeninterne Mitarbeiter</p>
-                    <ul id="employees" class="project-attribute-text"></ul>
+                    <ul id="employees" class="project-attribute-text "></ul>
                 </div>
         </div>
     </div>
@@ -78,7 +87,7 @@
     <div class="card card-fluid">
         <div class="card-body">
             <h4>Meilensteine</h4>
-            <table class="table table-hover table-striped table-responsive">
+            <table class="table table-hover table-striped table-responsive-md">
                 <thead class="thead-dark">
                     <tr>
                         <th>Datum</th>
@@ -100,7 +109,11 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="js/main.js"></script>
 <script src="js/detailsite.js"></script>
+
 </body>
 </html>

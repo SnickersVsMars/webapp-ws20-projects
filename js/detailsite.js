@@ -29,7 +29,7 @@ $.ajax({
 });
 
 function fillEmployess(employees) {
-    if (employees == null || employees == undefined || employees.length < 1)
+    if (employees === null || employees === undefined || employees.length < 1)
         return;
 
     let ul = document.getElementById("employees");
@@ -48,7 +48,7 @@ function fillEmployess(employees) {
 }
 
 function fillMilestones(milestones) {
-    if (milestones == null || milestones == undefined || milestones.length < 1)
+    if (milestones === null || milestones === undefined || milestones.length < 1)
         return;
 
     let tbody = document.getElementById("table-milestone-body");

@@ -17,7 +17,7 @@ $.ajax({
             card.querySelector(".project-milestone").innerHTML = validate(lastMilestone(project.milestones));
             card.querySelector(".project-customer").innerHTML = validate(project.customer);
 
-            if (project.employees != null && project.employees != 'undefined' && project.employees.length > 0)
+            if (project.employees != null && project.employees != undefined && project.employees.length > 0)
                 card.querySelector(".project-employees").innerHTML = project.employees.length;
 
             overview.appendChild(card);

@@ -1,6 +1,6 @@
 var id = new URLSearchParams(window.location.search).get("id");
 $.ajax({
-    url:"data/project_sample_data.json",
+    url: datafilepath,
     dataType:"json",
     type:"get",
     cache: false,
@@ -10,13 +10,14 @@ $.ajax({
             if (value.id === id) {
                 project=value;
 
-                document.getElementById("label").innerHTML=`${project.label}`;
-                document.getElementById("number").innerHTML=`${project.number}`;
-                document.getElementById("description").innerHTML=`${project.description}`;
-                document.getElementById("manager").innerHTML=`${project.manager}`;
-                document.getElementById("customer").innerHTML=`${project.customer}`;
-                document.getElementById("costCenter").innerHTML=`${project.costCenter}`;
-                document.getElementById("breadcrumb").innerHTML=`${project.number}`;
+                document.getElementById("label").innerHTML=validate(project.label);
+                document.getElementById("number").innerHTML=validate(project.number);
+                document.getElementById("description").innerHTML=validate(project.description);
+                document.getElementById("manager").innerHTML=validate(project.manager);
+                document.getElementById("customer").innerHTML=validate(project.customer);
+                document.getElementById("costCenter").innerHTML=validate(project.costCenter);
+                document.getElementById("breadcrumb").innerHTML=`PROJEKT ${project.number}`;
+                document.getElementById("breadcrumb").setAttribute('href', 'detailsite.html?id='+project.id);
 
                 fillEmployess(project.employees);
                 fillMilestones(project.milestones);
@@ -28,7 +29,7 @@ $.ajax({
 });
 
 function fillEmployess(employees) {
-    if (employees == null || employees == 'undefined' || employees.length < 1)
+    if (employees == null || employees == undefined || employees.length < 1)
         return;
 
     let ul = document.getElementById("employees");
@@ -36,6 +37,7 @@ function fillEmployess(employees) {
     for (let i = 0; i < employees.length; i++) {
         // Create the list item:
         let item = document.createElement('li');
+        // item.className="list-group-item"
 
         // Set its contents:
         item.innerText = employees[i];
@@ -46,7 +48,7 @@ function fillEmployess(employees) {
 }
 
 function fillMilestones(milestones) {
-    if (milestones == null || milestones == 'undefined' || milestones.length < 1)
+    if (milestones == null || milestones == undefined || milestones.length < 1)
         return;
 
     let tbody = document.getElementById("table-milestone-body");
@@ -57,8 +59,12 @@ function fillMilestones(milestones) {
 
         let tr = tbody.insertRow();
 
-        tr.insertCell().innerHTML = new Date(milestones[i].date).toLocaleDateString();
-        tr.insertCell().innerHTML = milestones[i].label;
-        tr.insertCell().innerHTML = milestones[i].description;
+        if(milestones[i].date === null || milestones[i].date === undefined)
+            tr.insertCell().innerHTML = validate(null);
+        else
+            tr.insertCell().innerHTML = new Date(milestones[i].date).toLocaleDateString();
+
+        tr.insertCell().innerHTML = validate(milestones[i].label);
+        tr.insertCell().innerHTML = validate(milestones[i].description);
     }
 }

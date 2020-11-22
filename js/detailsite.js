@@ -62,7 +62,7 @@ function fillMilestones(milestones) {
         if(milestones[i].date === null || milestones[i].date === undefined)
             tr.insertCell().innerHTML = validate(null);
         else
-            tr.insertCell().innerHTML = new Date(milestones[i].date).toLocaleDateString();
+            tr.insertCell().innerHTML = formatDate(milestones[i].date);
 
         tr.insertCell().innerHTML = validate(milestones[i].label);
         tr.insertCell().innerHTML = validate(milestones[i].description);

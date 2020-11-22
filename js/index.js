@@ -52,8 +52,5 @@ function lastMilestone(milestones){
             lastMilestone = milestoneDate;
     }
 
-    if(lastMilestone == null)
-        return validate(null);
-
-    return lastMilestone.toLocaleDateString();
+    return formatDate(lastMilestone);
 }

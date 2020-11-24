@@ -3,6 +3,7 @@
 .idea
 .vscode/*
 *.iml
+node_modules
 
 
 # Google Drive exclude

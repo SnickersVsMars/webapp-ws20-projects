@@ -1,3 +1,5 @@
+const dbConnection = require('../dbConnection');
+
 // Erstellen einer Service Klasse, die sich um CRUD Aktionen mit der Datenbank kümmert
 // C - Create
 // R - Read
@@ -8,17 +10,8 @@ class TestService {
     constructor() {
     }
 
-    tests = [
-        {id:1,label:"Test"},
-        {id:2,label:"Mein Test"},
-        {id:3,label:"Ich teste"},
-        {id:4,label:"Test"},
-        {id:5,label:"5. Test"},
-    ];
-   
-  
-    get() {
-        return this.tests;
+    get(succes) {
+        dbConnection.select("Select * FROM tests", succes);
     }
     
     find(id) {

@@ -24,15 +24,17 @@ viewRouter.get('/', (req, res) => {
 // Definieren der routen für die api. Die Api returniert nur Daten, keine Oberfläche. 
 // In unserem fall im JSON Format
 apiRouter.get('/', (req, res) => {
-    res.send(testService.get());
+    testService.get((result)=>{
+        res.json(result);
+    });
 });
 
 apiRouter.get('/:id', (req, res) => {
-    res.send(testService.find(req.params.id));
+    res.json(testService.find(req.params.id));
 });
 
 apiRouter.post('/', (req, res) => {
-    res.send(testService.insert(req.body));
+    res.json(testService.insert(req.body));
 });
 
 module.exports = {

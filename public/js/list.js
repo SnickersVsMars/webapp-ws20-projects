@@ -34,7 +34,7 @@ $.ajax({
 
 
 function showDetail(id){
-    location.href = "project/" + id;
+    location.href = "projects/" + id;
 };
 
 function lastMilestone(milestones){

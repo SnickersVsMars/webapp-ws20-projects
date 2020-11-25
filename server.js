@@ -1,12 +1,10 @@
 const express = require('express');
-const path = require('path');
-const router = require('./client/clientRouter');
+const router = require('./features/featureRouter');
 const server = express();
 const port = 3000;
-const clientRounter = require('./client/clientRouter')
 
 server.set('port', process.env.PORT || port);
-server.use(express.static('client'));
+server.use(express.static('public'));
 
 
 server.use('/',router);

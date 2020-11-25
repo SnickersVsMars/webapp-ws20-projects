@@ -3,6 +3,8 @@
 .idea
 .vscode/*
 *.iml
+
+# exclude nodejs
 node_modules
 package-lock.json
 

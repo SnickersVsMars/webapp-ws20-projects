@@ -2,7 +2,7 @@
   "name": "webapp-ws20-projects",
   "version": "1.2.0",
   "description": "Education project for the FH Joannem Web Application Development class",
-  "main": "js/index.js",
+  "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,13 +12,13 @@
   },
   "keywords": [
     "education",
-    "webapp",
-    "vanilla"
+    "webapp"
   ],
   "author": "SnickersVsMars",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SnickersVsMars/webapp-ws20-projects/issues"
   },
-  "homepage": "https://github.com/SnickersVsMars/webapp-ws20-projects#readme"
+  "homepage": "https://github.com/SnickersVsMars/webapp-ws20-projects#readme",
+  "dependencies": {}
 }

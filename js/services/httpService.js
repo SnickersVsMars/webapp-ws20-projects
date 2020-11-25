@@ -12,7 +12,7 @@ function get(path) {
 }
 
 function post(path, body) {
-    $.ajax({
+    return $.ajax({
         url: pathPrefix + path,
         dataType: "json",
         type: "POST",
@@ -22,7 +22,7 @@ function post(path, body) {
 }
 
 function put(path, body) {
-    $.ajax({
+    return $.ajax({
         url: pathPrefix + path,
         dataType: "json",
         type: "PUT",

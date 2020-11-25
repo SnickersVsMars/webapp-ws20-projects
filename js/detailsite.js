@@ -5,7 +5,7 @@ data = get(datafilepath).done((data) => {
 });
 
 function populateData(data) {
-    $(data.projects).each(function (index, value) {
+    $(data.projects).each(function (i, value) {
         var project;
         if (value.id === id) {
             project = value;

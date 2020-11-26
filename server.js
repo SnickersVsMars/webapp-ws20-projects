@@ -2,9 +2,9 @@ const express = require('express');
 const router = require('./features/router');
 const bodyParser = require('body-parser');
 const dbConnection = require('./features/dbConnection');
+const port = require('config').get("port");
 
 const server = express();
-const port = 3000;
 
 server.set('port', port);
 server.use(express.static('public'));

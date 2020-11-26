@@ -1,0 +1,11 @@
+{
+    "MySqlConnectionPool": {
+        "connectionLimit": 5,
+        "host": "localhost",
+        "user": "wad",
+        "password": "wad",
+        "database": "wad"
+    },
+    
+    "port":3000
+}

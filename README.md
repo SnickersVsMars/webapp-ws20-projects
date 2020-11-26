@@ -29,4 +29,10 @@ Our used technologies are:
 - CSS
 - JS
 - Bootstrap as an additional Framework
-                            
+- nodejs
+
+## Run server
+Install latest version of nodejs for your os.
+https://nodejs.org/
+
+start server with 'npm start'

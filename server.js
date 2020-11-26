@@ -1,11 +1,12 @@
 const express = require('express');
 const router = require('./features/router');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const dbConnection = require('./features/dbConnection');
 
 const server = express();
 const port = 3000;
 
-server.set('port', process.env.PORT || port);
+server.set('port', port);
 server.use(express.static('public'));
  
 // parse application/json
@@ -21,6 +22,16 @@ server.use((request,response)=>{
 });
 
 //Binding to a port
-server.listen(port, ()=>{
+server.listen(port, () => {
   console.log('Express server started at port 3000');
+});
+
+// Handle server shutdown
+server.on('close', function() {
+    dbConnection.close();
+});
+
+process.on('SIGINT', function() {
+  dbConnection.close();
+  process.exit(0);
 });

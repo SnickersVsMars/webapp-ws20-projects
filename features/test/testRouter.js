@@ -18,7 +18,7 @@ const apiRouter = express.Router();
 // Definieren der routen für die view files. In unserem fall sind dies plain HTML files
 
 viewRouter.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname,'test.html'));
+    res.sendFile(path.join(__dirname, 'test.html'));
 });
 
 // Definieren der routen für die api. Die Api returniert nur Daten, keine Oberfläche. 
@@ -38,6 +38,6 @@ apiRouter.post('/', (req, res) => {
 });
 
 module.exports = {
-    viewRouter,
-    apiRouter
+    viewRouter: viewRouter,
+    apiRouter: apiRouter
 }

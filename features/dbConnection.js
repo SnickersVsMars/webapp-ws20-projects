@@ -3,12 +3,14 @@ const mysql = require('mysql');
 // Ist keine Klasse da wir private fields haben wollen. 
 // In unserem Fall 'connection' und 'handleError'
 function DbConnection() {
-    let connection = mysql.createConnection({
-        host: "localhost",
+      let pool = mysql.createPool({
+        connectionLimit: 5,
+        host: 'localhost',
         user: "wad",
         password: "wad",
         database: "wad"
-      });
+    });
+
 
     
     let handleError = (error) => {
@@ -16,17 +18,19 @@ function DbConnection() {
             throw error;
     }
 
-    connection.connect(handleError);    
-
     this.select = (query, success) =>{
-        connection.query(query, (error, results, fields) => {
+        pool.getConnection((error, connection) => {
             handleError(error);
-            success(results);
+            connection.query(query, (error, results, fields) => {
+                handleError(error);
+                success(results);
+                connection.release();
+            });
         });
     };
 
     this.close = () => {
-        connection.end();
+        pool.end();
     }
 }
 

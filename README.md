@@ -12,6 +12,25 @@ Samuel Angerer <br>
 Islam Hemida <br>
 Martin Guevara-Kunerth <br>
 
+## Run project
+
+Install latest version of Node.js for your OS.  
+You can find more info on the official webpage: https://nodejs.org/
+
+After cloning the project on your local machine, open it and run `npm i` to install the required packages.
+
+Now you can start the server with `npm start`
+
+## Technology
+
+Our used technologies are:
+
+-   HTML
+-   CSS
+-   JS
+-   Bootstrap as an additional Framework
+-   NodeJS
+
 ## Task description
 
 This project is designed to let us practice our project management skills with scrum as well as our software development skills in a team. <br>
@@ -26,19 +45,4 @@ FH JOANNEUM will introduce a new project management tool. <br>
 With this tool, users should have the possibility to view and search for information. <br>
 Our group is assigned to manage and display information regarding ongoing or finished projects.
 
-## Technology
 
-Our used technologies are:
-
--   HTML
--   CSS
--   JS
--   Bootstrap as an additional Framework
--   NodeJS
-
-## Run server
-
-Install latest version of nodejs for your OS.
-You can find more info on the official webpage: https://nodejs.org/
-
-Start server with 'npm start'

@@ -1,43 +1,41 @@
-const express = require('express')
-const path = require('path');
-const testService = require('./testService')
+const express = require("express");
+const path = require("path");
+const testService = require("./testService");
 
-// Erstellen von 2 router
-// Wir benötigen 2 router da wir die routen
+// creation of 3 router, because of 2 differen route prefixes:
 // - /projects
 // - /api/projects
-// ansteuern möchten.
-// Da die präfixe '/projects' und '/api/projects' erst beim Hinzufügen
-// dieses routers gesetzt werden, (wir wollen hier keinen doppelten Code schreiben)
-// müssen hier 2 Router definieren.
+// We don't want to write the prefix '/tests/' and '/api/tests/' multiple times so
+// we create 2 routers:
+// - viewRouter
+// - apiRouter
+// After appending the routes to this routers be append them to the main router testsRouter
+// There we define the prefix.
 
+// Define the routes for view files. In our case html files.
 const viewRouter = express.Router();
+viewRouter.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "test.html"));
+});
+
+// Define the routes for the api. The api routes return only data using the JSON format
 const apiRouter = express.Router();
-
-
-// Definieren der routen für die view files. In unserem fall sind dies plain HTML files
-
-viewRouter.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'test.html'));
+apiRouter.get("/", (req, res) => {
+  testService.get((result) => {
+    res.json(result);
+  });
 });
 
-// Definieren der routen für die api. Die Api returniert nur Daten, keine Oberfläche. 
-// In unserem fall im JSON Format
-apiRouter.get('/', (req, res) => {
-    testService.get((result)=>{
-        res.json(result);
-    });
+apiRouter.get("/:id", (req, res) => {
+  res.json(testService.find(req.params.id));
 });
 
-apiRouter.get('/:id', (req, res) => {
-    res.json(testService.find(req.params.id));
+apiRouter.post("/", (req, res) => {
+  res.json(testService.insert(req.body));
 });
 
-apiRouter.post('/', (req, res) => {
-    res.json(testService.insert(req.body));
-});
+var testsRouter = express.Router();
+testsRouter.use("/api/tests", apiRouter);
+testsRouter.use("/tests", viewRouter);
 
-module.exports = {
-    viewRouter: viewRouter,
-    apiRouter: apiRouter
-}
+module.exports = testsRouter;

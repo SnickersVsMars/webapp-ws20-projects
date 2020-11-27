@@ -1,18 +1,11 @@
-const express = require('express')
-const projectRouter = require('./projects/projectRouter')
-const testRouter = require('./test/testRouter')
+const express = require("express");
+const router = express.Router();
 
-const router = express.Router()
+router.use("/", require("./projects/projectRouter"));
+router.use("/", require("./test/testRouter"));
 
-router.use('/api/projects', projectRouter.apiRouter);
-router.use('/api/tests', testRouter.apiRouter);
-
-
-router.use('/projects', projectRouter.viewRouter);
-router.use('/tests', testRouter.viewRouter);
-
-router.get('/', (req, res) => {
-    res.redirect("/projects");
-})
+router.get("/", (req, res) => {
+  res.redirect("/projects");
+});
 
 module.exports = router;

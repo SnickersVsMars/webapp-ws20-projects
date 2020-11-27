@@ -1,10 +1,10 @@
 {
     "MySqlConnectionPool": {
         "connectionLimit": 5,
-        "host": "localhost",
-        "user": "wad",
-        "password": "wad",
-        "database": "wad"
+        "host": "snickersvsmars.online",
+        "user": "user",
+        "password": "IleXTrUegYPhopECTAL",
+        "database": "webapp"
     },
     
     "port":3000

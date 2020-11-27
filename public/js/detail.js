@@ -1,36 +1,48 @@
+const split = window.location.href.split("/");
+const id = split[split.length - 1];
 
-
- var split = window.location.href.split('/');
- var id = split[split.length-1];
-
-$.ajax({
-    url: datafilepath,
-    dataType:"json",
-    type:"get",
-    cache: false,
-    success: function (data) {
-        $(data.projects).each(function(index, value) {
-            var project;
-            if (value.id === id) {
-                project=value;
-
-                document.getElementById("label").innerHTML=validate(project.label);
-                document.getElementById("number").innerHTML=validate(project.number);
-                document.getElementById("description").innerHTML=validate(project.description);
-                document.getElementById("manager").innerHTML=validate(project.manager);
-                document.getElementById("customer").innerHTML=validate(project.customer);
-                document.getElementById("costCenter").innerHTML=validate(project.costCenter);
-                document.getElementById("breadcrumb").innerHTML=`PROJEKT ${project.number}`;
-                document.getElementById("breadcrumb").setAttribute('href', '/projects/'+project.id);
-
-                fillEmployess(project.employees);
-                fillMilestones(project.milestones);
-            }
-
-            document.getElementById("busy-indicator").hidden=true;
-        })
-    }
+get(datafilepath).done((data) => {
+    populateData(data);
 });
+
+function populateData(data) {
+    $(data.projects).each(function (i, value) {
+        var project;
+        if (value.id === id) {
+            project = value;
+
+            document.getElementById("label").innerHTML = validate(
+                project.label
+            );
+            document.getElementById("number").innerHTML = validate(
+                project.number
+            );
+            document.getElementById("description").innerHTML = validate(
+                project.description
+            );
+            document.getElementById("manager").innerHTML = validate(
+                project.manager
+            );
+            document.getElementById("customer").innerHTML = validate(
+                project.customer
+            );
+            document.getElementById("costCenter").innerHTML = validate(
+                project.costCenter
+            );
+            document.getElementById(
+                "breadcrumb"
+            ).innerHTML = `PROJEKT ${project.number}`;
+            document
+                .getElementById("breadcrumb")
+                .setAttribute("href", "/projects/" + project.id);
+
+            fillEmployess(project.employees);
+            fillMilestones(project.milestones);
+        }
+
+        document.getElementById("busy-indicator").hidden = true;
+    });
+}
 
 function fillEmployess(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
@@ -40,7 +52,7 @@ function fillEmployess(employees) {
 
     for (let i = 0; i < employees.length; i++) {
         // Create the list item:
-        let item = document.createElement('li');
+        let item = document.createElement("li");
         // item.className="list-group-item"
 
         // Set its contents:
@@ -52,21 +64,23 @@ function fillEmployess(employees) {
 }
 
 function fillMilestones(milestones) {
-    if (milestones === null || milestones === undefined || milestones.length < 1)
+    if (
+        milestones === null ||
+        milestones === undefined ||
+        milestones.length < 1
+    )
         return;
 
     let tbody = document.getElementById("table-milestone-body");
-    tbody.innerHTML = '';
+    tbody.innerHTML = "";
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < milestones.length; i++) {
-
         let tr = tbody.insertRow();
 
-        if(milestones[i].date === null || milestones[i].date === undefined)
+        if (milestones[i].date === null || milestones[i].date === undefined)
             tr.insertCell().innerHTML = validate(null);
-        else
-            tr.insertCell().innerHTML = formatDate(milestones[i].date);
+        else tr.insertCell().innerHTML = formatDate(milestones[i].date);
 
         tr.insertCell().innerHTML = validate(milestones[i].label);
         tr.insertCell().innerHTML = validate(milestones[i].description);

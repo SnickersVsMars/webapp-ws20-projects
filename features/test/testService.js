@@ -10,29 +10,29 @@ const dbConnection = require("../dbConnection");
 // function TestService(constructorParam1, constructorParam2)
 
 class TestService {
-  constructor() {}
+    constructor() {}
 
-  get(succes) {
-    dbConnection.select("Select * FROM tests", succes);
-  }
-
-  find(id) {
-    if (id == null) return null;
-
-    if (typeof id === "string") id = parseInt(id);
-    else if (typeof id !== "number") return null;
-
-    for (let i = 0; i < this.tests.length; i++) {
-      if (this.tests[i].id === id) return this.tests[i];
+    get(succes) {
+        dbConnection.select("Select * FROM tests", succes);
     }
 
-    return null;
-  }
+    find(id) {
+        if (id == null) return null;
 
-  insert(test) {
-    this.tests[this.tests.length] = test;
-    return test;
-  }
+        if (typeof id === "string") id = parseInt(id);
+        else if (typeof id !== "number") return null;
+
+        for (let i = 0; i < this.tests.length; i++) {
+            if (this.tests[i].id === id) return this.tests[i];
+        }
+
+        return null;
+    }
+
+    insert(test) {
+        this.tests[this.tests.length] = test;
+        return test;
+    }
 }
 
 // return instance of TestService, because we want a singleton TestService

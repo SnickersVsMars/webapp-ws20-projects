@@ -30,15 +30,15 @@ Our group is assigned to manage and display information regarding ongoing or fin
 
 Our used technologies are:
 
-- HTML
-- CSS
-- JS
-- Bootstrap as an additional Framework
-- nodejs
+-   HTML
+-   CSS
+-   JS
+-   Bootstrap as an additional Framework
+-   NodeJS
 
 ## Run server
 
-Install latest version of nodejs for your os.
-https://nodejs.org/
+Install latest version of nodejs for your OS.
+You can find more info on the official webpage: https://nodejs.org/
 
-start server with 'npm start'
+Start server with 'npm start'

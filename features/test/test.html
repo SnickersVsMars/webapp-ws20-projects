@@ -58,21 +58,27 @@
         crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Service that offers GET, POST and PUT HTTP requests. -->
+    <script src="/js/services/httpService.js"></script>
     <script>
-        $.ajax({
-            url: "/api/tests",
-            dataType: "json",
-            type: "get",
-            cache: false,
-            success: function (items) {
-                var main = document.getElementById("main");
-                for (let i = 0; i < items.length; i++) {
-                    let p = document.createElement("p")
-                    p.innerHTML = items[i].id + " | " + items[i].label;
-                    main.append(p);
-                }
-            }
+        // NOTE this JS should be in it's own JS file!!
+        // this is only used for demonstration
+
+        // we only need to use the last part of the url here,
+        // since the request service already knows the api
+        // base path => get("tests") will send a request to /api/tests
+        get("tests").done((data) => {
+            populateData(data);
         });
+
+        function populateData(data) {
+            var main = document.getElementById("main");
+            for (let i = 0; i < data.length; i++) {
+                let p = document.createElement("p")
+                p.innerHTML = data[i].id + " | " + data[i].label;
+                main.append(p);
+            }
+        }
     </script>
 </body>
 

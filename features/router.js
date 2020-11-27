@@ -5,7 +5,7 @@ router.use("/", require("./projects/projectRouter"));
 router.use("/", require("./test/testRouter"));
 
 router.get("/", (req, res) => {
-  res.redirect("/projects");
+    res.redirect("/projects");
 });
 
 module.exports = router;

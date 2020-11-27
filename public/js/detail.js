@@ -1,7 +1,7 @@
 const split = window.location.href.split("/");
 const id = split[split.length - 1];
 
-data = get(datafilepath).done((data) => {
+get(datafilepath).done((data) => {
     populateData(data);
 });
 

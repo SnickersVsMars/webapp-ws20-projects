@@ -1,10 +1,10 @@
-// TODO uncomment
-// const pathPrefix = "localhost:8080/api/";
-const pathPrefix = "";
+const pathPrefix = "/api/";
 
 function get(path) {
+    console.log(path);
     return $.ajax({
-        url: pathPrefix + path,
+        // TODO remove endsWith once all data comes from db
+        url: path.endsWith(".json") ? path : pathPrefix + path,
         dataType: "json",
         type: "GET",
         cache: false,
@@ -13,7 +13,8 @@ function get(path) {
 
 function post(path, body) {
     return $.ajax({
-        url: pathPrefix + path,
+        // TODO remove endsWith once all data comes from db
+        url: path.endsWith(".json") ? path : pathPrefix + path,
         dataType: "json",
         type: "POST",
         data: body,
@@ -23,7 +24,8 @@ function post(path, body) {
 
 function put(path, body) {
     return $.ajax({
-        url: pathPrefix + path,
+        // TODO remove endsWith once all data comes from db
+        url: path.endsWith(".json") ? path : pathPrefix + path,
         dataType: "json",
         type: "PUT",
         data: body,

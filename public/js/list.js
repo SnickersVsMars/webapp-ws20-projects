@@ -1,7 +1,7 @@
 var overview = document.getElementById("card-container");
 var template = document.getElementById("card-template");
 
-data = get(datafilepath).done((data) => {
+get(datafilepath).done((data) => {
     populateData(data);
 });
 

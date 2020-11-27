@@ -1,6 +1,6 @@
 {
   "name": "webapp-ws20-projects",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "web application development projekt of the group SnickersVsMars for the FH-JOANNEUM",
   "main": "server.js",
   "scripts": {

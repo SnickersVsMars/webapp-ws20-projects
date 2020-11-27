@@ -1,179 +1,145 @@
 {
-   "$schema":"http://json-schema.org/draft-07/schema",
-   "$id":"projects.json",
-   "type":"object",
-   "title":"Project schema",
-   "description":"Schema of the json object.",
-   "examples":[
-      {
-         "id":"5df14899-0c33-4164-a46e-f9d9fea3e377",
-         "number":"1",
-         "label":"Test-Projekt",
-         "description":"Beschreibung des Projekts",
-         "manager":"Christian Sitzwohl",
-         "employees":[
-            "Michael Lamprecht",
-            "Marian Korosec",
-            "Samuel Angerer",
-            "Islam Hemida",
-            "Martin Guevara-Kunerth"
-         ],
-         "customer":"Testkunde",
-         "costCenter":"Test",
-         "milestones":[
-            {
-               "date":"2020-11-09",
-               "label":"Start",
-               "description":"Projektstart"
-            },
-            {
-               "date":"2021-01-09",
-               "label":"Ende",
-               "description":"Projektabschluss"
-            }
-         ]
-      }
-   ],
-   "required":[
-      "id",
-      "number",
-      "label",
-      "manager",
-      "customer",
-      "costCenter"
-   ],
-   "properties":{
-      "id":{
-         "default":"",
-         "description":"Unique project identifier.",
-         "examples":[
-            "5df14899-0c33-4164-a46e-f9d9fea3e377"
-         ],
-         "title":"Unique ID",
-         "type":"string"
-      },
-      "number":{
-         "default":"",
-         "description":"Used as an user-readable projekt identifier.",
-         "examples":[
-            "1"
-         ],
-         "title":"Friendly project identifier",
-         "type":"string"
-      },
-      "label":{
-         "default":"",
-         "description":"Friendly projekt label / short description.",
-         "examples":[
-            "Test-Projekt"
-         ],
-         "title":"Friendly projekt label",
-         "type":"string"
-      },
-      "description":{
-         "default":"",
-         "description":"Description to get an idea of what the project is about.",
-         "examples":[
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"
-         ],
-         "title":"Project description",
-         "type":"string"
-      },
-      "manager":{
-         "default":"",
-         "description":"Person who has the lead responsibility for this project.",
-         "examples":[
-            "Christian Sitzwohl"
-         ],
-         "title":"Manager of the project",
-         "type":"string"
-      },
-      "employees":{
-         "default":[
-            
-         ],
-         "description":"Employees who work on this project.",
-         "examples":[
-            [
-               "Michael Lamprecht",
-               "Marian Korosec"
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "projects.json",
+    "type": "object",
+    "title": "Project schema",
+    "description": "Schema of the json object.",
+    "examples": [
+        {
+            "id": "5df14899-0c33-4164-a46e-f9d9fea3e377",
+            "number": "1",
+            "label": "Test-Projekt",
+            "description": "Beschreibung des Projekts",
+            "manager": "Christian Sitzwohl",
+            "employees": [
+                "Michael Lamprecht",
+                "Marian Korosec",
+                "Samuel Angerer",
+                "Islam Hemida",
+                "Martin Guevara-Kunerth"
+            ],
+            "customer": "Testkunde",
+            "costCenter": "Test",
+            "milestones": [
+                {
+                    "date": "2020-11-09",
+                    "label": "Start",
+                    "description": "Projektstart"
+                },
+                {
+                    "date": "2021-01-09",
+                    "label": "Ende",
+                    "description": "Projektabschluss"
+                }
             ]
-         ],
-         "title":"Project employees",
-         "type":"array",
-         "additionalItems":true,
-         "items":{
-            "$id":"#/properties/employees/items"
-         }
-      },
-      "customer":{
-         "default":"",
-         "description":"The customer for whom the project is being carried out.",
-         "examples":[
-            "Testkunde"
-         ],
-         "title":"Project customer",
-         "type":"string"
-      },
-      "costCenter":{
-         "default":"",
-         "description":"Cost center to which the project is charged.",
-         "examples":[
-            "Test"
-         ],
-         "title":"Project cost center",
-         "type":"string"
-      },
-      "milestones":{
-         "default":[
-            
-         ],
-         "description":"Milestones of this project.",
-         "examples":[
-            [
-               {
-                  "date":"2020-11-09",
-                  "label":"Start",
-                  "description":"Projektstart"
-               },
-               {
-                  "date":"2021-01-09",
-                  "label":"Ende",
-                  "description":"Projektabschluss"
-               }
-            ]
-         ],
-         "title":"Project milestones",
-         "type":"array",
-         "items":{
-            "date":{
-               "$id":"project/milestones/items/date",
-               "type":"string",
-               "title":"Milestone date",
-               "description":"Exact date of the milestone event.",
-               "examples":[
-                  "2020-11-09"
-               ]
-            },
-            "label":{
-               "$id":"project/milestones/items/label",
-               "type":"string",
-               "title":"Milestone label",
-               "description":"Label / Short Description of the Milestone.",
-               "examples":[
-                  "Projektstart"
-               ]
-            },
-            "description":{
-               "$id":"project/milestones/items/description",
-               "type":"string",
-               "title":"Milestone description",
-               "description":"Optional longer description of the milestone.",
-               "examples":[
-                  "Projektstart"
-               ]
+        }
+    ],
+    "required": ["id", "number", "label", "manager", "customer", "costCenter"],
+    "properties": {
+        "id": {
+            "default": "",
+            "description": "Unique project identifier.",
+            "examples": ["5df14899-0c33-4164-a46e-f9d9fea3e377"],
+            "title": "Unique ID",
+            "type": "string"
+        },
+        "number": {
+            "default": "",
+            "description": "Used as an user-readable projekt identifier.",
+            "examples": ["1"],
+            "title": "Friendly project identifier",
+            "type": "string"
+        },
+        "label": {
+            "default": "",
+            "description": "Friendly projekt label / short description.",
+            "examples": ["Test-Projekt"],
+            "title": "Friendly projekt label",
+            "type": "string"
+        },
+        "description": {
+            "default": "",
+            "description": "Description to get an idea of what the project is about.",
+            "examples": [
+                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"
+            ],
+            "title": "Project description",
+            "type": "string"
+        },
+        "manager": {
+            "default": "",
+            "description": "Person who has the lead responsibility for this project.",
+            "examples": ["Christian Sitzwohl"],
+            "title": "Manager of the project",
+            "type": "string"
+        },
+        "employees": {
+            "default": [],
+            "description": "Employees who work on this project.",
+            "examples": [["Michael Lamprecht", "Marian Korosec"]],
+            "title": "Project employees",
+            "type": "array",
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/employees/items"
             }
-         }
-      }
-   }
+        },
+        "customer": {
+            "default": "",
+            "description": "The customer for whom the project is being carried out.",
+            "examples": ["Testkunde"],
+            "title": "Project customer",
+            "type": "string"
+        },
+        "costCenter": {
+            "default": "",
+            "description": "Cost center to which the project is charged.",
+            "examples": ["Test"],
+            "title": "Project cost center",
+            "type": "string"
+        },
+        "milestones": {
+            "default": [],
+            "description": "Milestones of this project.",
+            "examples": [
+                [
+                    {
+                        "date": "2020-11-09",
+                        "label": "Start",
+                        "description": "Projektstart"
+                    },
+                    {
+                        "date": "2021-01-09",
+                        "label": "Ende",
+                        "description": "Projektabschluss"
+                    }
+                ]
+            ],
+            "title": "Project milestones",
+            "type": "array",
+            "items": {
+                "date": {
+                    "$id": "project/milestones/items/date",
+                    "type": "string",
+                    "title": "Milestone date",
+                    "description": "Exact date of the milestone event.",
+                    "examples": ["2020-11-09"]
+                },
+                "label": {
+                    "$id": "project/milestones/items/label",
+                    "type": "string",
+                    "title": "Milestone label",
+                    "description": "Label / Short Description of the Milestone.",
+                    "examples": ["Projektstart"]
+                },
+                "description": {
+                    "$id": "project/milestones/items/description",
+                    "type": "string",
+                    "title": "Milestone description",
+                    "description": "Optional longer description of the milestone.",
+                    "examples": ["Projektstart"]
+                }
+            }
+        }
+    }
 }

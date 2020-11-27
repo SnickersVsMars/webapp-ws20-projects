@@ -13,4 +13,4 @@ desktop.ini
 
 #node.js
 node_modules
-package.lock.json
+package-lock.json

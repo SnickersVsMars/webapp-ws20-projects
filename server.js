@@ -23,7 +23,7 @@ server.use((request, response) => {
 
 //Binding to a port
 server.listen(port, () => {
-  console.log("Express server started at port 3000");
+  console.log('Express server started on port ' + port);
 });
 
 // Handle server shutdown

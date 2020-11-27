@@ -1,0 +1,11 @@
+{
+    "MySqlConnectionPool": {
+        "connectionLimit": 5,
+        "host": "snickersvsmars.online",
+        "user": "user",
+        "password": "IleXTrUegYPhopECTAL",
+        "database": "webapp"
+    },
+    
+    "port":3000
+}

@@ -43,7 +43,7 @@ function populateData(data) {
 }
 
 function showDetail(id) {
-    location.href = "detailsite.html?id=" + id;
+    location.href = "projects/" + id;
 }
 
 function lastMilestone(milestones) {

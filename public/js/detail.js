@@ -1,4 +1,5 @@
-var id = new URLSearchParams(window.location.search).get("id");
+const split = window.location.href.split("/");
+const id = split[split.length - 1];
 
 data = get(datafilepath).done((data) => {
     populateData(data);
@@ -33,7 +34,7 @@ function populateData(data) {
             ).innerHTML = `PROJEKT ${project.number}`;
             document
                 .getElementById("breadcrumb")
-                .setAttribute("href", "detailsite.html?id=" + project.id);
+                .setAttribute("href", "/projects/" + project.id);
 
             fillEmployess(project.employees);
             fillMilestones(project.milestones);

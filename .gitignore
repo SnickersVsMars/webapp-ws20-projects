@@ -4,6 +4,10 @@
 .vscode/*
 *.iml
 
+# exclude nodejs
+node_modules
+package-lock.json
+
 
 # Google Drive exclude
 desktop.ini

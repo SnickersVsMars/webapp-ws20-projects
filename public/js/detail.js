@@ -1,4 +1,8 @@
-var id = new URLSearchParams(window.location.search).get("id");
+
+
+ var split = window.location.href.split('/');
+ var id = split[split.length-1];
+
 $.ajax({
     url: datafilepath,
     dataType:"json",
@@ -17,7 +21,7 @@ $.ajax({
                 document.getElementById("customer").innerHTML=validate(project.customer);
                 document.getElementById("costCenter").innerHTML=validate(project.costCenter);
                 document.getElementById("breadcrumb").innerHTML=`PROJEKT ${project.number}`;
-                document.getElementById("breadcrumb").setAttribute('href', 'detailsite.html?id='+project.id);
+                document.getElementById("breadcrumb").setAttribute('href', '/projects/'+project.id);
 
                 fillEmployess(project.employees);
                 fillMilestones(project.milestones);

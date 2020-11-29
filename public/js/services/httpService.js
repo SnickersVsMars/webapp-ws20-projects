@@ -1,7 +1,6 @@
 const pathPrefix = "/api/";
 
 function get(path) {
-    console.log(path);
     return $.ajax({
         // TODO remove endsWith once all data comes from db
         url: path.endsWith(".json") ? path : pathPrefix + path,

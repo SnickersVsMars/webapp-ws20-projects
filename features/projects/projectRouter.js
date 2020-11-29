@@ -1,14 +1,13 @@
 const express = require("express");
 const path = require("path");
 
-const viewRouter = express.Router();
-const apiRouter = express.Router();
-
 function buildPath(fileName) {
     return path.join(__dirname, fileName);
 }
 
 // define view routes
+const viewRouter = express.Router();
+
 viewRouter.get("/", (req, res) => {
     res.sendFile(buildPath("list.html"));
 });
@@ -18,6 +17,7 @@ viewRouter.get("/:id", (req, res) => {
 });
 
 // Todo: define api routes
+const apiRouter = express.Router();
 
 // define project router
 const projectRouter = express.Router();

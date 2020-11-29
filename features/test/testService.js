@@ -10,8 +10,6 @@ const dbConnection = require("../dbConnection");
 // function TestService(constructorParam1, constructorParam2)
 
 class TestService {
-    constructor() {}
-
     get(succes) {
         dbConnection.select("Select * FROM tests", succes);
     }
@@ -33,6 +31,9 @@ class TestService {
         this.tests[this.tests.length] = test;
         return test;
     }
+
+    update() {}
+    delete() {}
 }
 
 // return instance of TestService, because we want a singleton TestService

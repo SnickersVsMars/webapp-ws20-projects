@@ -14,7 +14,7 @@ Martin Guevara-Kunerth <br>
 
 ## Run project
 
-Install latest version of Node.js for your OS.  
+Install latest version of Node.js for your OS.
 You can find more info on the official webpage: https://nodejs.org/
 
 After cloning the project on your local machine, open it and run `npm i` to install the required packages.
@@ -44,5 +44,3 @@ At the end of each sprint every group presents the results from another group.
 FH JOANNEUM will introduce a new project management tool. <br>
 With this tool, users should have the possibility to view and search for information. <br>
 Our group is assigned to manage and display information regarding ongoing or finished projects.
-
-

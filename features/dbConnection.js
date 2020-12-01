@@ -1,7 +1,7 @@
-const mysql = require("mysql");
-const config = require("config");
+const mysql = require('mysql');
+const config = require('config');
 
-const poolConfig = config.get("MySqlConnectionPool");
+const poolConfig = config.get('MySqlConnectionPool');
 
 // Declared as function and not as class here, because in default
 // JS it is not possible to make private fields in classes.

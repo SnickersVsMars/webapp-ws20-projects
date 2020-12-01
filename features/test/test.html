@@ -67,15 +67,15 @@
         // we only need to use the last part of the url here,
         // since the request service already knows the api
         // base path => get("tests") will send a request to /api/tests
-        get("tests").done((data) => {
+        get('tests').done((data) => {
             populateData(data);
         });
 
         function populateData(data) {
-            var main = document.getElementById("main");
+            var main = document.getElementById('main');
             for (let i = 0; i < data.length; i++) {
-                let p = document.createElement("p")
-                p.innerHTML = data[i].id + " | " + data[i].label;
+                let p = document.createElement('p')
+                p.innerHTML = data[i].id + ' | ' + data[i].label;
                 main.append(p);
             }
         }

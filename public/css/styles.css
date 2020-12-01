@@ -65,8 +65,8 @@ body {
 }
 
 .breadcrumb a:after {
-    content: "chevron_right";
-    font-family: "Material Icons";
+    content: 'chevron_right';
+    font-family: 'Material Icons';
     position: absolute;
     font-size: 1.3rem;
     right: 0.5rem;
@@ -74,7 +74,7 @@ body {
 }
 
 .breadcrumb li:last-of-type a:after {
-    content: "";
+    content: '';
 }
 
 .breadcrumb li {

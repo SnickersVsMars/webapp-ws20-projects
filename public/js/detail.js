@@ -1,4 +1,4 @@
-const split = window.location.href.split("/");
+const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
 get(datafilepath).done((data) => {
@@ -11,36 +11,36 @@ function populateData(data) {
         if (value.id === id) {
             project = value;
 
-            document.getElementById("label").innerHTML = validate(
+            document.getElementById('label').innerHTML = validate(
                 project.label
             );
-            document.getElementById("number").innerHTML = validate(
+            document.getElementById('number').innerHTML = validate(
                 project.number
             );
-            document.getElementById("description").innerHTML = validate(
+            document.getElementById('description').innerHTML = validate(
                 project.description
             );
-            document.getElementById("manager").innerHTML = validate(
+            document.getElementById('manager').innerHTML = validate(
                 project.manager
             );
-            document.getElementById("customer").innerHTML = validate(
+            document.getElementById('customer').innerHTML = validate(
                 project.customer
             );
-            document.getElementById("costCenter").innerHTML = validate(
+            document.getElementById('costCenter').innerHTML = validate(
                 project.costCenter
             );
             document.getElementById(
-                "breadcrumb"
+                'breadcrumb'
             ).innerHTML = `PROJEKT ${project.number}`;
             document
-                .getElementById("breadcrumb")
-                .setAttribute("href", "/projects/" + project.id);
+                .getElementById('breadcrumb')
+                .setAttribute('href', '/projects/' + project.id);
 
             fillEmployess(project.employees);
             fillMilestones(project.milestones);
         }
 
-        document.getElementById("busy-indicator").hidden = true;
+        document.getElementById('busy-indicator').hidden = true;
     });
 }
 
@@ -48,11 +48,11 @@ function fillEmployess(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
         return;
 
-    let ul = document.getElementById("employees");
+    let ul = document.getElementById('employees');
 
     for (let i = 0; i < employees.length; i++) {
         // Create the list item:
-        let item = document.createElement("li");
+        let item = document.createElement('li');
         // item.className="list-group-item"
 
         // Set its contents:
@@ -71,8 +71,8 @@ function fillMilestones(milestones) {
     )
         return;
 
-    let tbody = document.getElementById("table-milestone-body");
-    tbody.innerHTML = "";
+    let tbody = document.getElementById('table-milestone-body');
+    tbody.innerHTML = '';
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < milestones.length; i++) {

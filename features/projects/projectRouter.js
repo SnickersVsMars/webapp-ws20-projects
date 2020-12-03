@@ -17,6 +17,10 @@ viewRouter.get("/:id", (req, res) => {
     res.sendFile(buildPath("detail.html"));
 });
 
+viewRouter.get("/add", (req, res) => {
+    res.sendFile(buildPath("add.html"));
+});
+
 // Todo: define api routes
 
 // define project router

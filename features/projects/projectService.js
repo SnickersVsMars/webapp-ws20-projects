@@ -37,24 +37,62 @@ class ProjectService {
         );
     }
 
-    insert(values, success) {
-        if (values == null) {
+    insert(project, success) {
+        if (project == null) {
             return null;
         }
 
-        if (values.length < 1) {
+        if (project.length < 1) {
             return null;
         }
+
+        var projectValues = [project.number];
 
         dbConnection.insert(
-            `START TRANSACTION;
-        INSERT INTO projects (id, number, label, description, manager, customer, costcenter) VALUES ?;
-        INSERT INTO employees (project_id, name) VALUES ?;
-        INSERT INTO milestones (date, label, descrption, project_id) VALUES ?;
-        COMMIT`,
-            [[projects], [employees], [milestones]],
-            success
+            'INSERT INTO projects (id, number, label, description, manager, customer, costcenter) VALUES ?',
+            projectValues,
+            (result) => {
+                let employeesValues = new Array();
+
+                for (const employee of project.employees) {
+                    employeesValues.push(employee);
+                }
+
+                dbConnection.insert(
+                    'INSERT INTO employees (project_id, name) VALUES ?',
+                    employeesValues
+                );
+
+                var milestonesValues = [];
+
+                for (const milestone of project.milestones) {
+                    milestonesValues.push([milestone.date]);
+                }
+
+                dbConnection.insert(
+                    'INSERT INTO milestones (date, label, descrption, project_id) VALUES ?',
+                    milestonesValues
+                );
+
+                return result.insertId;
+            }
         );
+
+        // connection.query('INSERT INTO posts SET ?', {title: 'test'}, function(err, result, fields) {
+        //     if (err) throw err;
+
+        //     console.log(result.insertId);
+        //   });
+
+        // dbConnection.insert(
+        //     `START TRANSACTION;
+        // INSERT INTO projects (number, label, description, manager, customer, costcenter) VALUES ?;
+        // INSERT INTO employees (project_id, name) VALUES ?;
+        // INSERT INTO milestones (date, label, descrption, project_id) VALUES ?;
+        // COMMIT`,
+        //     [[projects], [employees], [milestones]],
+        //     success
+        // );
     }
 }
 

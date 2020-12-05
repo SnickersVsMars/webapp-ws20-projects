@@ -39,34 +39,6 @@ function DbConnection() {
         });
     };
 
-    this.bulkInsert = (array, success) => {
-        let bulkConfig = mysql.createConnection({poolConfig})
-        pool.getConnection((error, connection) => {
-            handleError(error);
-            connection.beginTransaction(function(err) {
-                handleError(error);
-                array.forEach(element => {
-                    connection.query(element.query, element.values, handleError);
-                });
-                    connection.commit(function(err) {
-                      if (err) {
-                        return connection.rollback(function() {
-                          throw err;
-                        });
-                      }
-                      success(re);
-                      connection.release();
-                    });
-                });
-            });
-            connection.query(query, values, (error, results, fields) => {
-                handleError(error);
-                success(results);
-                connection.release();
-            });
-        });
-    };
-
     // closes the connection to the database
     this.close = () => {
         pool.end();

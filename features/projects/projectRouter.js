@@ -9,6 +9,12 @@ function buildPath(fileName) {
 }
 
 // define view routes
+
+viewRouter.get("/add", (req, res) => {
+    console.log("add"); 
+    res.sendFile(buildPath("add.html"));
+});
+
 viewRouter.get("/", (req, res) => {
     res.sendFile(buildPath("list.html"));
 });
@@ -17,9 +23,7 @@ viewRouter.get("/:id", (req, res) => {
     res.sendFile(buildPath("detail.html"));
 });
 
-viewRouter.get("/add", (req, res) => {
-    res.sendFile(buildPath("add.html"));
-});
+
 
 // Todo: define api routes
 

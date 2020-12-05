@@ -22,7 +22,7 @@ package-lock.json
 # cypress dummy tests
 cypress/integration/examples
 cypress/fixtures/example.json
-cypress/fixtures/example.json
 cypress/fixtures/profile.json
 cypress/fixtures/users.json
-cypress/screenshots/All Integration Specs
+cypress/screenshots
+cypress/videos

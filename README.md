@@ -21,6 +21,8 @@ After cloning the project on your local machine, open it and run `npm i` to inst
 
 Now you can start the server with `npm start`
 
+If you are in a development environment you can start the server with hot reload using `nodemon start`
+
 ## Technology
 
 Our used technologies are:

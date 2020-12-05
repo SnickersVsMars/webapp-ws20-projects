@@ -6,6 +6,7 @@ function addEmployeeField() {
     new_textfield.setAttribute("type", "text");
     new_textfield.setAttribute("class", "form-control mb-2");
     new_textfield.setAttribute("placeholder", "Mitarbeiter eintragen");
+
     employee_container.appendChild(new_textfield);
 }
 
@@ -30,7 +31,7 @@ function addMilestoneField() {
     new_button.setAttribute("onclick", "addMilestoneField()");
     new_button.innerHTML = '<i class="material-icons ">add</i>';
 
-    table_milestone_body.appendChild(new_button);
+    new_button.appendChild(new_button);
 
 
 }

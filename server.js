@@ -1,40 +1,45 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const port = require("config").get("port");
+const express = require('express');
+const bodyParser = require('body-parser');
+const port = require('config').get('port');
+const path = require('path');
 
-const router = require("./features/router");
-const dbConnection = require("./features/dbConnection");
+const router = require('./features/router');
+const dbConnection = require('./features/dbConnection');
 
 const server = express();
 
-server.set("port", port);
+server.set('port', port);
 
-server.use(express.static("public"));
+server.use(express.static('public'));
 
 // parse application/json
 server.use(bodyParser.json());
 
-server.use("/", router);
+server.use('/', router);
 
-// Express error handling middleware
+// Not Found Error
 server.use((request, response) => {
-    response.type("text/plain");
-    response.status(505);
-    response.send("Error page");
+    response.sendFile(path.join(__dirname, 'features/errors/404.html'));
+});
+
+// Server Error
+server.use(function (err, req, res, next) {
+    res.sendFile(path.join(__dirname, 'features/errors/500.html'));
+    console.log(err);
 });
 
 // Binding to a port
 server.listen(port, () => {
-    console.log("Express server listening on port " + port);
-    console.log("http://localhost:3000");
+    console.log('Express server listening on port ' + port);
+    console.log('http://localhost:3000');
 });
 
 // Handle server shutdown
-server.on("close", function () {
+server.on('close', function () {
     dbConnection.close();
 });
 
-process.on("SIGINT", function () {
+process.on('SIGINT', function () {
     dbConnection.close();
     process.exit(0);
 });

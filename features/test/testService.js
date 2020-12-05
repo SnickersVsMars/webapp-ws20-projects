@@ -1,4 +1,4 @@
-const dbConnection = require("../dbConnection");
+const dbConnection = require('../dbConnection');
 
 // Class for CRUD actions for the database
 // C - Create
@@ -11,14 +11,14 @@ const dbConnection = require("../dbConnection");
 
 class TestService {
     get(succes) {
-        dbConnection.select("Select * FROM tests", succes);
+        dbConnection.select('Select * FROM tests', succes);
     }
 
     find(id) {
         if (id == null) return null;
 
-        if (typeof id === "string") id = parseInt(id);
-        else if (typeof id !== "number") return null;
+        if (typeof id === 'string') id = parseInt(id);
+        else if (typeof id !== 'number') return null;
 
         for (let i = 0; i < this.tests.length; i++) {
             if (this.tests[i].id === id) return this.tests[i];

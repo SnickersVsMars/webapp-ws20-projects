@@ -1,5 +1,4 @@
 const dbConnection = require('../dbConnection');
-const projectRouter = require('./projectRouter');
 
 class ProjectService {
     get(success) {

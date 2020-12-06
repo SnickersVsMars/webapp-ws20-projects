@@ -17,7 +17,6 @@ viewRouter.get('/:id', (req, res) => {
     res.sendFile(buildPath('detail.html'));
 });
 
-// Todo: define api routes
 const apiRouter = express.Router();
 apiRouter.get('/', (req, res) => {
     projectService.get((result) => {

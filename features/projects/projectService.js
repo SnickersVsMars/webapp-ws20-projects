@@ -1,4 +1,5 @@
 const dbConnection = require('../dbConnection');
+const projectRouter = require('./projectRouter');
 
 class ProjectService {
     get(success) {
@@ -76,53 +77,39 @@ class ProjectService {
             return null;
         }
 
-        var projectValues = [project.number];
+        var employees = project.employees;
+        var milestones = project.milestones;
 
-        dbConnection.insert(
-            'INSERT INTO projects (id, number, label, description, manager, customer, costcenter) VALUES ?',
-            projectValues,
-            (result) => {
-                let employeesValues = new Array();
+        delete project.milestones;
+        delete project.employees;
 
-                for (const employee of project.employees) {
-                    employeesValues.push(employee);
-                }
-
-                dbConnection.insert(
-                    'INSERT INTO employees (project_id, name) VALUES ?',
-                    employeesValues
-                );
-
-                var milestonesValues = [];
-
-                for (const milestone of project.milestones) {
-                    milestonesValues.push([milestone.date]);
-                }
-
-                dbConnection.insert(
-                    'INSERT INTO milestones (date, label, descrption, project_id) VALUES ?',
-                    milestonesValues
-                );
-
-                return result.insertId;
+        dbConnection.insert('INSERT INTO projects SET ?', project, (result) => {
+            for (var i = 0; i < employees.length; i++) {
+                employees[i].project_id = result.insertId;
             }
-        );
 
-        // connection.query('INSERT INTO posts SET ?', {title: 'test'}, function(err, result, fields) {
-        //     if (err) throw err;
+            for (var i = 0; i < employees.length; i++) {
+                dbConnection.insert(
+                    'INSERT INTO employees SET ?',
+                    employees[i],
+                    () => {}
+                );
+            }
 
-        //     console.log(result.insertId);
-        //   });
+            for (var i = 0; i < milestones.length; i++) {
+                milestones[i].project_id = result.insertId;
+            }
 
-        // dbConnection.insert(
-        //     `START TRANSACTION;
-        // INSERT INTO projects (number, label, description, manager, customer, costcenter) VALUES ?;
-        // INSERT INTO employees (project_id, name) VALUES ?;
-        // INSERT INTO milestones (date, label, descrption, project_id) VALUES ?;
-        // COMMIT`,
-        //     [[projects], [employees], [milestones]],
-        //     success
-        // );
+            for (var i = 0; i < milestones.length; i++) {
+                dbConnection.insert(
+                    'INSERT INTO milestones SET ?',
+                    milestones[i],
+                    () => {}
+                );
+            }
+
+            success(result.insertId);
+        });
     }
 }
 

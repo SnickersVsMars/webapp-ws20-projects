@@ -31,6 +31,12 @@ apiRouter.get('/:id', (req, res) => {
     });
 });
 
+apiRouter.post('/', (req, res) => {
+    projectService.insert(req.body, (result) => {
+        res.json(result);
+    });
+});
+
 // define project router
 const projectRouter = express.Router();
 projectRouter.use('/api/projects', apiRouter);

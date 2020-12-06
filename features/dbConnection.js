@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const config = require('config');
-const { query } = require('express');
 
 const poolConfig = config.get('MySqlConnectionPool');
 

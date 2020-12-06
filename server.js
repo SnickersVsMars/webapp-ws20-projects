@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const port = require('config').get('port');
 const path = require('path');
 
@@ -13,7 +12,7 @@ server.set('port', port);
 server.use(express.static('public'));
 
 // parse application/json
-server.use(bodyParser.json());
+server.use(express.json());
 
 server.use('/', router);
 

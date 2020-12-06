@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const config = require('config');
+const { query } = require('express');
 
 const poolConfig = config.get('MySqlConnectionPool');
 
@@ -20,6 +21,17 @@ function DbConnection() {
         pool.getConnection((error, connection) => {
             handleError(error);
             connection.query(query, (error, results, fields) => {
+                handleError(error);
+                success(results);
+                connection.release();
+            });
+        });
+    };
+
+    this.insert = (query, values, success) => {
+        pool.getConnection((error, connection) => {
+            handleError(error);
+            connection.query(query, values, (error, results, fields) => {
                 handleError(error);
                 success(results);
                 connection.release();

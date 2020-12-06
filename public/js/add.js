@@ -14,26 +14,27 @@ function addMilestoneField() {
     var table_milestone_body = document.getElementById('table-milestone-body');
     var new_table_row = document.createElement("tr");
 
-    for (var i = 0; i < 3; i++) {
-        var new_table_1 = document.createElement("td");
-        var new_textfield = document.createElement("input");
-        new_textfield.setAttribute("type", "input");
-        new_textfield.setAttribute("class", "form-control mb-2");
-        new_textfield.setAttribute("placeholder", "Bitte eintragen");
-        new_table_1.appendChild(new_textfield);
-        new_table_row.appendChild(new_table_1);
-    }
+    var date_column = createTableColumn("date");
+    new_table_row.appendChild(date_column);
+
+    var label_column = createTableColumn("text");
+    new_table_row.appendChild(label_column);
+
+    var description_column = createTableColumn("text");
+    new_table_row.appendChild(description_column);
+
     table_milestone_body.appendChild(new_table_row);
-
-    var new_button = document.createElement("button");
-    new_button.setAttribute("type", "button");
-    new_button.setAttribute("class", "btn btn-primary");
-    new_button.setAttribute("onclick", "addMilestoneField()");
-    new_button.innerHTML = '<i class="material-icons ">add</i>';
-
-    new_button.appendChild(new_button);
-
-
 }
 
+function createTableColumn(type) {
 
+    var new_table_column = document.createElement("td");
+
+    var new_textfield = document.createElement("input");
+    new_textfield.setAttribute("type", type);
+    new_textfield.setAttribute("class", "form-control mb-2");
+    new_textfield.setAttribute("placeholder", "Bitte eintragen");
+    new_table_column.appendChild(new_textfield);
+
+    return new_table_column;
+}

@@ -6,15 +6,23 @@ function buildPath(fileName) {
 }
 
 // define view routes
-const viewRouter = express.Router();
 
-viewRouter.get('/', (req, res) => {
-    res.sendFile(buildPath('list.html'));
+
+viewRouter.get("/add", (req, res) => {
+    console.log("add");
+    res.sendFile(buildPath("add.html"));
+});
+
+viewRouter.get("/", (req, res) => {
+    res.sendFile(buildPath("list.html"));
+
 });
 
 viewRouter.get('/:id', (req, res) => {
     res.sendFile(buildPath('detail.html'));
 });
+
+
 
 // Todo: define api routes
 const apiRouter = express.Router();

@@ -2,7 +2,20 @@ const dbConnection = require('../dbConnection');
 
 class ProjectService {
     get(success) {
-        dbConnection.select('SELECT * FROM projects', success);
+        dbConnection.select(
+            `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(*) as employeeCount
+            FROM projects p
+                LEFT OUTER JOIN employees e ON p.id=e.project_id
+                LEFT OUTER JOIN
+                    (
+                        SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
+                        FROM milestones m
+                        WHERE m.date >= CURRENT_DATE()
+                        GROUP BY m.project_id
+                    ) nextM ON p.id = nextM.project_id
+            GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`,
+            success
+        );
     }
 
     find(id, success) {
@@ -23,16 +36,33 @@ class ProjectService {
                     throw `${id} not found`;
                 }
 
-                if (Array.isArray(result)) {
-                    if (result.length > 1) {
+                let project = result;
+                if (Array.isArray(project)) {
+                    if (project.length > 1) {
                         throw `${id} returns more that one value`;
                     }
-                    if (result.length < 1) {
+                    if (project.length < 1) {
                         throw `${id} not found`;
                     }
 
-                    success(result[0]);
-                } else success(result);
+                    project = project[0];
+                }
+
+                dbConnection.select(
+                    `SELECT id, name FROM employees WHERE project_id = ${id}`,
+                    (result) => {
+                        project.employees = result;
+
+                        dbConnection.select(
+                            `SELECT id, date, label, description FROM milestones WHERE project_id = ${id}`,
+                            (result) => {
+                                project.milestones = result;
+
+                                success(project);
+                            }
+                        );
+                    }
+                );
             }
         );
     }

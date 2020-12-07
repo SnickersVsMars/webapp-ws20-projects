@@ -4,8 +4,9 @@
     "description": "Education project for the FH Joannem Web Application Development class",
     "main": "server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon server.js"
+        "start": "nodemon server.js",
+        "test": "./node_modules/.bin/cypress run",
+        "cy:open": "./node_modules/.bin/cypress open"
     },
     "repository": {
         "type": "git",
@@ -25,11 +26,13 @@
     "homepage": "https://github.com/SnickersVsMars/webapp-ws20-projects#readme",
     "dependencies": {
         "config": "^3.3.2",
+        "cypress": "^6.0.1",
         "express": "^4.17.1",
+        "express-validator": "^6.7.0",
         "mysql": "^2.18.1"
     },
     "devDependencies": {
-        "nodemon": "^2.0.6",
-        "prettier": "^2.2.0"
+        "prettier": "^2.2.0",
+        "nodemon": "^2.0.6"
     }
 }

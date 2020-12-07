@@ -42,6 +42,9 @@ function populateData(projects) {
     document.getElementById('busy-indicator').hidden = true;
 }
 
+var cards = document.getElementsByClassName('card');
+console.log(cards);
+
 function showDetail(id) {
     location.href = 'projects/' + id;
 }

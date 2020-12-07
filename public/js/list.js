@@ -18,20 +18,20 @@ function populateData(projects) {
         card.querySelector('.project-label').innerHTML = validate(
             project.label
         );
-        card.querySelector('.project-milestone').innerHTML = validate(
-            project.nextMilestone
+
+        let nextMilestone = new Date(project.nextMilestone);
+
+        card.querySelector('.project-milestone').innerHTML = formatDate(
+            nextMilestone
         );
+
         card.querySelector('.project-customer').innerHTML = validate(
             project.customer
         );
 
-        if (
-            project.employees != null &&
-            project.employees != undefined &&
-            project.employees.length > 0
-        )
-            card.querySelector('.project-employees').innerHTML =
-                project.employees.length;
+        card.querySelector('.project-employees').innerHTML = validate(
+            project.employeeCount
+        );
 
         overview.appendChild(card);
         var cards = document.getElementsByClassName('card');

@@ -3,7 +3,7 @@ const dbConnection = require('../dbConnection');
 class ProjectService {
     get(success) {
         dbConnection.select(
-            `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(*) as employeeCount
+            `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
             FROM projects p
                 LEFT OUTER JOIN employees e ON p.id=e.project_id
                 LEFT OUTER JOIN

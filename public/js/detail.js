@@ -1,47 +1,32 @@
 const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
-get(datafilepath).done((data) => {
-    populateData(data);
+HttpService.get('projects/' + id).done((project) => {
+    populateData(project);
 });
 
-function populateData(data) {
-    $(data.projects).each(function (i, value) {
-        var project;
-        if (value.id === id) {
-            project = value;
+function populateData(project) {
+    document.getElementById('label').innerHTML = validate(project.label);
+    document.getElementById('number').innerHTML = validate(project.number);
+    document.getElementById('description').innerHTML = validate(
+        project.description
+    );
+    document.getElementById('manager').innerHTML = validate(project.manager);
+    document.getElementById('customer').innerHTML = validate(project.customer);
+    document.getElementById('costCenter').innerHTML = validate(
+        project.costCenter
+    );
+    document.getElementById(
+        'breadcrumb'
+    ).innerHTML = `PROJEKT ${project.number}`;
+    document
+        .getElementById('breadcrumb')
+        .setAttribute('href', '/projects/' + project.id);
 
-            document.getElementById('label').innerHTML = validate(
-                project.label
-            );
-            document.getElementById('number').innerHTML = validate(
-                project.number
-            );
-            document.getElementById('description').innerHTML = validate(
-                project.description
-            );
-            document.getElementById('manager').innerHTML = validate(
-                project.manager
-            );
-            document.getElementById('customer').innerHTML = validate(
-                project.customer
-            );
-            document.getElementById('costCenter').innerHTML = validate(
-                project.costCenter
-            );
-            document.getElementById(
-                'breadcrumb'
-            ).innerHTML = `PROJEKT ${project.number}`;
-            document
-                .getElementById('breadcrumb')
-                .setAttribute('href', '/projects/' + project.id);
+    fillEmployess(project.employees);
+    fillMilestones(project.milestones);
 
-            fillEmployess(project.employees);
-            fillMilestones(project.milestones);
-        }
-
-        document.getElementById('busy-indicator').hidden = true;
-    });
+    document.getElementById('busy-indicator').hidden = true;
 }
 
 function fillEmployess(employees) {
@@ -56,7 +41,7 @@ function fillEmployess(employees) {
         // item.className="list-group-item"
 
         // Set its contents:
-        item.innerText = employees[i];
+        item.innerText = employees[i].name;
 
         // Add it to the list:
         ul.appendChild(item);

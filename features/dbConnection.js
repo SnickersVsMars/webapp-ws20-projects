@@ -27,6 +27,17 @@ function DbConnection() {
         });
     };
 
+    this.insert = (query, values, success) => {
+        pool.getConnection((error, connection) => {
+            handleError(error);
+            connection.query(query, values, (error, results, fields) => {
+                handleError(error);
+                success(results);
+                connection.release();
+            });
+        });
+    };
+
     // closes the connection to the database
     this.close = () => {
         pool.end();

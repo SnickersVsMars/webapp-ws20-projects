@@ -1,0 +1,51 @@
+[
+    {
+        "id": "1",
+        "number": "PR20_0001",
+        "label": "Test-Projekt 1",
+        "manager": "Christian Sitzwohl",
+        "employeeCount": 2,
+        "customer": "Campus02",
+        "nextMilestone": "2021-01-09"
+    },
+    {
+        "id": "2",
+        "number": "PR20_0002",
+        "label": "Test-Projekt 2",
+        "manager": "Thorsten Mustermensch",
+        "employeeCount": 3,
+        "customer": "Intern",
+        "costCenter": "Intern",
+        "nextMilestone": "2021-01-09"
+    },
+    {
+        "id": "3",
+        "number": "PR20_0003",
+        "label": "Test-Projekt 3",
+        "manager": "Karl Karlson",
+        "employeeCount": 0,
+        "customer": "Carlsberg",
+        "costCenter": "Event-Management",
+        "nextMilestone": "2021-01-06"
+    },
+    {
+        "id": "4",
+        "number": "PR20_0004",
+        "label": "Test-Projekt 4",
+        "manager": "Christian Sitzwohl",
+        "employeeCount": 2,
+        "customer": "TU Graz",
+        "costCenter": "Extern",
+        "nextMilestone": "2021-01-09"
+    },
+    {
+        "id": "5",
+        "number": "PR20_0005",
+        "label": "Test-Projekt 5",
+        "manager": "Michael Lamprecht",
+        "employeeCount": 5,
+        "customer": "Snickers vs Mars",
+        "costCenter": "Studenten",
+        "nextMilestone": "2020-12-09"
+    }
+]

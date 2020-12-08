@@ -1,12 +1,17 @@
 var overview = document.getElementById('card-container');
 var template = document.getElementById('card-template');
 
-HttpService.get('projects').done((projects) => {
-    populateData(projects);
+let projects;
+
+HttpService.get('projects').done((projectsResult) => {
+    projects = projectsResult;
+    populateData(projectsResult);
 });
 
-function populateData(projects) {
-    $(projects).each(function (i, project) {
+function populateData(list) {
+    removeProjects();
+
+    $(list).each(function (i, project) {
         var card = template.content.cloneNode(true);
         card.querySelector('.project-number').innerHTML = validate(
             project.number
@@ -42,9 +47,36 @@ function populateData(projects) {
     document.getElementById('busy-indicator').hidden = true;
 }
 
-var cards = document.getElementsByClassName('card');
-console.log(cards);
+$('#search-box').on('input', () => {
+    let text = document.getElementById('search-box').value;
+
+    if (text === '' || text === null || text === undefined) {
+        populateData(result);
+    }
+
+    text = text.toLowerCase();
+    result = projects.filter((project) => {
+        return (
+            project.label.toLowerCase().includes(text) ||
+            project.manager.toLowerCase().includes(text) ||
+            project.number.toLowerCase().includes(text) ||
+            project.customer.toLowerCase().includes(text) ||
+            formatDate(new Date(project.nextMilestone)).includes(text)
+        );
+    });
+    populateData(result);
+});
+
+function filterProjects() {
+    console.log(projects);
+}
 
 function showDetail(id) {
     location.href = 'projects/' + id;
+}
+
+function removeProjects() {
+    while (overview.firstChild) {
+        overview.removeChild(overview.firstChild);
+    }
 }

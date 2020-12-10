@@ -50,16 +50,16 @@
     <main class="container">
         <div class="card">
 
-            <form>
+            <form id="project_form">
                 <div class="card-body row">
                     <div class="form-group col-md-6">
                         <label for="input-number">Nummer</label>
-                        <input type="text" class="form-control" id="input-number"
+                        <input type="text" class="form-control" id="input-number" name="input-number"
                             placeholder="Projektnummer eintragen" />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-manager">Leiter</label>
-                        <input type="text" class="form-control" id="input-manager"
+                        <input type="text" class="form-control" id="input-manager" name="input-manager"
                             placeholder="Projektleiter eintragen" />
                     </div>
                     <div class="form-group col-md-6">
@@ -70,18 +70,18 @@
 
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="input-designation">Bezeichnung</label>
-                        <input type="text" class="form-control" id="input-designation"
-                            placeholder="Example input placeholder" />
+                        <label for="input-label">Bezeichnung</label>
+                        <input type="text" class="form-control" id="input-label" name="input-label"
+                            placeholder="Projektbezeichnung hinzufügen" />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-costplace">Kostenstelle</label>
-                        <input type="text" class="form-control" id="input-costplace"
+                        <input type="text" class="form-control" id="input-costplace" name="input-costplace"
                             placeholder="Kostenstelle eintragen" />
                     </div>
                     <div class="form-group col-lg-6">
-                        <label for="input-descripton">Beschreibung</label>
-                        <input type="text" class="form-control" id="input-descripton"
+                        <label for="input-description">Beschreibung</label>
+                        <input type="text" class="form-control" id="input-description" name="input-descrption"
                             placeholder="Beschreibung eintragen" />
                     </div>
                     <div class="col-md-6"></div>
@@ -89,7 +89,7 @@
                     <div class="form group col-sm-6">
                         <label for="input-employee">Mitarbeiter</label>
                         <div id="employee-container">
-                            <input type="text" class="form-control mb-2" placeholder="Mitarbeiter eintragen" />
+                            <input type="text" class="form-control mb-2" id="input-employee" name="input-employee" placeholder="Mitarbeiter eintragen" />
                         </div>
                         <button type="button" id="add-employee" class="btn btn-primary align-content-between"
                             onclick="addEmployeeField();">
@@ -114,13 +114,13 @@
                     <tbody id="table-milestone-body">
                         <tr>
                             <td width="13%">
-                                <input type="date" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" />
+                                <input type="date" class="form-control mb-1 mt-1" name="input-date" placeholder="Bitte eintragen" />
                             </td>
                             <td width="27%">
-                                <input type="text" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" />
+                                <input type="text" class="form-control mb-1 mt-1" name="input-label-td" placeholder="Bitte eintragen" />
                             </td>
                             <td width="60%">
-                                <input type="text" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" />
+                                <input type="text" class="form-control mb-1 mt-1" name="input-description-td" placeholder="Bitte eintragen" />
                             </td>
                         </tr>
                     </tbody>
@@ -143,7 +143,7 @@
     <!--<div id="busy-indicator">
         <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
-        </div> 
+        </div>
     </div> -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -159,6 +159,7 @@
     <script src="/js/main.js"></script>
     <script src="/js/services/httpService.js"></script>
     <script src="/js/add.js"></script>
+    <script src="/js/fetchService.js"></script>
 
 </body>
 

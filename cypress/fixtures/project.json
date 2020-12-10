@@ -1,0 +1,34 @@
+{
+    "id": 1,
+    "number": "PR20_0001",
+    "label": "Test-Projekt 1",
+    "description": "Das ist das erste Test-Projekt.",
+    "manager": "Christian Sitzwohl",
+    "customer": "Campus02",
+    "costCenter": "Intern",
+    "employees": [
+        { "id": 3, "name": "Michael Lamprecht" },
+        { "id": 4, "name": "Marian Korosec" },
+        { "id": 5, "name": "Samuel Angerer" }
+    ],
+    "milestones": [
+        {
+            "id": 3,
+            "date": "2020-11-09",
+            "label": "Kick-off",
+            "description": "Kick-off Meeting"
+        },
+        {
+            "id": 4,
+            "date": "2020-11-08",
+            "label": "Start",
+            "description": "Projektstart"
+        },
+        {
+            "id": 5,
+            "date": "2021-01-09",
+            "label": "Ende",
+            "description": "Projektabschluss"
+        }
+    ]
+}

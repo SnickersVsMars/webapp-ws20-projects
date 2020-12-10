@@ -1,13 +1,15 @@
-var datafilepath = '/data/project_sample_data.json';
-
 function validate(value) {
-    if (value === null || value === undefined) return '&ndash;';
+    if (value === null || value === undefined) {
+        return '&ndash;';
+    }
 
     return value;
 }
 
 function formatDate(date) {
-    if (date === null || date === undefined) return '&ndash;';
+    if (date === null || date === undefined) {
+        return '&ndash;';
+    }
 
     let dateInstance;
     if (typeof date !== 'string') {

@@ -19,7 +19,7 @@ You can find more info on the official webpage: https://nodejs.org/
 
 After cloning the project on your local machine, open it and run `npm i` to install the required packages.
 
-Now you can start the server with `npm start`
+Now you can start the server with `npm start`.
 
 ## Technology
 

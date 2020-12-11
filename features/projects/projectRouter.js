@@ -7,6 +7,7 @@ function buildPath(fileName) {
 }
 
 // define view routes
+const viewRouter = express.Router();
 
 viewRouter.get('/add', (req, res) => {
     console.log('add');

@@ -5,61 +5,113 @@
 //     "milestones": [{ "date": "2020-12-09", "label": "Start", "description": "Projektstart" },
 //     { "date": "2021-12-09", "label": "Ende", "description": "Projektabschluss" }]}
 
-import FetchService from "/js/FetchService";
-
-const fetchService = new FetchService();
-
-//Event Listener
-const form = document.getElementById("project_form");
-if (form) {
-    form.addEventListener("submit", function (e) {
-        submitForm(e, this);
-    });
-}
-
-async function submitForm(e, form) {
-    // verbindet reloading Page
-    e.preventDefault();
-
-    //submit the form
-    const btnSubmit = document.getElementById("Submit");
-    btnSubmit.disable = true;
-    setTimeout(() => btnSubmit.disable(form));
-
-    //Build json body
-    const jsonFormData = buildJsonFormData(form); //!!!!!
-
-    //Build Headers
-    const headers = buildHeader();
-
-    //Request&Respose
-    const respose = await fetchService.performPostHttpRequest(
-        "https://jsonplacerholder.typicode.com/posts",
-        headers,
-        jsonFormData
+// A handler function to prevent default submission and run our custom script.
+const formToJSON = (elements) =>
+    [].reduce.call(
+        elements,
+        (data, element) => {
+            // Make sure the element has the required properties.
+            if (isValidElement(element) && isValidValue()) {
+                data[element.name] = element.value;
+            }
+            if (isCheckbox(element)) {
+                data[element.name] = (data[element.name] || []).concat(
+                    element.value
+                );
+            } else if (isMultiSelect(element)) {
+                data[element.name] = getSelectValues(element);
+            } else {
+                data[element.name] = element.value;
+            }
+            return data;
+        },
+        {}
     );
-    console.log(respose);
 
-    //informiere User wegen Resultat
-    if (response)
-        window.location =
-            "/add.html?Nummer=${response.input-number}&Manager=${response.input-manager}&Employees=${response.input-employees}" +
-            "&Milestones=${response.add-milestones}&Date=${response.input-date}&Label=${response.input-label-td}&Description=${response.input-description-td}";
-    else alert("An error occured.");
-}
+// Checks if an element’s value can be saved (e.g. not an unselected checkbox)
+const isValidValue = (element) => {
+    return !['checkbox', 'radio'].includes(element.type) || element.checked;
+};
 
-function buildJsonFormData(form) {
-    const jsonFormData = {};
-    for (const pair of new FormData(form)) {
-        jsonFormData[pair[0]] = pair[1];
-    }
-    return jsonFormData;
-}
+// Checks if an input is a checkbox, because checkboxes allow multiple values.
+const isCheckbox = (element) => element.type === 'checkbox';
 
-function buildHeaders(authorization = null) {
-    const headers = {
-        "Content-Type": "application/json",
-        Authorization: authorization ? authorization : "Bearer TOKEN_MISSING",
+//Checks if an input is a `select` with the `multiple` attribute.
+const isMultiSelect = (element) => element.options && element.multiple;
+
+// Retrieves the selected options from a multi-select as an array.
+const getSelectValues = (options) =>
+    [].reduce.call(
+        options,
+        (values, option) => {
+            return option.selected ? values.concat(option.value) : values;
+        },
+        []
+    );
+
+//
+
+const handleFormSubmit = (event) => {
+    // Stop the form from submitting since we’re handling that with AJAX.
+    event.preventDefault();
+    // TODO: Call our function to get the form data.
+    const data = formToJSON(form.elements);
+    // Demo only: print the form data onscreen as a formatted JSON object.
+    const dataContainer = document.getElementsByClassName(
+        'results__display'
+    )[0];
+    // Use `JSON.stringify()` to make the output valid, human-readable JSON.
+    dataContainer.textContent = JSON.stringify(data, null, '  ');
+    // ...this is where we’d actually do something with the form data...
+};
+
+const form = document.getElementById('project_form');
+form.addEventListener('submit', handleFormSubmit);
+
+// This is the function that is called on each element of the array.
+const reducerFunction = (data, element) => {
+    data[element.name] = element.value;
+
+    data.log(JSON.stringify(data));
+
+    return data;
+};
+
+const formToJSON_deconstructed = (elements) => {
+    /// This is the function that is called on each element of the array.
+    const reducerFunction = (data, element) => {
+        // Add the current field to the object.
+        data[element.name] = element.value;
+        // For the demo only: show each step in the reducer’s progress.
+        console.log(JSON.stringify(data));
+        return data;
     };
-    return headers;
-}
+    // This is used as the initial value of `data` in `reducerFunction()`.
+    const reducerInitialValue = {};
+    // To help visualize what happens, log the inital value.
+    console.log('Initial `data` value:', JSON.stringify(reducerInitialValue));
+    // Now we reduce by `call`-ing `Array.prototype.reduce()` on `elements`.
+    const formData = [].reduce.call(
+        elements,
+        reducerFunction,
+        reducerInitialValue
+    );
+    // The result is then returned for use elsewhere.
+    return formData;
+};
+
+formToJSON_deconstructed(form.elements);
+
+//Checks that an element has a non-empty `name` and `value` property.
+
+const isValidElement = (element) => {
+    return element.name && element.value;
+};
+
+HttpService.get('add').done((form) => {
+    populateData(form);
+    HttpService.post('add').done(form);
+    populateData(form);
+    HttpService.put(form).done(form);
+    populateData(form);
+});

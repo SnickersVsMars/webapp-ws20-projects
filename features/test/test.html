@@ -87,6 +87,8 @@
         // base path => get("tests") will send a request to /api/tests
         HttpService.get('tests').done((data) => {
             populateData(data);
+
+
         });
 
         function populateData(data) {

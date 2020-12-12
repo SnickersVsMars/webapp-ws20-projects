@@ -56,11 +56,9 @@ var validationArray = [
 
 function validate(req, res) {
     const errorFormatter = ({ param, msg }) => {
-        // Build your resulting errors however you want! String, object, whatever - it works!
         return ` ${msg}`;
     };
     const errors = validationResult(req).formatWith(errorFormatter);
-    // const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.mapped() });
     }

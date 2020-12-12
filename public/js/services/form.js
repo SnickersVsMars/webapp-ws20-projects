@@ -5,6 +5,24 @@
 //     "milestones": [{ "date": "2020-12-09", "label": "Start", "description": "Projektstart" },
 //     { "date": "2021-12-09", "label": "Ende", "description": "Projektabschluss" }]}
 
+const handleFormSubmit = (event) => {
+    // Stop the form from submitting since we’re handling that with AJAX.
+    event.preventDefault();
+    // TODO: Call our function to get the form data.
+    const data = formToJSON(form.elements);
+    // Demo only: print the form data onscreen as a formatted JSON object.
+    const dataContainer = document.getElementsByClassName(
+        'results__display'
+    )[0];
+    // Use `JSON.stringify()` to make the output valid, human-readable JSON.
+    dataContainer.textContent = JSON.stringify(data, null, '  ');
+    console.log(dataContainer.textContent);
+    //HttpService.post('add', '').done(form);
+};
+
+const form = document.getElementById('project_form');
+form.addEventListener('submit', handleFormSubmit);
+
 // A handler function to prevent default submission and run our custom script.
 const formToJSON = (elements) =>
     [].reduce.call(
@@ -49,43 +67,6 @@ const getSelectValues = (options) =>
         []
     );
 
-//
-
-const handleFormSubmit = (event) => {
-    // Stop the form from submitting since we’re handling that with AJAX.
-    event.preventDefault();
-    // TODO: Call our function to get the form data.
-    const data = formToJSON(form.elements);
-    // Demo only: print the form data onscreen as a formatted JSON object.
-    const dataContainer = document.getElementsByClassName(
-        'results__display'
-    )[0];
-    // Use `JSON.stringify()` to make the output valid, human-readable JSON.
-    dataContainer.textContent = JSON.stringify(data, null, '  ');
-    // ...this is where we’d actually do something with the form data...
-};
-
-const form = document.getElementById('project_form');
-form.addEventListener('submit', handleFormSubmit);
-
-// This is the function that is called on each element of the array.
-const reducerFunction = (data, element) => {
-    data[element.name] = element.value;
-
-    data.log(JSON.stringify(data));
-
-    return data;
-};
-
-const formToJSON_deconstructed = (elements) => {
-    /// This is the function that is called on each element of the array.
-    const reducerFunction = (data, element) => {
-        // Add the current field to the object.
-        data[element.name] = element.value;
-        // For the demo only: show each step in the reducer’s progress.
-        console.log(JSON.stringify(data));
-        return data;
-    };
     // This is used as the initial value of `data` in `reducerFunction()`.
     const reducerInitialValue = {};
     // To help visualize what happens, log the inital value.
@@ -108,10 +89,3 @@ const isValidElement = (element) => {
     return element.name && element.value;
 };
 
-HttpService.get('add').done((form) => {
-    populateData(form);
-    HttpService.post('add').done(form);
-    populateData(form);
-    HttpService.put(form).done(form);
-    populateData(form);
-});

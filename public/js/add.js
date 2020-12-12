@@ -33,6 +33,7 @@ function createTableColumn(type) {
     var new_textfield = document.createElement("input");
     new_textfield.setAttribute("type", type);
     new_textfield.setAttribute("class", "form-control mb-1 mt-1");
+    new_textfield.setAttribute("name", "");
     new_textfield.setAttribute("placeholder", "Bitte eintragen");
     new_table_column.appendChild(new_textfield);
 

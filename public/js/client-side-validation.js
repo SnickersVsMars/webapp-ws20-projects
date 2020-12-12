@@ -17,5 +17,3 @@ console.log("in");
         });
     }, false);
 })();
-
-// date range ab 2000

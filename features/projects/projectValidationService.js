@@ -67,14 +67,3 @@ function validate(req, res) {
 }
 
 module.exports = { validationArray, validate };
-
-//json anders aufbauen
-/*fehler meldungen in einem array zusammenfassen
-
-{
-    "key": "number",
-    "msg": ["Invalid value",
-    "message 2"
-    ]
-
-} */

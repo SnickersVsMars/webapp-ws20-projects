@@ -56,17 +56,24 @@
                     <div class="form-group col-md-6">
                         <label for="input-number">Nummer</label>
                         <input type="text" class="form-control" id="input-number"
-                            placeholder="Projektnummer eintragen" required/>
-                        <div class="valid-feedback">looks good</div>
+                            placeholder="Projektnummer eintragen" pattern="PR\d{2}-\d{4}" required/><div class="invalid-feedback">
+                        Bitte folgendes Format verwenden z.B.: PR20-0001
+                    </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-manager">Leiter</label>
                         <input type="text" class="form-control" id="input-manager"
                             placeholder="Projektleiter eintragen" required/>
+                        <div class="invalid-feedback">
+                            Bitte Namen der zuständigen Person eintragen
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-customer">Kunde</label>
                         <input type="text" class="form-control" id="input-customer" placeholder="Kunde eintragen" required/>
+                        <div class="invalid-feedback">
+                            Bitte Namen des Kunden eintragen
+                        </div>
                     </div>
                     <div class="col-md-6">
 
@@ -74,12 +81,16 @@
                     <div class="form-group col-md-6">
                         <label for="input-designation">Bezeichnung</label>
                         <input type="text" class="form-control" id="input-designation"
-                            placeholder="Example input placeholder" />
+                            placeholder="Kostenstelle eintragen" />
+
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-costplace">Kostenstelle</label>
                         <input type="text" class="form-control" id="input-costplace"
                             placeholder="Kostenstelle eintragen" required/>
+                        <div class="invalid-feedback">
+                            Bitte zuständige Kostenstelle eintragen
+                        </div>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="input-descripton">Beschreibung</label>

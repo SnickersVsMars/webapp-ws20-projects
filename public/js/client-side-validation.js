@@ -49,7 +49,7 @@ const handleFormSubmit = (form) => {
     var project = JSON.stringify(data);
     console.log(project);
     // ajax call here
-    HttpService.post('add', project).done((res) =>{
+    HttpService.post('projects/add', project).done((res) =>{
         console.log(res);
     }) ;
 }

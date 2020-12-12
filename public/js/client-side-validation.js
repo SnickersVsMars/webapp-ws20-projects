@@ -16,6 +16,9 @@
                                 event.preventDefault();
                                 event.stopPropagation();
                             }
+                            else {
+                                console.log(form.data());
+                            }
                             form.classList.add('was-validated');
                         },
                         false

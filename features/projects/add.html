@@ -54,7 +54,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-manager">Leiter</label>
-                    <input type="text" class="form-control" id="input-manager" name="number"
+                    <input type="text" class="form-control" id="input-manager" name="manager"
                            placeholder="Projektleiter eintragen" required />
                     <div class="invalid-feedback">
                         Bitte Namen der zuständigen Person eintragen
@@ -62,7 +62,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-customer">Kunde</label>
-                    <input type="text" class="form-control" id="input-customer" placeholder="Kunde eintragen"
+                    <input type="text" class="form-control" id="input-customer" name="customer" placeholder="Kunde eintragen"
                            required />
                     <div class="invalid-feedback">
                         Bitte Namen des Kunden eintragen
@@ -71,28 +71,28 @@
                 <div class="col-md-6">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="input-designation">Bezeichnung</label>
-                    <input type="text" class="form-control" id="input-designation"
+                    <label for="input-label">Bezeichnung</label>
+                    <input type="text" class="form-control" id="input-label" name="label"
                            placeholder="Bezeichnung eintragen" />
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="input-costplace">Kostenstelle</label>
-                    <input type="text" class="form-control" id="input-costplace"
+                    <label for="input-costcenter">Kostenstelle</label>
+                    <input type="text" class="form-control" id="input-costcenter" name="costCenter"
                            placeholder="Kostenstelle eintragen" required />
                     <div class="invalid-feedback">
                         Bitte zu verwendende Kostenstelle eintragen
                     </div>
                 </div>
                 <div class="form-group col-lg-6">
-                    <label for="input-descripton">Beschreibung</label>
-                    <input type="text" class="form-control" id="input-descripton"
+                    <label for="input-description">Beschreibung</label>
+                    <input type="text" class="form-control" id="input-description" name="description"
                            placeholder="Beschreibung eintragen" />
                 </div>
                 <div class="col-md-6"></div>
                 <div class="form group col-sm-6">
                     <label for="input-employee">Mitarbeiter</label>
                     <div id="employee-container">
-                        <input type="text" class="form-control mb-2" id="input-employee"
+                        <input type="text" class="form-control mb-2" id="input-employee" name="employee"
                                placeholder="Mitarbeiter eintragen" name="employees[0].name" />
                     </div>
                     <button type="button" id="add-employee" class="btn btn-primary align-content-between"

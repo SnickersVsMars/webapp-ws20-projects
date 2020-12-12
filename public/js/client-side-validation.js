@@ -45,8 +45,11 @@ const handleFormSubmit = (form) => {
     // Call our function to get the form data.
     const data = formToJSON(form.elements);
 
-    console.log(JSON.stringify(data));
-    // ...this is where we’d actually do something with the form data...
-
+    //console.log(JSON.stringify(data));
+    var project = JSON.stringify(data);
+    console.log(project);
     // ajax call here
-};
+    HttpService.post('add', project).done((res) =>{
+        console.log(res);
+    }) ;
+}

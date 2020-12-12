@@ -19,7 +19,6 @@
                                 // We need to submit the form here -> make JSON and send to server and wait for request
                                 handleFormSubmit(form);
                             }
-                            console.log('Test');
                             form.classList.add('was-validated');
                         },
                         false
@@ -31,11 +30,25 @@
     );
 })();
 
+const isValidElement = (element) => {
+    return element.name && element.value;
+};
+
+const isArrayInput = (element) => element.class === 'input-array';
+
 const formToJSON = (elements) =>
     [].reduce.call(
         elements,
         (data, element) => {
-            data[element.name] = element.value;
+            if (isValidElement(element)) {
+                if (isArrayInput(element)) {
+                    data[element.name] = (data[element.name] || []).concat(
+                        element.value
+                    );
+                } else {
+                    data[element.name] = element.value;
+                }
+            }
             return data;
         },
         {}
@@ -45,11 +58,10 @@ const handleFormSubmit = (form) => {
     // Call our function to get the form data.
     const data = formToJSON(form.elements);
 
-    //console.log(JSON.stringify(data));
-    var project = JSON.stringify(data);
-    console.log(project);
+    // var project = JSON.stringify(data);
+    console.log(data);
     // ajax call here
-    HttpService.post('projects/add', project).done((res) =>{
+    HttpService.post('projects/add', data).done((res) => {
         console.log(res);
-    }) ;
-}
+    });
+};

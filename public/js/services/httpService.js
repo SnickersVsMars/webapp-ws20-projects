@@ -6,6 +6,7 @@ const HttpService = (function () {
             return $.ajax({
                 url: pathPrefix + path,
                 dataType: 'json',
+                contentType: 'application/json',
                 type: 'GET',
                 cache: false,
             });
@@ -15,8 +16,9 @@ const HttpService = (function () {
             return $.ajax({
                 url: pathPrefix + path,
                 dataType: 'json',
+                contentType: 'application/json',
                 type: 'POST',
-                data: body,
+                data: JSON.stringify(body),
                 cache: false,
             });
         },
@@ -25,8 +27,9 @@ const HttpService = (function () {
             return $.ajax({
                 url: pathPrefix + path,
                 dataType: 'json',
+                contentType: 'application/json',
                 type: 'PUT',
-                data: body,
+                data: JSON.stringify(body),
                 cache: false,
             });
         },

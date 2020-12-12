@@ -47,7 +47,7 @@
                 <div class="form-group col-md-6">
                     <label for="input-number">Nummer</label>
                     <input type="text" class="form-control" id="input-number" name="number"
-                           placeholder="Projektnummer eintragen" pattern="PR\d{2}-\d{4}" required />
+                           placeholder="Projektnummer" pattern="PR\d{2}-\d{4}" required />
                     <div class="invalid-feedback">
                         Bitte folgendes Format verwenden z.B.: PR20-0001
                     </div>
@@ -55,17 +55,17 @@
                 <div class="form-group col-md-6">
                     <label for="input-manager">Leiter</label>
                     <input type="text" class="form-control" id="input-manager" name="manager"
-                           placeholder="Projektleiter eintragen" required />
+                           placeholder="Projektleiter" required />
                     <div class="invalid-feedback">
-                        Bitte Namen der zuständigen Person eintragen
+                        Bitte Namen der zuständigen Person angeben
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-customer">Kunde</label>
-                    <input type="text" class="form-control" id="input-customer" name="customer" placeholder="Kunde eintragen"
+                    <input type="text" class="form-control" id="input-customer" name="customer" placeholder="Kunde"
                            required />
                     <div class="invalid-feedback">
-                        Bitte Namen des Kunden eintragen
+                        Bitte Namen des Kunden angeben
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -73,27 +73,29 @@
                 <div class="form-group col-md-6">
                     <label for="input-label">Bezeichnung</label>
                     <input type="text" class="form-control" id="input-label" name="label"
-                           placeholder="Bezeichnung eintragen" />
+                           placeholder="Projekt Bezeichnung" />
+                        <div class="invalid-feedback">
+                            Bitte eine Bezeichnung für das Projekt angeben
+                        </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-costcenter">Kostenstelle</label>
                     <input type="text" class="form-control" id="input-costcenter" name="costCenter"
-                           placeholder="Kostenstelle eintragen" required />
+                           placeholder="Kostenstelle" required />
                     <div class="invalid-feedback">
-                        Bitte zu verwendende Kostenstelle eintragen
+                        Bitte zu verwendende Kostenstelle angeben
                     </div>
                 </div>
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-12">
                     <label for="input-description">Beschreibung</label>
                     <input type="text" class="form-control" id="input-description" name="description"
-                           placeholder="Beschreibung eintragen" />
+                           placeholder="Beschreibung" />
                 </div>
-                <div class="col-md-6"></div>
                 <div class="form group col-sm-6">
                     <label for="input-employee">Mitarbeiter</label>
                     <div id="employee-container">
-                        <input type="text" class="form-control mb-2" id="input-employee" name="employee"
-                               placeholder="Mitarbeiter eintragen" name="employees[0].name" />
+                        <input type="text" class="form-control mb-2 input-array" id="input-employee"
+                               placeholder="Name des Mitarbeiters" name="employees[][name]" />
                     </div>
                     <button type="button" id="add-employee" class="btn btn-primary align-content-between"
                             onclick="addEmployeeField();">
@@ -116,13 +118,13 @@
                     <tbody id="table-milestone-body">
                     <tr>
                         <td width="13%">
-                            <input type="date" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" name="milestones[0].date" />
+                            <input type="date" class="form-control mb-1 mt-1 input-array" name="milestones[][date]" />
                         </td>
                         <td width="27%">
-                            <input type="text" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" name="milestones[0].label" />
+                            <input type="text" class="form-control mb-1 mt-1 input-array" placeholder="Meilenstein Bezeichnung" name="milestones[][label]" />
                         </td>
                         <td width="60%">
-                            <input type="text" class="form-control mb-1 mt-1" placeholder="Bitte eintragen" name="milestones[0].description" />
+                            <input type="text" class="form-control mb-1 mt-1 input-array" placeholder="Meilenstein Beschreibung" name="milestones[][description]" />
                         </td>
                     </tr>
                     </tbody>
@@ -157,6 +159,6 @@
 <script src="/js/main.js"></script>
 <script src="/js/services/httpService.js"></script>
 <script src="/js/add.js"></script>
-<script src="/js/client-side-validation.js"></script>
+<script src="/js/add-form.js"></script>
 </body>
 </html>

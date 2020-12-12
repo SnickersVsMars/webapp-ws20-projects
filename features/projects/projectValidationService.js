@@ -20,7 +20,7 @@ var validationArray = [
         .withMessage('Bitte Namen des Kunden eintragen')
         .trim()
         .isLength({ max: 20 }),
-    body('costcenter')
+    body('costCenter')
         .notEmpty()
         .withMessage('Bitte zuständige Kostenstelle eintragen')
         .trim()

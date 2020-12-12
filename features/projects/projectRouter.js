@@ -11,7 +11,6 @@ function buildPath(fileName) {
 const viewRouter = express.Router();
 
 viewRouter.get('/add', (req, res) => {
-    console.log('add');
     res.sendFile(buildPath('add.html'));
 });
 
@@ -36,12 +35,15 @@ apiRouter.get('/:id', (req, res) => {
     });
 });
 
-apiRouter.post('/', projectValidationService.validationArray, (req, res) => {
-    let result = projectValidationService.validate(req, res);
-    if (result) {
-        return result;
-    }
+apiRouter.post('/add', (req, res) => {
+    // TODO server side validation not functional yet
+    // apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
+    // let result = projectValidationService.validate(req, res);
+    // if (result) {
+    //     return result;
+    // }
 
+    console.log(req.body);
     projectService.insert(req.body, (result) => {
         res.json(result);
     });

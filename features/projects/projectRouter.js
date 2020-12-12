@@ -53,4 +53,3 @@ projectRouter.use('/api/projects', apiRouter);
 projectRouter.use('/projects', viewRouter);
 
 module.exports = projectRouter;
-

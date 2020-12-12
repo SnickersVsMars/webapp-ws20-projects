@@ -48,6 +48,7 @@
 
 
     <main class="container">
+        <form class="needs-validation" novalidate>
         <div class="card">
 
             <form id="project_form">
@@ -61,10 +62,11 @@
                         <label for="input-manager">Leiter</label>
                         <input type="text" class="form-control" id="input-manager" name="input-manager"
                             placeholder="Projektleiter eintragen" />
+
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-customer">Kunde</label>
-                        <input type="text" class="form-control" id="input-customer" placeholder="Kunde eintragen" />
+                        <input type="text" class="form-control" id="input-customer" placeholder="Kunde eintragen" required/>
                     </div>
                     <div class="col-md-6">
 
@@ -78,6 +80,7 @@
                         <label for="input-costplace">Kostenstelle</label>
                         <input type="text" class="form-control" id="input-costplace" name="input-costplace"
                             placeholder="Kostenstelle eintragen" />
+
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="input-description">Beschreibung</label>
@@ -90,28 +93,29 @@
                         <label for="input-employee">Mitarbeiter</label>
                         <div id="employee-container">
                             <input type="text" class="form-control mb-2" id="input-employee" name="input-employee" placeholder="Mitarbeiter eintragen" />
+
                         </div>
+                        <!-- ask mitch about for label and how to implement for dynamically added fields -->
                         <button type="button" id="add-employee" class="btn btn-primary align-content-between"
                             onclick="addEmployeeField();">
                             <i class="material-icons ">add</i>
                         </button>
                     </div>
                 </div>
-            </form>
-        </div>
 
-        <div class="card card-fluid">
-            <div class="card-body">
-                <h4>Meilensteine</h4>
-                <table class="table table-hover table-striped table-responsive-md">
-                    <thead class="thead-dark">
+        </div>
+            <div class="card card-fluid">
+                <div class="card-body">
+                    <h4>Meilensteine</h4>
+                    <table class="table table-hover table-striped table-responsive-md">
+                        <thead class="thead-dark">
                         <tr>
                             <th>Datum</th>
                             <th>Bezeichnung</th>
                             <th>Beschreibung</th>
                         </tr>
-                    </thead>
-                    <tbody id="table-milestone-body">
+                        </thead>
+                        <tbody id="table-milestone-body">
                         <tr>
                             <td width="13%">
                                 <input type="date" class="form-control mb-1 mt-1" name="input-date" placeholder="Bitte eintragen" />
@@ -123,22 +127,25 @@
                                 <input type="text" class="form-control mb-1 mt-1" name="input-description-td" placeholder="Bitte eintragen" />
                             </td>
                         </tr>
-                    </tbody>
-                    <tfoot>
+                        </tbody>
+                        <tfoot>
                         <tr>
                             <td colspan="3">
                                 <button type="button" id="add-milestone" class="btn btn-primary align-content-between"
-                                    onclick="addMilestoneField();">
+                                        onclick="addMilestoneField();">
                                     <i class="material-icons ">add</i>
                                 </button>
                             </td>
                         </tr>
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="float-right">
-            <button type="submit" class="btn btn-primary mb-2 mt-1">Submit</button>
-        </div>
+            <button class="btn btn-primary mb-2 mt-1 float-right" type="submit">Submit</button>
+        </form>
+
+
+
+
     </main>
     <!--<div id="busy-indicator">
         <div class="spinner-border" role="status">
@@ -159,7 +166,11 @@
     <script src="/js/main.js"></script>
     <script src="/js/services/httpService.js"></script>
     <script src="/js/add.js"></script>
+<<<<<<< HEAD
     <script src="/js/form.js"></script>
+=======
+    <script src="/js/client-side-validation.js"></script>
+>>>>>>> cd66bdcabda11562a9e1ba390f27da3b216bb3c3
 
 </body>
 

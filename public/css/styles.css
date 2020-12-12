@@ -156,10 +156,6 @@ table tbody tr td:last-of-type {
     min-width: 300px;
 }
 
-<<<<<<< HEAD
-/* test isi */ 
-
-=======
 #error {
     text-align: center;
 }
@@ -194,4 +190,4 @@ table tbody tr td:last-of-type {
         font-size: 1rem;
     }
 }
->>>>>>> origin
+

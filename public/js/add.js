@@ -1,20 +1,15 @@
-var empCount = 1;
-
 function addEmployeeField() {
-    empCount++;
     var employeeContainer = document.getElementById('employee-container');
     var newTextfield = document.createElement('input');
-    // <button type="button" id="add-employee" class="btn btn-primary align-content-between" onclick="add_fields();">
     newTextfield.setAttribute('type', 'text');
     newTextfield.setAttribute('class', 'form-control mb-2');
-    newTextfield.setAttribute('name', 'employee['+ empCount-1 + '].name');
-    newTextfield.setAttribute('placeholder', 'Mitarbeiter eintragen');
+    newTextfield.setAttribute('name', 'employees[][name]');
+    newTextfield.setAttribute('placeholder', 'Name des Mitarbeiters');
 
     employeeContainer.appendChild(newTextfield);
 }
 
 function addMilestoneField() {
-    milestoneCount++;
     var tableMilestoneBody = document.getElementById('table-milestone-body');
     var newTableRow = document.createElement('tr');
 
@@ -29,7 +24,6 @@ function addMilestoneField() {
 
     tableMilestoneBody.appendChild(newTableRow);
 }
-var milestoneCount = 1;
 
 function createTableColumn(type, property) {
     var newTableColumn = document.createElement('td');
@@ -37,8 +31,12 @@ function createTableColumn(type, property) {
     var newTextfield = document.createElement('input');
     newTextfield.setAttribute('type', type);
     newTextfield.setAttribute('class', 'form-control mb-1 mt-1');
-    newTextfield.setAttribute('name', 'milestones['+ milestoneCount-1 + '].'+ property);
-    newTextfield.setAttribute('placeholder', 'Bitte eintragen');
+    newTextfield.setAttribute('name', 'milestones[][' + property + ']:string');
+    if (property === 'label') {
+        newTextfield.setAttribute('placeholder', 'Meilenstein Bezeichnung');
+    } else if (property === 'description') {
+        newTextfield.setAttribute('placeholder', 'Meilenstein Beschreibung');
+    }
     newTableColumn.appendChild(newTextfield);
 
     return newTableColumn;

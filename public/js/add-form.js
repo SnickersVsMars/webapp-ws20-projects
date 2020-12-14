@@ -30,37 +30,14 @@
     );
 })();
 
-const isValidElement = (element) => {
-    return element.name && element.value;
+var emptyStringsAndZerosToNulls = function (val, inputName) {
+    if (val === '') return null; // parse empty strings as nulls
+    return val;
 };
 
-const isArrayInput = (element) => element.class === 'input-array';
-
-const formToJSON = (elements) =>
-    [].reduce.call(
-        elements,
-        (data, element) => {
-            if (isValidElement(element)) {
-                if (isArrayInput(element)) {
-                    data[element.name] = (data[element.name] || []).concat(
-                        element.value
-                    );
-                } else {
-                    data[element.name] = element.value;
-                }
-            }
-            return data;
-        },
-        {}
-    );
-
 const handleFormSubmit = (form) => {
-    // Call our function to get the form data.
-    const data = formToJSON(form.elements);
-
-    // var project = JSON.stringify(data);
+    data = $(form).find('input').not('[value=""]').serializeJSON();
     console.log(data);
-    // ajax call here
     HttpService.post('projects/add', data).done((res) => {
         console.log(res);
     });

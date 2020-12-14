@@ -30,14 +30,15 @@
     );
 })();
 
-var emptyStringsAndZerosToNulls = function (val, inputName) {
+const emptyStringsAndZerosToNulls = (val, inputName) => {
     if (val === '') return null; // parse empty strings as nulls
     return val;
 };
 
 const handleFormSubmit = (form) => {
-    data = $(form).find('input').not('[value=""]').serializeJSON();
-    console.log(data);
+    data = $(form).serializeJSON({
+        skipFalsyValuesForTypes: ['string'],
+    });
     HttpService.post('projects/add', data).done((res) => {
         console.log(res);
     });

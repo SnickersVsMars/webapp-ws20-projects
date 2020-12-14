@@ -35,10 +35,10 @@ apiRouter.get('/:id', (req, res) => {
     });
 });
 
-apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
-    let result = projectValidationService.validate(req, res);
+// apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
+apiRouter.post('/add', (req, res) => {
+    // let result = projectValidationService.validate(req, res);
     console.log(req.body);
-    // console.log(result)
     // if (result) {
     //     return result;
     // }

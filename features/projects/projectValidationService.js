@@ -27,6 +27,7 @@ var validationArray = [
         .isLength({ max: 20 })
         .withMessage('Maximale Länge überschritten'),
     body('label')
+        .notEmpty()
         .trim()
         .isLength({ max: 50 })
         .withMessage('Maximale Länge überschritten'),

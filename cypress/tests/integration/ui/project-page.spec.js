@@ -21,12 +21,11 @@ describe('The project page', () => {
         it('can navigate to detail', () => {
             cy.get('.card')
                 .get('.project-number')
-                .then((number) => {
-                    let projectNr = number.first().text();
+                .then((numbers) => {
+                    let projectNr = numbers.first().text();
 
                     cy.get('.card').contains(projectNr).click();
 
-                    // TODO projectNR here instead
                     cy.url().should('contain', '/projects/1');
                     cy.contains(projectNr);
                 });
@@ -38,6 +37,11 @@ describe('The project page', () => {
             cy.get('.breadcrumb').contains('Projekte'.toUpperCase()).click();
 
             cy.url().should('contain', '/projects');
+        });
+
+        it('navigates to add page', () => {
+            cy.contains('Neues Projekt').click();
+            cy.url().should('contain', '/projects/add');
         });
     });
 
@@ -65,14 +69,13 @@ describe('The project page', () => {
         it('can navigate to detail', () => {
             cy.get('.card')
                 .get('.project-number')
-                .then((number) => {
-                    let projectNr = number.first().text();
+                .then((numbers) => {
+                    let projectNr = numbers.first().text();
 
                     cy.get('.card').contains(projectNr).click();
 
                     cy.wait('@findProject');
 
-                    // TODO projectNR or int primary key here instead
                     cy.url().should('contain', '/projects/1');
 
                     cy.contains(projectNr);

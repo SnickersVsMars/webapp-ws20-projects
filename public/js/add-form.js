@@ -30,16 +30,19 @@
     );
 })();
 
-const emptyStringsAndZerosToNulls = (val, inputName) => {
-    if (val === '') return null; // parse empty strings as nulls
-    return val;
-};
-
 const handleFormSubmit = (form) => {
     data = $(form).serializeJSON({
         skipFalsyValuesForTypes: ['string'],
     });
     HttpService.post('projects/add', data).done((res) => {
         console.log(res);
+        if (res.code !== 200) {
+            alert('Fehler');
+        } else {
+            // do redirect
+        }
+
+        // TODO redirect to received ID detail
+        // if error: map to UI instead and don't redirect
     });
 };

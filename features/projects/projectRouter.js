@@ -35,13 +35,14 @@ apiRouter.get('/:id', (req, res) => {
     });
 });
 
-// apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
-apiRouter.post('/add', (req, res) => {
-    // let result = projectValidationService.validate(req, res);
+apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
+    // apiRouter.post('/add', (req, res) => {
+    let result = projectValidationService.validate(req, res);
     console.log(req.body);
-    // if (result) {
-    //     return result;
-    // }
+    console.log(result);
+    if (result) {
+        return result;
+    }
 
     projectService.insert(req.body, (result) => {
         res.json(result);

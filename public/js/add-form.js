@@ -16,7 +16,6 @@
                                 event.preventDefault();
                                 event.stopPropagation();
                             } else {
-                                // We need to submit the form here -> make JSON and send to server and wait for request
                                 handleFormSubmit(form);
                             }
                             form.classList.add('was-validated');
@@ -36,12 +35,6 @@ const handleFormSubmit = (form) => {
     });
     HttpService.post('projects/add', data).done((res) => {
         console.log(res);
-        if (res.code !== 200) {
-            alert('Fehler');
-        } else {
-            // do redirect
-        }
-
         // TODO redirect to received ID detail
         // if error: map to UI instead and don't redirect
     });

@@ -10,29 +10,38 @@ const poolConfig = config.get('MySqlConnectionPool');
 // mysql github: https://github.com/mysqljs/mysql
 function DbConnection() {
     let pool = mysql.createPool(poolConfig);
-    let handleError = (error, next) => {
-        if (error) next(error);
-    };
 
     // query = SQL query string who will be send to the database
     // success = function which will be executed on successfull database call
     this.select = (query, success) => {
         pool.getConnection((error, connection) => {
-            handleError(error, next);
+            if (error) {
+                return success(error, null);
+            }
+
             connection.query(query, (error, results, fields) => {
-                handleError(error, next);
-                success(results);
+                if (error) {
+                    return success(error, null);
+                }
+
+                success(null, results);
                 connection.release();
             });
         });
     };
 
-    this.insert = (query, values, success, next) => {
+    this.insert = (query, values, success) => {
         pool.getConnection((error, connection) => {
-            handleError(error, next);
+            if (error) {
+                return success(error, null);
+            }
+
             connection.query(query, values, (error, results, fields) => {
-                handleError(error, next);
-                success(results);
+                if (error) {
+                    return success(error, null);
+                }
+
+                success(null, results);
                 connection.release();
             });
         });

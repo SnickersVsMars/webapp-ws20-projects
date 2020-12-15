@@ -1,31 +1,32 @@
 const dbConnection = require('../dbConnection');
 
 class ProjectService {
-    get(success) {
-        dbConnection.select(
-            `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
-            FROM projects p
-                LEFT OUTER JOIN employees e ON p.id=e.project_id
-                LEFT OUTER JOIN
-                    (
-                        SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
-                        FROM milestones m
-                        WHERE m.date >= CURRENT_DATE()
-                        GROUP BY m.project_id
-                    ) nextM ON p.id = nextM.project_id
-            GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`,
-            success
-        );
+    get(success, next) {
+        let selectQuery = `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
+        FROM projects p
+            LEFT OUTER JOIN employees e ON p.id=e.project_id
+            LEFT OUTER JOIN
+                (
+                    SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
+                    FROM milestones m
+                    WHERE m.date >= CURRENT_DATE()
+                    GROUP BY m.project_id
+                ) nextM ON p.id = nextM.project_id
+        GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`;
+
+        dbConnection.select(selectQuery, success, next);
     }
 
-    find(id, success) {
+    find(id, success, next) {
         if (id == null) {
             return null;
         }
 
         if (typeof id == 'string') {
             id = parseInt(id);
-        } else if (typeof id !== 'number') {
+        }
+
+        if (typeof id !== 'number' || isNaN(id)) {
             return null;
         }
 
@@ -33,16 +34,17 @@ class ProjectService {
             `SELECT * FROM projects WHERE id = ${id}`,
             (result) => {
                 if (!result) {
-                    throw `${id} not found`;
+                    return next(`${id} not found`);
                 }
 
                 let project = result;
                 if (Array.isArray(project)) {
                     if (project.length > 1) {
-                        throw `${id} returns more that one value`;
+                        return next(`${id} returns more that one value`);
                     }
+
                     if (project.length < 1) {
-                        throw `${id} not found`;
+                        return next(`${id} not found`);
                     }
 
                     project = project[0];
@@ -63,11 +65,12 @@ class ProjectService {
                         );
                     }
                 );
-            }
+            },
+            next
         );
     }
 
-    insert(project, success) {
+    insert(project, success, next) {
         if (project == null) {
             return null;
         }
@@ -82,35 +85,40 @@ class ProjectService {
         delete project.milestones;
         delete project.employees;
 
-        dbConnection.insert('INSERT INTO projects SET ?', project, (result) => {
-            if (employees !== null && employees !== undefined) {
-                for (var i = 0; i < employees.length; i++) {
-                    employees[i].project_id = result.insertId;
+        dbConnection.insert(
+            'INSERT INTO projects SET ?',
+            project,
+            (result) => {
+                if (employees !== null && employees !== undefined) {
+                    for (var i = 0; i < employees.length; i++) {
+                        employees[i].project_id = result.insertId;
+                    }
+
+                    for (var i = 0; i < employees.length; i++) {
+                        dbConnection.insert(
+                            'INSERT INTO employees SET ?',
+                            employees[i],
+                            () => {}
+                        );
+                    }
                 }
 
-                for (var i = 0; i < employees.length; i++) {
+                for (var i = 0; i < milestones.length; i++) {
+                    milestones[i].project_id = result.insertId;
+                }
+
+                for (var i = 0; i < milestones.length; i++) {
                     dbConnection.insert(
-                        'INSERT INTO employees SET ?',
-                        employees[i],
+                        'INSERT INTO milestones SET ?',
+                        milestones[i],
                         () => {}
                     );
                 }
-            }
 
-            for (var i = 0; i < milestones.length; i++) {
-                milestones[i].project_id = result.insertId;
-            }
-
-            for (var i = 0; i < milestones.length; i++) {
-                dbConnection.insert(
-                    'INSERT INTO milestones SET ?',
-                    milestones[i],
-                    () => {}
-                );
-            }
-
-            success(result.insertId);
-        });
+                success(result.insertId);
+            },
+            next
+        );
     }
 }
 

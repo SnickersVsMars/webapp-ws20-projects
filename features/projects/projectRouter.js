@@ -23,31 +23,43 @@ viewRouter.get('/:id', (req, res) => {
 });
 
 const apiRouter = express.Router();
-apiRouter.get('/', (req, res) => {
-    projectService.get((result) => {
+apiRouter.get('/', (req, res, next) => {
+    let success = (result) => {
         res.json(result);
-    });
+    };
+
+    projectService.get(success, next);
 });
 
-apiRouter.get('/:id', (req, res) => {
-    projectService.find(req.params.id, (result) => {
+apiRouter.get('/:id', (req, res, next) => {
+    let success = (result) => {
         res.json(result);
-    });
-});
+    };
 
-apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
-    // apiRouter.post('/add', (req, res) => {
-    let result = projectValidationService.validate(req, res);
-    console.log(req.body);
-    console.log(result);
-    if (result) {
-        return result;
+    if (!projectService.find(req.params.id, success, next)) {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     }
-
-    projectService.insert(req.body, (result) => {
-        res.json(result);
-    });
 });
+
+apiRouter.post(
+    '/add',
+    projectValidationService.validationArray,
+    (req, res, next) => {
+        // apiRouter.post('/add', (req, res) => {
+        let result = projectValidationService.validate(req, res);
+        console.log(req.body);
+        console.log(result);
+        if (result) {
+            return result;
+        }
+
+        let success = (result) => {
+            res.json(result);
+        };
+
+        projectService.insert(req.body, success, next);
+    }
+);
 
 // define project router
 const projectRouter = express.Router();

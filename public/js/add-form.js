@@ -33,7 +33,7 @@ const handleFormSubmit = (form) => {
     data = $(form).serializeJSON({
         skipFalsyValuesForTypes: ['string'],
     });
-    HttpService.post('projects/add', data).done((res) => {
+    HttpService.post('projects/', data).done((res) => {
         console.log(res);
         // TODO redirect to received ID detail
         // if error: map to UI instead and don't redirect

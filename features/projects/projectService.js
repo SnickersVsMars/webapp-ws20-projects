@@ -61,7 +61,8 @@ class ProjectService {
                                 success(project);
                             }
                         );
-                    }
+                    },
+                    next
                 );
             }
         );

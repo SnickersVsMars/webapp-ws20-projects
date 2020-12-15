@@ -35,18 +35,23 @@ apiRouter.get('/:id', (req, res) => {
     });
 });
 
-apiRouter.post('/add', projectValidationService.validationArray, (req, res) => {
-    let result = projectValidationService.validate(req, res);
-    console.log(req.body);
-    console.log(result);
-    if (result) {
-        return result;
-    }
+apiRouter.post(
+    '/',
+    projectValidationService.validationArray,
+    (req, res, next) => {
+        let result = projectValidationService.validate(req, res);
+        console.log(req.body);
+        if (result) {
+            return result;
+        }
 
-    projectService.insert(req.body, (result) => {
-        res.json(result);
-    });
-});
+        let success = (result) => {
+            res.json(result);
+        };
+
+        projectService.insert(req.body, success, next);
+    }
+);
 
 // define project router
 const projectRouter = express.Router();

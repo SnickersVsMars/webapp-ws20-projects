@@ -1,40 +1,43 @@
 function addEmployeeField() {
+    var employeeContainer = document.getElementById('employee-container');
+    var newTextfield = document.createElement('input');
+    newTextfield.setAttribute('type', 'text');
+    newTextfield.setAttribute('class', 'form-control mb-2');
+    newTextfield.setAttribute('name', 'employees[][name]');
+    newTextfield.setAttribute('placeholder', 'Name des Mitarbeiters');
 
-    var employee_container = document.getElementById('employee-container');
-    var new_textfield = document.createElement("input");
-    // <button type="button" id="add-employee" class="btn btn-primary align-content-between" onclick="add_fields();">
-    new_textfield.setAttribute("type", "text");
-    new_textfield.setAttribute("class", "form-control mb-2");
-    new_textfield.setAttribute("placeholder", "Mitarbeiter eintragen");
-
-    employee_container.appendChild(new_textfield);
+    employeeContainer.appendChild(newTextfield);
 }
 
 function addMilestoneField() {
-    var table_milestone_body = document.getElementById('table-milestone-body');
-    var new_table_row = document.createElement("tr");
+    var tableMilestoneBody = document.getElementById('table-milestone-body');
+    var newTableRow = document.createElement('tr');
 
-    var date_column = createTableColumn("date");
-    new_table_row.appendChild(date_column);
+    var dateColumn = createTableColumn('date', 'date');
+    newTableRow.appendChild(dateColumn);
 
-    var label_column = createTableColumn("text");
-    new_table_row.appendChild(label_column);
+    var labelColumn = createTableColumn('text', 'label');
+    newTableRow.appendChild(labelColumn);
 
-    var description_column = createTableColumn("text");
-    new_table_row.appendChild(description_column);
+    var descriptionColumn = createTableColumn('text', 'description');
+    newTableRow.appendChild(descriptionColumn);
 
-    table_milestone_body.appendChild(new_table_row);
+    tableMilestoneBody.appendChild(newTableRow);
 }
 
-function createTableColumn(type) {
+function createTableColumn(type, property) {
+    var newTableColumn = document.createElement('td');
 
-    var new_table_column = document.createElement("td");
+    var newTextfield = document.createElement('input');
+    newTextfield.setAttribute('type', type);
+    newTextfield.setAttribute('class', 'form-control mb-1 mt-1');
+    newTextfield.setAttribute('name', 'milestones[][' + property + ']:string');
+    if (property === 'label') {
+        newTextfield.setAttribute('placeholder', 'Meilenstein Bezeichnung');
+    } else if (property === 'description') {
+        newTextfield.setAttribute('placeholder', 'Meilenstein Beschreibung');
+    }
+    newTableColumn.appendChild(newTextfield);
 
-    var new_textfield = document.createElement("input");
-    new_textfield.setAttribute("type", type);
-    new_textfield.setAttribute("class", "form-control mb-1 mt-1");
-    new_textfield.setAttribute("placeholder", "Bitte eintragen");
-    new_table_column.appendChild(new_textfield);
-
-    return new_table_column;
+    return newTableColumn;
 }

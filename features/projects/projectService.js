@@ -83,16 +83,18 @@ class ProjectService {
         delete project.employees;
 
         dbConnection.insert('INSERT INTO projects SET ?', project, (result) => {
-            for (var i = 0; i < employees.length; i++) {
-                employees[i].project_id = result.insertId;
-            }
+            if (employees !== null && employees !== undefined) {
+                for (var i = 0; i < employees.length; i++) {
+                    employees[i].project_id = result.insertId;
+                }
 
-            for (var i = 0; i < employees.length; i++) {
-                dbConnection.insert(
-                    'INSERT INTO employees SET ?',
-                    employees[i],
-                    () => {}
-                );
+                for (var i = 0; i < employees.length; i++) {
+                    dbConnection.insert(
+                        'INSERT INTO employees SET ?',
+                        employees[i],
+                        () => {}
+                    );
+                }
             }
 
             for (var i = 0; i < milestones.length; i++) {

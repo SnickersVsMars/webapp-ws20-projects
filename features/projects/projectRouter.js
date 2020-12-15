@@ -23,16 +23,32 @@ viewRouter.get('/:id', (req, res) => {
 });
 
 const apiRouter = express.Router();
-apiRouter.get('/', (req, res) => {
-    projectService.get((result) => {
+apiRouter.get('/', (req, res, next) => {
+    let success = (error, result) => {
+        if (error) {
+            return next(error);
+        }
+
         res.json(result);
-    });
+    };
+
+    projectService.get(success, next);
 });
 
-apiRouter.get('/:id', (req, res) => {
-    projectService.find(req.params.id, (result) => {
+apiRouter.get('/:id', (req, res, next) => {
+    let success = (error, result) => {
+        if (error) {
+            return next(error);
+        }
+
         res.json(result);
-    });
+    };
+
+    var result = projectService.find(req.params.id, success, next);
+
+    if (result) {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+    }
 });
 
 apiRouter.post(
@@ -40,16 +56,19 @@ apiRouter.post(
     projectValidationService.validationArray,
     (req, res, next) => {
         let result = projectValidationService.validate(req, res);
-        console.log(req.body);
         if (result) {
             return result;
         }
 
-        let success = (result) => {
+        let success = (error, result) => {
+            if (error) {
+                return next(error);
+            }
+
             res.json(result);
         };
 
-        projectService.insert(req.body, success, next);
+        projectService.insert(req.body, success);
     }
 );
 

@@ -1,4 +1,6 @@
 const express = require('express');
+const { expressValidator } = require('express-validator');
+
 const port = require('config').get('port');
 const path = require('path');
 
@@ -18,12 +20,14 @@ server.use('/', router);
 
 // Not Found Error
 server.use((request, response) => {
-    response.sendFile(path.join(__dirname, 'features/errors/404.html'));
+    response
+        .status(404)
+        .sendFile(path.join(__dirname, 'features/errors/404.html'));
 });
 
 // Server Error
 server.use(function (err, req, res, next) {
-    res.sendFile(path.join(__dirname, 'features/errors/500.html'));
+    res.status(500).sendFile(path.join(__dirname, 'features/errors/500.html'));
     console.log(err);
 });
 

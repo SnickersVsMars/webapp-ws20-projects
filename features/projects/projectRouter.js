@@ -24,7 +24,11 @@ viewRouter.get('/:id', (req, res) => {
 
 const apiRouter = express.Router();
 apiRouter.get('/', (req, res, next) => {
-    let success = (result) => {
+    let success = (error, result) => {
+        if (error) {
+            return next(error);
+        }
+
         res.json(result);
     };
 
@@ -32,32 +36,40 @@ apiRouter.get('/', (req, res, next) => {
 });
 
 apiRouter.get('/:id', (req, res, next) => {
-    let success = (result) => {
+    let success = (error, result) => {
+        if (error) {
+            return next(error);
+        }
+
         res.json(result);
     };
 
-    if (!projectService.find(req.params.id, success, next)) {
+    var result = projectService.find(req.params.id, success, next);
+
+    if (result) {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     }
 });
 
 apiRouter.post(
-    '/add',
+    '/',
     projectValidationService.validationArray,
     (req, res, next) => {
         // apiRouter.post('/add', (req, res) => {
         let result = projectValidationService.validate(req, res);
-        console.log(req.body);
-        console.log(result);
         if (result) {
             return result;
         }
 
-        let success = (result) => {
+        let success = (error, result) => {
+            if (error) {
+                return next(error);
+            }
+
             res.json(result);
         };
 
-        projectService.insert(req.body, success, next);
+        projectService.insert(req.body, success);
     }
 );
 

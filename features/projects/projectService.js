@@ -1,7 +1,7 @@
 const dbConnection = require('../dbConnection');
 
 class ProjectService {
-    get(success, next) {
+    get(success) {
         let selectQuery = `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
         FROM projects p
             LEFT OUTER JOIN employees e ON p.id=e.project_id
@@ -14,10 +14,10 @@ class ProjectService {
                 ) nextM ON p.id = nextM.project_id
         GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`;
 
-        dbConnection.select(selectQuery, success, next);
+        dbConnection.select(selectQuery, success);
     }
 
-    find(id, success, next) {
+    find(id, success) {
         if (id == null) {
             return null;
         }
@@ -32,45 +32,58 @@ class ProjectService {
 
         dbConnection.select(
             `SELECT * FROM projects WHERE id = ${id}`,
-            (result) => {
+            (error, result) => {
+                if (error) {
+                    return success(error, null);
+                }
+
                 if (!result) {
-                    return next(`${id} not found`);
+                    return success(`${id} not found`, null);
                 }
 
                 let project = result;
                 if (Array.isArray(project)) {
                     if (project.length > 1) {
-                        return next(`${id} returns more that one value`);
+                        return success(
+                            `${id} returns more that one value`,
+                            null
+                        );
                     }
 
                     if (project.length < 1) {
-                        return next(`${id} not found`);
+                        return success(`${id} not found`, null);
                     }
 
                     project = project[0];
                 }
 
                 dbConnection.select(
-                    `SELECT id, name FROM employees WHERE project_id = ${id}`,
-                    (result) => {
+                    `SELECT id, name FROM employees WHERE project_id = ${id} ORDER BY name ASC`,
+                    (error, result) => {
+                        if (error) {
+                            return success(error, null);
+                        }
+
                         project.employees = result;
 
                         dbConnection.select(
-                            `SELECT id, date, label, description FROM milestones WHERE project_id = ${id}`,
-                            (result) => {
-                                project.milestones = result;
+                            `SELECT id, date, label, description FROM milestones WHERE project_id = ${id} ORDER BY date ASC`,
+                            (error, result) => {
+                                if (error) {
+                                    return success(error, null);
+                                }
 
-                                success(project);
+                                project.milestones = result;
+                                success(null, project);
                             }
                         );
                     }
                 );
-            },
-            next
+            }
         );
     }
 
-    insert(project, success, next) {
+    insert(project, success) {
         if (project == null) {
             return null;
         }
@@ -88,7 +101,11 @@ class ProjectService {
         dbConnection.insert(
             'INSERT INTO projects SET ?',
             project,
-            (result) => {
+            (error, result) => {
+                if (error) {
+                    return success(error, null);
+                }
+
                 if (employees !== null && employees !== undefined) {
                     for (var i = 0; i < employees.length; i++) {
                         employees[i].project_id = result.insertId;
@@ -115,9 +132,8 @@ class ProjectService {
                     );
                 }
 
-                success(result.insertId);
-            },
-            next
+                success(null, result.insertId);
+            }
         );
     }
 }

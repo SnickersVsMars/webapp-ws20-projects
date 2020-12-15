@@ -184,3 +184,34 @@ table tbody tr td:last-of-type {
         font-size: 1rem;
     }
 }
+
+.btn i {
+    vertical-align: middle;
+    line-height: initial;
+}
+
+textarea {
+    resize: none;
+}
+
+.added-employee {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.added-employee button {
+    margin: 10px 20px 10px 0;
+}
+
+.added-employee .form-control {
+    margin: 10px 0;
+}
+
+table tr td input:nth-of-type(2) {
+    min-width: 100px;
+}
+
+.milestone-label {
+    min-width: 10rem;
+}

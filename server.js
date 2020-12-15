@@ -1,4 +1,6 @@
 const express = require('express');
+const { expressValidator } = require('express-validator');
+
 const port = require('config').get('port');
 const path = require('path');
 

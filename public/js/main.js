@@ -1,5 +1,5 @@
 function validate(value) {
-    if (value === null || value === undefined) {
+    if (value === null || value === undefined || value === '') {
         return '&ndash;';
     }
 

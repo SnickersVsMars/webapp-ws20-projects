@@ -9,7 +9,9 @@ function addEmployeeField() {
     newTextfield.setAttribute('maxlength', 100);
     newTextfield.setAttribute('placeholder', 'Name des Mitarbeiters');
 
-    var removeButton = createRemoveButton('Mitarbeiter entfernen');
+    var removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
+        $(event.target).closest('.added-employee').remove();
+    });
 
     var container = document.createElement('div');
     container.classList = 'added-employee';
@@ -20,15 +22,13 @@ function addEmployeeField() {
 }
 
 function addMilestoneField() {
-    var tableMilestoneBody = document.getElementById('table-milestone-body');
-    var newTableRow = document.createElement('tr');
+    let milestonesContainer = document.getElementById('milestone-container');
 
-    var removeButton = createRemoveButton('Milestone Zeile entfernen');
-    let column = document.createElement('th');
-    column.appendChild(removeButton);
-    newTableRow.append(column);
+    let cardBody = document.createElement('div');
+    cardBody.classList = 'card-body row';
 
-    var dateColumn = createTableColumn(
+    var dateColumn = createFormGroup(
+        'Datum',
         'input',
         'date',
         'date',
@@ -36,9 +36,10 @@ function addMilestoneField() {
         true,
         null
     );
-    newTableRow.appendChild(dateColumn);
+    cardBody.appendChild(dateColumn);
 
-    var labelColumn = createTableColumn(
+    var labelColumn = createFormGroup(
+        'Bezeichnung',
         'input',
         'text',
         'label',
@@ -46,9 +47,10 @@ function addMilestoneField() {
         true,
         50
     );
-    newTableRow.appendChild(labelColumn);
+    cardBody.appendChild(labelColumn);
 
-    var descriptionColumn = createTableColumn(
+    var descriptionColumn = createFormGroup(
+        'Beschreibung',
         'textarea',
         null,
         'description',
@@ -56,12 +58,31 @@ function addMilestoneField() {
         false,
         250
     );
-    newTableRow.appendChild(descriptionColumn);
+    cardBody.appendChild(descriptionColumn);
 
-    tableMilestoneBody.appendChild(newTableRow);
+    var removeButton = createRemoveButton(
+        'Milestone Zeile entfernen',
+        (event) => {
+            var cardBody = $(event.target).closest('.card-body');
+            cardBody.prev('hr').remove();
+            cardBody.remove();
+        }
+    );
+    removeButton.classList = 'btn btn-danger d-block';
+    let removeContainer = document.createElement('div');
+    removeContainer.classList = 'col';
+    let emptyLabel = document.createElement('label');
+    emptyLabel.innerHTML = '&nbsp;';
+    removeContainer.appendChild(emptyLabel);
+    removeContainer.appendChild(removeButton);
+    cardBody.append(removeContainer);
+
+    milestonesContainer.appendChild(document.createElement('hr'));
+    milestonesContainer.appendChild(cardBody);
 }
 
-function createTableColumn(
+function createFormGroup(
+    labelString,
     tag,
     type,
     property,
@@ -69,11 +90,16 @@ function createTableColumn(
     isRequired,
     maxlength
 ) {
-    var column = document.createElement('td');
+    var formGroup = document.createElement('div');
+    formGroup.classList = 'form-group col-sm-6';
+
+    var label = document.createElement('label');
+    label.innerText = labelString;
+    formGroup.appendChild(label);
 
     var control = document.createElement(tag);
 
-    control.setAttribute('class', 'form-control mb-1 mt-1');
+    control.setAttribute('class', 'form-control');
     control.setAttribute('name', 'milestones[][' + property + ']');
 
     if (type) {
@@ -92,12 +118,12 @@ function createTableColumn(
         control.setAttribute('placeholder', placeholder);
     }
 
-    column.appendChild(control);
+    formGroup.appendChild(control);
 
-    return column;
+    return formGroup;
 }
 
-function createRemoveButton(title) {
+function createRemoveButton(title, onclick) {
     let icon = document.createElement('i');
     icon.classList = 'material-icons';
     icon.innerText = 'remove';
@@ -109,9 +135,7 @@ function createRemoveButton(title) {
 
     buttonRemove.appendChild(icon);
 
-    buttonRemove.onclick = (event) => {
-        $(event.target).parent().remove();
-    };
+    buttonRemove.onclick = onclick;
 
     return buttonRemove;
 }

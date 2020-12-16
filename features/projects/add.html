@@ -54,8 +54,8 @@
                 <div class="card-body row">
                     <div class="form-group col-md-6">
                         <label for="input-number">Nummer</label>
-                        <input type="text" class="form-control" id="input-number" name="number"
-                            placeholder="Projektnummer" pattern="PR\d{2}-\d{4}" maxlength="20" required />
+                        <input type="text" class="form-control" id="input-number" name="number" placeholder="PR20-0001"
+                            pattern="PR\d{2}-\d{4}" maxlength="20" required />
                         <div class="invalid-feedback">
                             Bitte folgendes Format verwenden z.B.: PR20-0001
                         </div>
@@ -99,7 +99,7 @@
                         <textarea class="form-control" id="input-description" name="description" rows="5"
                             placeholder="Beschreibung" maxlength="500"></textarea>
                     </div>
-                    <div class="form group col-sm-6">
+                    <div class="form-group col-sm-6">
                         <label for="input-employee">Mitarbeiter</label>
                         <div id="employee-container">
                         </div>
@@ -110,10 +110,65 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-fluid">
-                <div class="card-body">
+            <div class="card">
+                <div class="card-header">
                     <h4>Meilensteine</h4>
                     <div id="milestone-error"></div>
+                </div>
+
+                <div id="milestone-container">
+                    <div class="card-body row">
+                        <div class="form-group col-sm-6">
+                            <label>Datum</label>
+                            <input type="date" required class="form-control mb-1 mt-1" name="milestones[][date]" />
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Bezeichnung</label>
+                            <input type="text" required readonly value="Projekt Start"
+                                class="form-control mb-1 mt-1 milestone-label" placeholder="Meilenstein Bezeichnung"
+                                name="milestones[][label]" />
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Beschreibung</label>
+                            <textarea type="text" class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
+                                maxlength="250" name="milestones[][description]"></textarea>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="card-body row">
+                        <div class="form-group col-sm-6">
+                            <label>Datum</label>
+                            <input type="date" required class="form-control mb-1 mt-1" name="milestones[][date]" />
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Bezeichnung</label>
+                            <input type="text" required readonly value="Projekt Ende"
+                                class="form-control mb-1 mt-1 milestone-label" placeholder="Meilenstein Bezeichnung"
+                                name="milestones[][label]" />
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Beschreibung</label>
+                            <textarea type="text" class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
+                                maxlength="250" name="milestones[][description]"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" id="add-milestone" title="Neuen Meilenstein hinzufügen"
+                        class="btn btn-primary align-content-between" onclick="addMilestoneField();">
+                        <i class="material-icons ">add</i>
+                    </button>
+                </div>
+
+
+
+
+
+                <!-- <div class="card-body">
+
                     <table class="table table-hover table-striped table-responsive-lg">
                         <thead class="thead-dark">
                             <tr>
@@ -169,10 +224,13 @@
                                 </td>
                             </tr>
                     </table>
-                </div>
+                </div> -->
             </div>
-            <button class="btn btn-primary mb-2 mt-1 float-right" type="submit">Projekt erstellen</button>
-        </form>
+
+            <div class="clearfix">
+                <button class="btn btn-lg btn-primary mb-5 mt-4 mr-2 float-right" type="submit">Projekt
+                    erstellen</button>
+            </div>
     </main>
     <!-- JQuery for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

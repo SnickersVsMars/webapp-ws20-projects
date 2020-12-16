@@ -13,7 +13,7 @@ function DbConnection() {
 
     // query = SQL query string who will be send to the database
     // success = function which will be executed on successfull database call
-    this.select = (query, success, next) => {
+    this.select = (query, success) => {
         pool.getConnection((error, connection) => {
             if (error) {
                 return success(error, null);

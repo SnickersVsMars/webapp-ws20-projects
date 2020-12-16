@@ -19,7 +19,7 @@ server.use(express.json());
 server.use('/', router);
 
 // Not Found Error
-server.use((request, response) => {
+server.use('*', (request, response) => {
     response
         .status(404)
         .sendFile(path.join(__dirname, 'features/errors/404.html'));

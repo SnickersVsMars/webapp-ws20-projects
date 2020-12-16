@@ -40,8 +40,6 @@ const handleFormSubmit = (form) => {
             return;
         }
 
-        // $('form').addClass('was-validated');
-
         for (const [key, value] of Object.entries(res.responseJSON.errors)) {
             console.log(`${key}: ${value}`);
             if (key === 'milestones') {
@@ -85,12 +83,6 @@ const handleFormSubmit = (form) => {
                     .append(
                         '<div class="invalid-feedback">' + value + '</div>'
                     );
-
-            //     <div class="custom-control custom-checkbox mb-3">
-            //     <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-            //     <label class="custom-control-label" for="customControlValidation1">Check this custom checkbox</label>
-            //     <div class="invalid-feedback">Example invalid feedback text</div>
-            //   </div>
         }
     });
 };

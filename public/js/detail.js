@@ -1,9 +1,16 @@
 const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
-HttpService.get('projects/' + id).done((project) => {
-    populateData(project);
-});
+HttpService.get('projects/' + id)
+    .then((project) => {
+        populateData(project);
+    })
+    .catch((res) => {
+        if (res.status === 404 || res.status === 500) {
+            let page = document.getElementsByTagName('html')[0];
+            page.innerHTML = res.responseText;
+        }
+    });
 
 function populateData(project) {
     document.getElementById('label').innerHTML = validate(project.label);

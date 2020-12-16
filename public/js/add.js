@@ -3,7 +3,7 @@ function addEmployeeField() {
 
     var newTextfield = document.createElement('input');
     newTextfield.setAttribute('type', 'text');
-    newTextfield.setAttribute('class', 'form-control mb-2');
+    newTextfield.setAttribute('class', 'form-control mb-2 input-employee');
     newTextfield.setAttribute('name', 'employees[][name]');
     newTextfield.setAttribute('required', true);
     newTextfield.setAttribute('maxlength', 100);
@@ -97,6 +97,7 @@ function createFormGroup(
     label.innerText = labelString;
     formGroup.appendChild(label);
 
+    control.setAttribute('class', 'form-control milestone-' + property);
     let control = document.createElement(tag);
 
     control.setAttribute('class', 'form-control');
@@ -147,7 +148,7 @@ function createRemoveButton(title, onclick) {
 
     let buttonRemove = document.createElement('button');
     buttonRemove.setAttribute('type', 'button');
-    buttonRemove.classList = 'btn btn-danger mt-1 mb-1';
+    buttonRemove.classList = 'btn btn-danger mt-1 mb-1 remove-button';
     buttonRemove.setAttribute('title', title);
 
     buttonRemove.appendChild(icon);

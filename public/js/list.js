@@ -1,9 +1,16 @@
 var overview = document.getElementById('card-container');
 var template = document.getElementById('card-template');
 
-HttpService.get('projects').done((projects) => {
-    populateData(projects);
-});
+HttpService.get('projects')
+    .then((projects) => {
+        populateData(projects);
+    })
+    .catch((res) => {
+        if (res.status === 404 || res.status === 500) {
+            let page = document.getElementsByTagName('html')[0];
+            page.innerHTML = res.responseText;
+        }
+    });
 
 function populateData(projects) {
     $(projects).each(function (i, project) {

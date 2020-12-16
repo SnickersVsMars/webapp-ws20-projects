@@ -90,14 +90,14 @@ function createFormGroup(
     isRequired,
     maxlength
 ) {
-    var formGroup = document.createElement('div');
+    let formGroup = document.createElement('div');
     formGroup.classList = 'form-group col-sm-6';
 
-    var label = document.createElement('label');
+    let label = document.createElement('label');
     label.innerText = labelString;
     formGroup.appendChild(label);
 
-    var control = document.createElement(tag);
+    let control = document.createElement(tag);
 
     control.setAttribute('class', 'form-control');
     control.setAttribute('name', 'milestones[][' + property + ']');
@@ -106,12 +106,22 @@ function createFormGroup(
         control.setAttribute('type', type);
     }
 
+    let validationMessage;
+
     if (isRequired) {
         control.setAttribute('required', true);
+        validationMessage = 'Feld ist verpflichtend.';
     }
 
     if (maxlength > 1) {
         control.setAttribute('maxlength', maxlength);
+        let maxlengthMessage = 'Maximal ' + maxlength + ' Zeichen';
+
+        if (validationMessage != undefined) {
+            validationMessage += ' ';
+        }
+
+        validationMessage += maxlengthMessage;
     }
 
     if (placeholder) {
@@ -119,6 +129,13 @@ function createFormGroup(
     }
 
     formGroup.appendChild(control);
+
+    if (validationMessage) {
+        let feedback = document.createElement('div');
+        feedback.classList = 'invalid-feedback';
+        feedback.innerText = validationMessage;
+        formGroup.appendChild(feedback);
+    }
 
     return formGroup;
 }

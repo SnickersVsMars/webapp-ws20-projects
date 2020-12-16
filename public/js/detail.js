@@ -8,9 +8,9 @@ HttpService.get('projects/' + id).done((project) => {
 function populateData(project) {
     document.getElementById('label').innerHTML = validate(project.label);
     document.getElementById('number').innerHTML = validate(project.number);
-    document.getElementById('description').innerHTML = validate(
-        project.description
-    );
+
+    setDescription(document.getElementById('description'), project.description);
+
     document.getElementById('manager').innerHTML = validate(project.manager);
     document.getElementById('customer').innerHTML = validate(project.customer);
     document.getElementById('costCenter').innerHTML = validate(
@@ -68,6 +68,18 @@ function fillMilestones(milestones) {
         else tr.insertCell().innerHTML = formatDate(milestones[i].date);
 
         tr.insertCell().innerHTML = validate(milestones[i].label);
-        tr.insertCell().innerHTML = validate(milestones[i].description);
+        setDescription(tr.insertCell(), milestones[i].description);
+    }
+}
+
+function setDescription(element, description) {
+    if (
+        description === null ||
+        description === undefined ||
+        description === ''
+    ) {
+        element.innerHTML = '&ndash;';
+    } else {
+        element.innerText = description;
     }
 }

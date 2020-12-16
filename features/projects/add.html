@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <!-- Required meta tags -->
@@ -57,7 +57,7 @@
                         <input type="text" class="form-control" id="input-number" name="number" placeholder="PR20-0001"
                             pattern="PR\d{2}-\d{4}" maxlength="20" required />
                         <div class="invalid-feedback">
-                            Bitte folgendes Format verwenden z.B.: PR20-0001
+                            Feld ist verpflichtend. Folgendes Format verwenden: PR20-0001
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -65,7 +65,7 @@
                         <input type="text" class="form-control" id="input-manager" name="manager"
                             placeholder="Projektleiter" required maxlength="50" />
                         <div class="invalid-feedback">
-                            Bitte Namen der zuständigen Person angeben
+                            Feld ist verpflichtend. Maximal 50 Zeichen
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -73,7 +73,7 @@
                         <input type="text" class="form-control" id="input-customer" name="customer" placeholder="Kunde"
                             required maxlength="50" />
                         <div class="invalid-feedback">
-                            Bitte Namen des Kunden angeben
+                            Feld ist verpflichtend. Maximal 50 Zeichen
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -83,7 +83,7 @@
                         <input type="text" maxlength="50" class="form-control" id="input-label" name="label" required
                             placeholder="Projekt Bezeichnung" />
                         <div class="invalid-feedback">
-                            Bitte eine Bezeichnung für das Projekt angeben
+                            Feld ist verpflichtend. Maximal 50 Zeichen
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -91,16 +91,19 @@
                         <input type="text" maxlength="20" class="form-control" id="input-costcenter" name="costCenter"
                             placeholder="Kostenstelle" required />
                         <div class="invalid-feedback">
-                            Bitte zu verwendende Kostenstelle angeben
+                            Feld ist verpflichtend. Maximal 20 Zeichen
                         </div>
                     </div>
                     <div class="form-group col-lg-12">
                         <label for="input-description">Beschreibung</label>
                         <textarea class="form-control" id="input-description" name="description" rows="5"
                             placeholder="Beschreibung" maxlength="500"></textarea>
+                        <div class="invalid-feedback">
+                            Maximal 500 Zeichen
+                        </div>
                     </div>
                     <div class="form-group col-sm-6">
-                        <label for="input-employee">Mitarbeiter</label>
+                        <label>Mitarbeiter</label>
                         <div id="employee-container">
                         </div>
                         <button type="button" id="add-employee" title="Mitarbeiter hinzufügen" class="btn btn-primary"
@@ -121,6 +124,9 @@
                         <div class="form-group col-sm-6">
                             <label>Datum</label>
                             <input type="date" required class="form-control mb-1 mt-1" name="milestones[][date]" />
+                            <div class="invalid-feedback">
+                                Feld ist verpflichtend.
+                            </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Bezeichnung</label>
@@ -130,8 +136,11 @@
                         </div>
                         <div class="form-group col-12">
                             <label>Beschreibung</label>
-                            <textarea type="text" class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
+                            <textarea class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
                                 maxlength="250" name="milestones[][description]"></textarea>
+                            <div class="invalid-feedback">
+                                Maximal 250 Zeichen
+                            </div>
                         </div>
                     </div>
 
@@ -141,6 +150,9 @@
                         <div class="form-group col-sm-6">
                             <label>Datum</label>
                             <input type="date" required class="form-control mb-1 mt-1" name="milestones[][date]" />
+                            <div class="invalid-feedback">
+                                Feld ist verpflichtend.
+                            </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label>Bezeichnung</label>
@@ -150,8 +162,11 @@
                         </div>
                         <div class="form-group col-12">
                             <label>Beschreibung</label>
-                            <textarea type="text" class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
+                            <textarea class="form-control mb-1 mt-1" placeholder="Meilenstein Beschreibung"
                                 maxlength="250" name="milestones[][description]"></textarea>
+                            <div class="invalid-feedback">
+                                Maximal 250 Zeichen
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,69 +177,6 @@
                         <i class="material-icons ">add</i>
                     </button>
                 </div>
-
-
-
-
-
-                <!-- <div class="card-body">
-
-                    <table class="table table-hover table-striped table-responsive-lg">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th></th>
-                                <th>Datum</th>
-                                <th>Bezeichnung</th>
-                                <th>Beschreibung</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-milestone-body">
-                            <tr>
-                                <th></th>
-                                <td>
-                                    <input type="date" required class="form-control mb-1 mt-1"
-                                        name="milestones[][date]" />
-                                </td>
-                                <td>
-                                    <input type="text" required readonly value="Projekt Start"
-                                        class="form-control mb-1 mt-1 milestone-label"
-                                        placeholder="Meilenstein Bezeichnung" name="milestones[][label]" />
-                                </td>
-                                <td>
-                                    <textarea type="text" class="form-control mb-1 mt-1"
-                                        placeholder="Meilenstein Beschreibung" maxlength="250"
-                                        name="milestones[][description]"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <td>
-                                    <input type="date" required class="form-control mb-1 mt-1"
-                                        name="milestones[][date]" />
-                                </td>
-                                <td>
-                                    <input type="text" required readonly value="Projekt Ende"
-                                        class="form-control mb-1 mt-1 milestone-label"
-                                        placeholder="Meilenstein Bezeichnung" name="milestones[][label]" />
-                                </td>
-                                <td>
-                                    <textarea class="form-control mb-1 mt-1 input-array"
-                                        placeholder="Meilenstein Beschreibung" maxlength="250"
-                                        name="milestones[][description]"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3">
-                                    <button type="button" id="add-milestone" title="Neuen Meilenstein hinzufügen"
-                                        class="btn btn-primary align-content-between" onclick="addMilestoneField();">
-                                        <i class="material-icons ">add</i>
-                                    </button>
-                                </td>
-                            </tr>
-                    </table>
-                </div> -->
             </div>
 
             <div class="clearfix">

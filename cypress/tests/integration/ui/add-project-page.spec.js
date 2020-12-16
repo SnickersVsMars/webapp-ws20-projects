@@ -18,7 +18,7 @@ describe('The add project page', () => {
             expect(errors).to.have.length(5);
         });
 
-        cy.contains('Format verwenden z.B.: PR20-0001');
+        cy.contains('Format verwenden: PR20-0001');
         cy.contains('Namen der zuständigen Person angeben');
         cy.contains('Namen des Kunden angeben');
         cy.contains('Bezeichnung für das Projekt angeben');
@@ -32,10 +32,10 @@ describe('The add project page', () => {
 
         cy.contains('Projekt erstellen').click();
 
-        cy.contains('Format verwenden z.B.: PR20-0001');
+        cy.contains('Format verwenden: PR20-0001');
     });
 
-    it.only('allows to add and remove employee fields', () => {
+    it('allows to add and remove employee fields', () => {
         cy.get('.input-employee').should('not.exist');
         cy.get('#add-employee').click();
         cy.get('#add-employee').click();

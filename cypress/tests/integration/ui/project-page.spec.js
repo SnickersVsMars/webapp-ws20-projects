@@ -39,6 +39,14 @@ describe('The project page', () => {
             cy.url().should('contain', '/projects');
         });
 
+        it('shows 404 on wrong id', () => {
+            cy.visit('/projects/wrong-id', {
+                failOnStatusCode: false,
+            });
+
+            cy.contains('404');
+        });
+
         it('navigates to add page', () => {
             cy.contains('Neues Projekt').click();
             cy.url().should('contain', '/projects/add');

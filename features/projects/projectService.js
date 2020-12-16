@@ -77,8 +77,7 @@ class ProjectService {
                                 success(null, project);
                             }
                         );
-                    },
-                    next
+                    }
                 );
             }
         );

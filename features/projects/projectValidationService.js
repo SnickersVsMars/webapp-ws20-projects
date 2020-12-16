@@ -27,7 +27,7 @@ var validationArray = [
     body('label')
         .trim()
         .notEmpty()
-        .withMessage('Bitte Beschreibung eintragen')
+        .withMessage('Bitte Bezeichnung eintragen')
         .isLength({ max: 50 })
         .withMessage('Maximale Länge überschritten'),
 

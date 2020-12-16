@@ -22,3 +22,5 @@ package-lock.json
 # cypress dummy tests
 cypress/screenshots
 cypress/videos
+
+*.log

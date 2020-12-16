@@ -67,9 +67,7 @@ var validationArray = [
         .notEmpty()
         .withMessage('Bitte Datum eintragen')
         .matches(/\d{4}-\d{2}-\d{2}/)
-        .withMessage('Format nicht korrekt, bitte JJJJ-MM-TT verwenden')
-        .isLength({ max: 20 })
-        .withMessage('Maximale Länge überschritten'),
+        .withMessage('Format nicht korrekt, bitte JJJJ-MM-TT verwenden'),
 
     body('milestones').custom((value) => {
         let containsStart = false;

@@ -70,21 +70,25 @@ var validationArray = [
         .withMessage('Format nicht korrekt, bitte JJJJ-MM-TT verwenden'),
 
     body('milestones').custom((value) => {
-        let containsStart = false;
-        let containsEnd = false;
+        let startDate;
+        let endDate;
 
         for (let i = 0; i < value.length; i++) {
-            if (!containsStart && value[i].label === 'Projekt Start') {
-                containsStart = true;
+            if (value[i].label === 'Projekt Start') {
+                startDate = value[i].date;
             }
 
-            if (!containsEnd && value[i].label === 'Projekt Ende') {
-                containsEnd = true;
+            if (value[i].label === 'Projekt Ende') {
+                endDate = value[i].date;
             }
         }
 
-        if (!containsStart && !containsEnd) {
+        if (startDate == undefined || endDate == undefined) {
             throw '"Projekt Start" und "Projekt Ende" Meilensteine sind verplichtend';
+        }
+
+        if (startDate > endDate) {
+            throw 'Meilenstein "Projekt Start" muss vor Meilenstein "Projekt Ende" liegen';
         }
 
         return true;
@@ -93,11 +97,13 @@ var validationArray = [
 
 function validate(req, res) {
     const errorFormatter = ({ param, msg }) => {
-        return ` ${msg}`;
+        return `${msg}`;
     };
     const errors = validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.mapped() });
+        var errorsMapped = errors.mapped();
+
+        return res.status(400).json({ errors: errorsMapped });
     }
 }
 

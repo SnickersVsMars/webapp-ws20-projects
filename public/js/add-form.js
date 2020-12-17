@@ -13,6 +13,8 @@
                     form.addEventListener(
                         'submit',
                         function (event) {
+                            $('#milestone-error').children().remove();
+
                             event.preventDefault();
                             event.stopPropagation();
 
@@ -48,6 +50,7 @@ const handleFormSubmit = (form) => {
                         value +
                         '</div>'
                 );
+
                 return;
             }
 
@@ -76,7 +79,7 @@ const handleFormSubmit = (form) => {
 
             element.addClass('is-invalid');
             let feedback = element.siblings('.invalid-feedback');
-            if (feedback.length > 1) feedback.text(value);
+            if (feedback.length >= 1) feedback.text(value);
             else
                 element
                     .parent()

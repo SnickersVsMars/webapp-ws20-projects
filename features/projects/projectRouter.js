@@ -46,7 +46,7 @@ apiRouter.get('/:id', (req, res, next) => {
 
     var result = projectService.find(req.params.id, success, next);
 
-    if (result) {
+    if (result === null) {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     }
 });
@@ -55,7 +55,6 @@ apiRouter.post(
     '/',
     projectValidationService.validationArray,
     (req, res, next) => {
-        // apiRouter.post('/add', (req, res) => {
         let result = projectValidationService.validate(req, res);
         if (result) {
             return result;
@@ -66,7 +65,7 @@ apiRouter.post(
                 return next(error);
             }
 
-            res.json(result);
+            res.status(201).json(result);
         };
 
         projectService.insert(req.body, success);

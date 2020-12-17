@@ -42,8 +42,6 @@ const handleFormSubmit = (form) => {
             return;
         }
 
-        // $('form').addClass('was-validated');
-
         for (const [key, value] of Object.entries(res.responseJSON.errors)) {
             console.log(`${key}: ${value}`);
             if (key === 'milestones') {

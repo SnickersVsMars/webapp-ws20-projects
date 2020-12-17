@@ -13,16 +13,26 @@ describe('The add project page', () => {
     it('shows all validation errors on empty form submit', () => {
         cy.contains('Projekt erstellen').click();
 
-        cy.get('.invalid-feedback').then((errors) => {
-            errors = errors.get();
-            expect(errors).to.have.length(5);
+        cy.get('#input-number')
+            .closest('div')
+            .contains(
+                'Feld ist verpflichtend. Folgendes Format verwenden: PR20-0001'
+            );
+        cy.get('#input-manager')
+            .closest('div')
+            .contains('Feld ist verpflichtend. Maximal 50 Zeichen');
+        cy.get('#input-customer')
+            .closest('div')
+            .contains('Feld ist verpflichtend. Maximal 50 Zeichen');
+        cy.get('#input-label')
+            .closest('div')
+            .contains('Feld ist verpflichtend. Maximal 50 Zeichen');
+        cy.get('#input-costcenter')
+            .closest('div')
+            .contains('Feld ist verpflichtend. Maximal 20 Zeichen');
+        cy.get('.milestone-date').each((input) => {
+            cy.wrap(input).closest('div').contains('Feld ist verpflichtend');
         });
-
-        cy.contains('Format verwenden: PR20-0001');
-        cy.contains('Namen der zuständigen Person angeben');
-        cy.contains('Namen des Kunden angeben');
-        cy.contains('Bezeichnung für das Projekt angeben');
-        cy.contains('Kostenstelle angeben');
     });
 
     it('shows format error on wrong project format', () => {
@@ -53,4 +63,84 @@ describe('The add project page', () => {
         cy.get('.remove-button').last().click();
         cy.get('.input-employee').should('not.exist');
     });
+
+    it('allows to add and remove milestone fields', () => {
+        cy.get('#milestone-container')
+            .children('div')
+            .then((milestones) => {
+                milestones = milestones.get();
+                expect(milestones).to.have.length(2);
+            });
+        cy.get('#add-milestone').click();
+        cy.get('#add-milestone').click();
+        cy.get('#add-milestone').click();
+        cy.get('#milestone-container')
+            .children('div')
+            .then((milestones) => {
+                milestones = milestones.get();
+                expect(milestones).to.have.length(5);
+            });
+        cy.get('.d-block').last().click();
+        cy.get('#milestone-container')
+            .children('div')
+            .then((milestones) => {
+                milestones = milestones.get();
+                expect(milestones).to.have.length(4);
+            });
+        cy.get('.d-block').last().click();
+        cy.get('.d-block').last().click();
+        cy.get('#milestone-container')
+            .children('div')
+            .then((milestones) => {
+                milestones = milestones.get();
+                expect(milestones).to.have.length(2);
+            });
+    });
+
+    it('shows max length error messages on too long description', () => {
+        cy.get('#input-description').as('descriptionField');
+
+        cy.get('@descriptionField')
+            .type(random(501))
+            .then((field) => {
+                field = field.get();
+                expect(field[0].value).to.have.length(501);
+            });
+
+        cy.contains('Projekt erstellen').click();
+
+        cy.get('@descriptionField')
+            .closest('div')
+            .contains('Maximal 500 Zeichen');
+    });
+
+    it.only('shows max length error messages on too long milestone description', () => {
+        cy.get('.milestone-description').each((input) => {
+            cy.wrap(input)
+                .type(random(251))
+                .then((field) => {
+                    field = field.get();
+                    expect(field[0].value).to.have.length(251);
+                });
+        });
+
+        cy.contains('Projekt erstellen').click();
+
+        cy.get('.milestone-description').each((input) => {
+            cy.wrap(input).closest('div').contains('Maximal 250 Zeichen');
+        });
+    });
 });
+
+const random = (length) => {
+    let chars =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    // Pick characers randomly
+    let str = '';
+    for (let i = 0; i < length; i++) {
+        str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return str;
+};

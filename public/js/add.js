@@ -99,8 +99,6 @@ function createFormGroup(
 
     let control = document.createElement(tag);
     control.setAttribute('class', 'form-control milestone-' + property);
-
-    control.setAttribute('class', 'form-control');
     control.setAttribute('name', 'milestones[][' + property + ']');
 
     if (type) {

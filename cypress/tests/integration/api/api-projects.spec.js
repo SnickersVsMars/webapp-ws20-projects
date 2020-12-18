@@ -55,7 +55,7 @@ describe('Projects API', () => {
                 costCenter: 'TestCostCenter',
                 milestones: [
                     { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2021-01-16', label: 'Projekt End' },
+                    { date: '2021-01-16', label: 'Projekt Ende' },
                 ],
             };
 
@@ -85,7 +85,7 @@ describe('Projects API', () => {
                 costCenter: 'TestCostCenter',
                 milestones: [
                     { date: '2021-01-16', label: 'Projekt Start' },
-                    { date: '2020-12-16', label: 'Projekt End' },
+                    { date: '2020-12-16', label: 'Projekt Ende' },
                 ],
             };
 
@@ -96,9 +96,9 @@ describe('Projects API', () => {
                 failOnStatusCode: false,
             }).then((res) => {
                 expect(res.status).to.equal(400);
-                expect(res.body).should(
-                    'contain',
-                    'Start muss vor Projekt Ende'
+                expect(res.body.errors).to.have.property(
+                    'milestones',
+                    'Meilenstein "Projekt Start" muss vor Meilenstein "Projekt Ende" liegen'
                 );
             });
         });
@@ -112,7 +112,7 @@ describe('Projects API', () => {
                 costCenter: 'TestCostCenter',
                 milestones: [
                     { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2021-01-16', label: 'Projekt End' },
+                    { date: '2021-01-16', label: 'Projekt Ende' },
                 ],
             };
 

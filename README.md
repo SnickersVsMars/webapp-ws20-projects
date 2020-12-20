@@ -39,6 +39,47 @@ Following the SCRUM principle, the user stories we chose for a sprint will be sp
 After the implementation the developed features need to be tested by us as well as the by another team. In return our team will peer test another team's implementation as well.
 At the end of each sprint every team presents the results from another group.
 
+### User Stories
+
+#### List Overview -> Sprint 1
+
+This user story calls for an overview list of components in the project management tool, in our case, projects.
+
+This user story was implemented in Sprint 1.
+
+
+#### Search -> Not implemented
+
+This user story revolves around searching and filtering in the overview list.
+
+This user story was not yet implemented.
+
+#### Detail View -> Sprint 1
+
+In this user story, a component in the project management tool should have its own view to show the component's more specific details.
+
+This user story was implemented in Sprint 1.
+
+
+#### Add new data -> Sprint 2
+
+As part of this user story, it should be possible to add new componentes, in our case projects, to the management tool.
+
+This user story was implemented in Sprint 2.
+
+#### Edit existing data -> Not implemented
+
+Existing components should be editable after implementing this user story.
+
+This user story was not yet implemented.
+
+
+#### Frontend validation -> Sprint 2
+
+This user story requires data, either added or edited, to be validated before the actual change.
+
+This user story was implemented in Sprint 2.
+
 ### Authors
 
 Michael Lamprecht  

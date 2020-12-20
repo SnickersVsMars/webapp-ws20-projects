@@ -13,19 +13,19 @@ HttpService.get('projects/' + id)
     });
 
 function populateData(project) {
-    document.getElementById('label').innerHTML = validate(project.label);
-    document.getElementById('number').innerHTML = validate(project.number);
+    document.getElementById('label').innerText = validate(project.label);
+    document.getElementById('number').innerText = validate(project.number);
 
     setDescription(document.getElementById('description'), project.description);
 
-    document.getElementById('manager').innerHTML = validate(project.manager);
-    document.getElementById('customer').innerHTML = validate(project.customer);
-    document.getElementById('costCenter').innerHTML = validate(
+    document.getElementById('manager').innerText = validate(project.manager);
+    document.getElementById('customer').innerText = validate(project.customer);
+    document.getElementById('costCenter').innerText = validate(
         project.costCenter
     );
     document.getElementById(
         'breadcrumb'
-    ).innerHTML = `PROJEKT ${project.number}`;
+    ).innerText = `PROJEKT ${project.number}`;
     document
         .getElementById('breadcrumb')
         .setAttribute('href', '/projects/' + project.id);
@@ -64,17 +64,17 @@ function fillMilestones(milestones) {
         return;
 
     let tbody = document.getElementById('table-milestone-body');
-    tbody.innerHTML = '';
+    tbody.innerText = '';
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < milestones.length; i++) {
         let tr = tbody.insertRow();
 
         if (milestones[i].date === null || milestones[i].date === undefined)
-            tr.insertCell().innerHTML = validate(null);
-        else tr.insertCell().innerHTML = formatDate(milestones[i].date);
+            tr.insertCell().innerText = validate(null);
+        else tr.insertCell().innerText = formatDate(milestones[i].date);
 
-        tr.insertCell().innerHTML = validate(milestones[i].label);
+        tr.insertCell().innerText = validate(milestones[i].label);
         setDescription(tr.insertCell(), milestones[i].description);
     }
 }

@@ -15,28 +15,28 @@ HttpService.get('projects')
 function populateData(projects) {
     $(projects).each(function (i, project) {
         var card = template.content.cloneNode(true);
-        card.querySelector('.project-number').innerHTML = validate(
+        card.querySelector('.project-number').innerText = validate(
             project.number
         );
-        card.querySelector('.project-manager').innerHTML = validate(
+        card.querySelector('.project-manager').innerText = validate(
             project.manager
         );
 
-        card.querySelector('.project-label').innerHTML = validate(
+        card.querySelector('.project-label').innerText = validate(
             project.label
         );
 
         let nextMilestone = new Date(project.nextMilestone);
 
-        card.querySelector('.project-milestone').innerHTML = formatDate(
+        card.querySelector('.project-milestone').innerText = formatDate(
             nextMilestone
         );
 
-        card.querySelector('.project-customer').innerHTML = validate(
+        card.querySelector('.project-customer').innerText = validate(
             project.customer
         );
 
-        card.querySelector('.project-employees').innerHTML = validate(
+        card.querySelector('.project-employees').innerText = validate(
             project.employeeCount
         );
 

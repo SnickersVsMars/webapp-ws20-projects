@@ -29,4 +29,7 @@ http.createServer(function (req, res) {
 			res.write(route + ' not found in routing table');
 		res.end();
 	});
-}).listen(8081);
+}).listen(8081, function(err) {
+	if(err) throw err;
+	console.log("up and running");
+})

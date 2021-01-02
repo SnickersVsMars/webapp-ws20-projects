@@ -1,7 +1,32 @@
 var http = require('http');
+var Url = require('url-parse');
+var mysql = require('mysql');
+var con = mysql.createConnection({
+	"host": "snickersvsmars.online", 
+	"user": "user", 
+	"password": "IleXTrUegYPhopECTAL", 
+	"database": "hosting" 
+});
 
-//create a server object:
 http.createServer(function (req, res) {
-  res.write('Hello World!'); //write a response to the client
-  res.end(); //end the response
-}).listen(8081); //the server object listens on port 8080
+	var url = new Url("https://"+req.headers["host"]+req.url);
+	var route = url.pathname;
+	console.log("route: "+req.protocol);
+	con.query("SELECT port FROM HostingTable WHERE route = ?", 
+	[
+		route
+	],
+	function (err, rows) {
+		console.log("route 2: "+route);
+		if (err) throw err;
+		if(rows.length > 0)
+		{
+			res.writeHead(302, {
+				Location: "http://" + url.hostname + ":" + rows[0]["port"]
+			});
+		}
+		else
+			res.write(route + ' not found in routing table');
+		res.end();
+	});
+}).listen(8081);

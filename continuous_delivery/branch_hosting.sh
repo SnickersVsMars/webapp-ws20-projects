@@ -14,7 +14,7 @@ then
 		port=3001
 	fi	
 	echo 'insert port into routing table'
-	$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")	
+	$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")
 fi
 echo $port
 
@@ -38,4 +38,5 @@ git pull
 
 echo 'npm start'
 npm install
-PORT=$port npm start 
+pm2 delete $branch
+PORT=$port pm2 npm start --name $branch

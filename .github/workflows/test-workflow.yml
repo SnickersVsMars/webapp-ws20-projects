@@ -31,4 +31,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          script: cd ${{ secrets.PROJECT_PATH }} && cd continuous_delivery && ./branch_hosting.sh '${GITHUB_REF##*/}'
+          script: cd ${{ secrets.PROJECT_PATH }} && cd continuous_delivery && ./branch_hosting.sh ${{ GITHUB_REF##*/ }}

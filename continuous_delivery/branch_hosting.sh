@@ -13,7 +13,6 @@ then
 		port=3001
 	fi	
 	$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")	
-else
 fi
 
 

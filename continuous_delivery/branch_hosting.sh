@@ -10,3 +10,7 @@ else
     cd '/var/www/html/projects/staging/webapp-ws20-projects/branch/webapp/'
     git pull 'https://github.com/SnickersVsMars/webapp-ws20-projects.git'
 fi
+
+cd '/var/www/html/projects/staging/webapp-ws20-projects/branch/webapp/'
+git checkout ci
+git pull

@@ -39,4 +39,4 @@ git pull
 echo 'npm start'
 npm install
 pm2 delete $branch
-PORT=$port pm2 npm start --name $branch
+PORT=$port pm2 start npm --name $branch -- start

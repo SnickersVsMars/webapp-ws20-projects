@@ -4,19 +4,15 @@ name: CI
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push
   push:
-    branches: [ scripting ]
-  pull_request:
-    branches: [ scripting ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "logging"
-  logging:
+  staging-deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -26,11 +22,11 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
-      - name: Pull changes
+      - name: Staging Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          script: cd ${{ secrets.PROJECT_PATH }} && git pull
+          script: cd ${{ secrets.PROJECT_PATH }} && cd continuous_delivery && ./branch_hosting.sh ${GITHUB_REF##*/}

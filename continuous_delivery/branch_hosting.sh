@@ -5,10 +5,10 @@ echo $branch
 
 port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT port FROM HostingTable WHERE route ='${route}'")
 
-if  [ -z $port -o $port = "NULL" ]
+if  [ -z "$port" -o "$port" = "NULL" ]
 then
 	port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT MAX(port)+1 FROM HostingTable")
-	if  [ -z $port -o $port = "NULL" ]
+	if  [ -z "$port" -o "$port" = "NULL" ]
 	then
 		port=3001
 	fi	

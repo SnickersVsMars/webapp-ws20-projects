@@ -1,7 +1,7 @@
 const express = require('express');
 const { expressValidator } = require('express-validator');
 
-const port = require('config').get('port');
+const port = process.env.PORT || require('config').get('port');
 const path = require('path');
 
 const router = require('./features/router');
@@ -34,7 +34,7 @@ server.use(function (err, req, res, next) {
 // Binding to a port
 server.listen(port, () => {
     console.log('Express server listening on port ' + port);
-    console.log('http://localhost:3000');
+    console.log('http://localhost:'+port);
 });
 
 // Handle server shutdown

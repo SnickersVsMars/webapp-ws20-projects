@@ -2,7 +2,7 @@
 MASTER_DIR="/var/www/html/projects/webapp-ws20-projects/"
 GIT_PATH="https://github.com/SnickersVsMars/webapp-ws20-projects.git"
 
-cd "${MASTER_DIR}/${branch}/webapp/"
+cd "${MASTER_DIR}/webapp/"
 git checkout master
 git pull
 

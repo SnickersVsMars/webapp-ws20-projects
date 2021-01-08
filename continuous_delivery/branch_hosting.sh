@@ -1,6 +1,7 @@
 #!/bin/sh
 MYUSER="user" MYPASS="IleXTrUegYPhopECTAL" MYDB="hosting" route="/${1}" branch=$1
 STAGING_MASTER_DIR="/var/www/html/projects/staging/webapp-ws20-projects/"
+GIT_PATH="https://github.com/SnickersVsMars/webapp-ws20-projects.git"
 echo $route
 echo $branch
 
@@ -25,11 +26,11 @@ cd "${STAGING_MASTER_DIR}/${branch}"
 if [ ! -d "${STAGING_MASTER_DIR}/${branch}/webapp/.git" ]
 then
 	echo 'clone'
-    git clone "https://github.com/SnickersVsMars/webapp-ws20-projects.git" "${STAGING_MASTER_DIR}/${branch}/webapp/"
+    git clone $GIT_PATH "${STAGING_MASTER_DIR}/${branch}/webapp/"
 else
 	echo 'pull'
     cd "${STAGING_MASTER_DIR}/${branch}/webapp/"
-    git pull 'https://github.com/SnickersVsMars/webapp-ws20-projects.git'
+    git pull $GIT_PATH
 fi
 
 echo 'switch branch'

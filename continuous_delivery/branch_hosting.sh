@@ -33,7 +33,7 @@ fi
 
 echo 'switch branch'
 cd "/var/www/html/projects/staging/webapp-ws20-projects/${branch}/webapp/"
-git checkout ci
+git checkout $branch
 git pull
 
 echo 'npm start'

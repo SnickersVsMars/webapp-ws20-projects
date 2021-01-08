@@ -8,5 +8,6 @@ git pull
 
 echo 'npm start'
 npm install
+npm audit fix
 pm2 delete webapp
 pm2 start npm --name webapp -- start

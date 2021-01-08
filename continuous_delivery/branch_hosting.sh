@@ -1,5 +1,6 @@
 #!/bin/sh
 MYUSER="user" MYPASS="IleXTrUegYPhopECTAL" MYDB="hosting" route="/${1}" branch=$1
+STAGING_MASTER_DIR="/var/www/html/projects/staging/webapp-ws20-projects/"
 echo $route
 echo $branch
 
@@ -18,21 +19,21 @@ then
 fi
 echo $port
 
-mkdir -p "/var/www/html/projects/staging/webapp-ws20-projects/${branch}"
-cd "/var/www/html/projects/staging/webapp-ws20-projects/${branch}"
+mkdir -p "${STAGING_MASTER_DIR}/${branch}"
+cd "${STAGING_MASTER_DIR}/${branch}"
 
-if [ ! -d "/var/www/html/projects/staging/webapp-ws20-projects/${branch}/webapp/.git" ]
+if [ ! -d "${STAGING_MASTER_DIR}/${branch}/webapp/.git" ]
 then
 	echo 'clone'
-    git clone "https://github.com/SnickersVsMars/webapp-ws20-projects.git" "/var/www/html/projects/staging/webapp-ws20-projects/${branch}/webapp/"
+    git clone "https://github.com/SnickersVsMars/webapp-ws20-projects.git" "${STAGING_MASTER_DIR}/${branch}/webapp/"
 else
 	echo 'pull'
-    cd "/var/www/html/projects/staging/webapp-ws20-projects/${branch}/webapp/"
+    cd "${STAGING_MASTER_DIR}/${branch}/webapp/"
     git pull 'https://github.com/SnickersVsMars/webapp-ws20-projects.git'
 fi
 
 echo 'switch branch'
-cd "/var/www/html/projects/staging/webapp-ws20-projects/${branch}/webapp/"
+cd "${STAGING_MASTER_DIR}/${branch}/webapp/"
 git checkout $branch
 git pull
 

@@ -40,5 +40,6 @@ git pull
 
 echo 'npm start'
 npm install
+npm audit fix
 pm2 delete $branch
 PORT=$port pm2 start npm --name $branch -- start

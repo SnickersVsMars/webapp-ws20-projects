@@ -104,6 +104,19 @@
                 </table>
             </div>
         </div>
+		
+		<div class="card card-fluid">
+			<div class="card-body">
+				<form ref='uploadForm' 
+				  id='uploadForm' 
+				  action='/upload' 
+				  method='post' 
+				  encType="multipart/form-data">
+					<input type="file" name="target_file" />
+					<input type='submit' value='Upload!' />
+				</form>   
+			</div>
+		</div>
     </main>
     <div id="busy-indicator">
         <div class="spinner-border" role="status">

@@ -28,6 +28,7 @@
         "config": "^3.3.2",
         "cypress": "^6.0.1",
         "express": "^4.17.1",
+        "express-fileupload": "^1.2.0",
         "express-validator": "^6.7.0",
         "mysql": "^2.18.1",
         "pm2": "^4.5.1",

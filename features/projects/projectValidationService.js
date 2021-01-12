@@ -1,15 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
 var validationArray = [
-    body('number')
-        .trim()
-        .notEmpty()
-        .withMessage('Bitte Projektnummer eintragen')
-        .matches(/PR\d{2}-\d{4}/)
-        .withMessage('Bitte folgendes Format verwenden: PR20_xxxx')
-        .isLength({ max: 20 })
-        .withMessage('Maximale Länge überschritten'),
-
     body('manager')
         .trim()
         .notEmpty()

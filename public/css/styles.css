@@ -184,13 +184,27 @@ table tbody tr td:last-of-type {
     }
 }
 
-.search-row {
-    margin: 0 10px;
+.header-row {
+    height: 50px;
+    background-color: #384046;
 }
 
-.search-row i {
+#breadcrumb-row {
+    justify-content: space-between;
+}
+
+#filter-row {
+    justify-content: center;
+}
+
+.search {
+    margin: 0 40px 0 0;
+}
+
+.search i {
+    align-self: flex-end;
     position: absolute;
-    margin: 17.5px 5px;
+    margin: 14px 5px;
 }
 
 #search-box {
@@ -212,6 +226,30 @@ table tbody tr td:last-of-type {
 #search-box:after {
     content: 'search';
     font-family: 'Material Icons';
+}
+
+.filter-search {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #dfdfdf;
+}
+
+.filter {
+    padding-left: 8px;
+}
+
+.dropdown-menu {
+    padding-top: 0;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover,
+.dropdown-item:active {
+    background-color: white;
+}
+
+.dropdown-divider {
+    margin-top: 0;
 }
 
 .btn i {

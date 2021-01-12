@@ -1,12 +1,12 @@
-var overview = document.getElementById('card-container');
-var template = document.getElementById('card-template');
-
+let overview = document.getElementById('card-container');
+let template = document.getElementById('card-template');
 let projects;
 
+$('#search-box').val('');
+
 HttpService.get('projects')
-    .then((projectsResult) => {
-        projects = projectsResult;
-        populateData(projectsResult);
+    .then((projects) => {
+        populateData(projects);
     })
     .catch((res) => {
         if (res.status === 404 || res.status === 500) {
@@ -16,8 +16,6 @@ HttpService.get('projects')
     });
 
 function populateData(list) {
-    removeProjects();
-
     $(list).each(function (i, project) {
         var card = template.content.cloneNode(true);
         card.querySelector('.project-number').innerText = validate(
@@ -54,24 +52,13 @@ function populateData(list) {
     document.getElementById('busy-indicator').hidden = true;
 }
 
-$('#search-box').on('input', () => {
-    let text = document.getElementById('search-box').value;
+$('#search-box').on('input', function () {
+    let text = $(this).val().toLowerCase();
 
-    if (text === '' || text === null || text === undefined) {
-        populateData(result);
-    }
-
-    text = text.toLowerCase();
-    result = projects.filter((project) => {
-        return (
-            project.label.toLowerCase().includes(text) ||
-            project.manager.toLowerCase().includes(text) ||
-            project.number.toLowerCase().includes(text) ||
-            project.customer.toLowerCase().includes(text) ||
-            formatDate(new Date(project.nextMilestone)).includes(text)
-        );
+    $('#card-container .card').filter(function () {
+        console.log($(this).text());
+        $(this).toggle($(this).text().toLowerCase().includes(text));
     });
-    populateData(result);
 });
 
 function filterProjects() {
@@ -80,10 +67,4 @@ function filterProjects() {
 
 function showDetail(id) {
     location.href = 'projects/' + id;
-}
-
-function removeProjects() {
-    while (overview.firstChild) {
-        overview.removeChild(overview.firstChild);
-    }
 }

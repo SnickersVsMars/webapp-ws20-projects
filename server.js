@@ -24,9 +24,6 @@ server.use(fileUpload({
 	tempFileDir : '/tmp/'
 }));
 
-server.use(bodyParser({
-	limit: '10mb'
-}))
 server.use(bodyParser.json()); // for parsing application/json
 server.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 

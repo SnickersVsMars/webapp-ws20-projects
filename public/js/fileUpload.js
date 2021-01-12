@@ -74,7 +74,7 @@ uploadField.onchange = function (e) {
 
 uploadForm.onsubmit = function (e) {
     e.preventDefault();
-	
+    
 	if(fileContent === "") {
 		theErrorMessage.innerHTML = "No File selected";
 		theErrorMessage.classList.remove('hide');
@@ -86,7 +86,8 @@ uploadForm.onsubmit = function (e) {
 			url: '/upload',
 			data: {
 				name: fileName,
-				content: fileContent
+                content: fileContent,
+                project_id: document.getElementById('project_id').value
 			}
 		})
 		.done(function (resp) {

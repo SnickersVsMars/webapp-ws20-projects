@@ -32,6 +32,7 @@ function populateData(project) {
 
     fillEmployess(project.employees);
     fillMilestones(project.milestones);
+    document.getElementById('project_id').value = project.id;
 
     document.getElementById('busy-indicator').hidden = true;
 }

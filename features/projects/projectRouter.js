@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
+const pdfGenerator = require('./pdf/pdf-generator');
 
 function buildPath(fileName) {
     return path.join(__dirname, fileName);
@@ -9,6 +10,17 @@ function buildPath(fileName) {
 
 // define view routes
 const viewRouter = express.Router();
+
+viewRouter.get('/pdf', (req, res) => {
+    let success = (error, path) => {
+        if (error) {
+            return next(error);
+        }
+        res.sendFile(path);
+    };
+
+    pdfGenerator.generateListPdf(success);
+});
 
 viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));

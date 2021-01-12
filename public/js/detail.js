@@ -34,6 +34,9 @@ function populateData(project) {
     fillMilestones(project.milestones);
 
     document.getElementById('busy-indicator').hidden = true;
+    document.getElementById('edit').addEventListener('click', () =>
+        showDetail(project.id)
+    );
 }
 
 function fillEmployess(employees) {
@@ -90,3 +93,8 @@ function setDescription(element, description) {
         element.innerText = description;
     }
 }
+
+function showDetail(id) {
+    location.href = id +'/edit/';
+}
+

@@ -14,6 +14,10 @@ viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));
 });
 
+viewRouter.get('/:id/edit', (req, res) => {
+    res.sendFile(buildPath('edit.html'));
+});
+
 viewRouter.get('/', (req, res) => {
     res.sendFile(buildPath('list.html'));
 });

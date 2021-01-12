@@ -107,14 +107,16 @@
 		
 		<div class="card card-fluid">
 			<div class="card-body">
-				<form ref='uploadForm' 
-				  id='uploadForm' 
-				  action='/upload' 
-				  method='post' 
-				  encType="multipart/form-data">
-					<input type="file" name="target_file" />
-					<input type='submit' value='Upload!' />
-				</form>   
+				<form id="uploadForm">
+					<label for="uploadField" id="uploadContainer">
+						<input type="file" id="uploadField">
+						<p id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</p>
+						<button id="clearFile" type="button" class="btn btn-outline-danger hide">x</button>
+					</label>
+					<p id="errorMessage" class="hide"></p>
+					<p id="successMessage" class="hide"></p>
+					<button class="btn btn-outline-dark" type="submit">Upload</button>
+				</form>
 			</div>
 		</div>
     </main>
@@ -139,6 +141,7 @@
     <script src="/js/main.js"></script>
     <script src="/js/services/httpService.js"></script>
     <script src="/js/detail.js"></script>
+	<script src="/js/fileUpload.js"></script>
 </body>
 
 </html>

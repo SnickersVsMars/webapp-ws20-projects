@@ -10,19 +10,24 @@ router.get('/throw', (req, res) => {
 });
 
 router.post('/upload', (req, res) => {
-    
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send('No files were uploaded.');
-    }
+	if(req.body.theFile !== "") {
+		let content = req.body.content;
+		let filename = req.body.name;
+		
+		var fs = require('fs');
+		var dataUrlRegExp = /^data:.*base64,/;
+		var base64Data = content.replace(dataUrlRegExp, "");
+		var buffer = new Buffer(base64Data, "base64");
+		fs.writeFile(appRoot+"/uploads/"+filename, buffer,  "binary",function(err) {
+			if(err) {
+				console.log(err);
+			} else {
+				console.log("The file was saved!");
+			}
+		});
+	}
 
-    let targetFile = req.files.target_file;
-
-    targetFile.mv(path.join(appRoot, 'uploads', targetFile.name), (err) => {
-        if (err)
-            return res.status(500).send(err);
-        res.send('File uploaded!');
-    });
-  
+	res.send('UPLOADED');
 });
 
 router.get('/', (req, res) => {

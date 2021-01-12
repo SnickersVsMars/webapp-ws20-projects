@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <!-- Required meta tags -->
@@ -32,8 +32,8 @@
             <a href="/"
                class="navbar-brand">
                 <img src="/img/FHJ_Logo_100mm_rgb_web.png"
-                     width="170"
-                     height="73"
+                     width="140"
+                     height="60"
                      alt="Logo-Fh-Joanneum">
             </a>
             <button type="button"
@@ -45,10 +45,16 @@
             </button>
             <div class="collapse navbar-collapse"
                  id="navbarCollapse">
-                <div class="navbar-nav">
-                    <a href="/projects"
-                       class="nav-item nav-link">Projekte</a>
-                </div>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a href="/projects"
+                           class="nav-link">Projekte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/add"
+                           class="nav-link">Neues Projekt</a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </div>
@@ -115,15 +121,18 @@
         </div>
     </template>
 
+    <!-- JQuery for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
             crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
             crossorigin="anonymous"></script>
-
+    <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!-- Custom JS -->
     <script src="/js/main.js"></script>
     <script src="/js/services/httpService.js"></script>
     <script src="/js/list.js"></script>

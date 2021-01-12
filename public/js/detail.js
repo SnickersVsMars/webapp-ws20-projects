@@ -1,24 +1,31 @@
 const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
-HttpService.get('projects/' + id).done((project) => {
-    populateData(project);
-});
+HttpService.get('projects/' + id)
+    .then((project) => {
+        populateData(project);
+    })
+    .catch((res) => {
+        if (res.status === 404 || res.status === 500) {
+            let page = document.getElementsByTagName('html')[0];
+            page.innerHTML = res.responseText;
+        }
+    });
 
 function populateData(project) {
-    document.getElementById('label').innerHTML = validate(project.label);
-    document.getElementById('number').innerHTML = validate(project.number);
-    document.getElementById('description').innerHTML = validate(
-        project.description
-    );
-    document.getElementById('manager').innerHTML = validate(project.manager);
-    document.getElementById('customer').innerHTML = validate(project.customer);
-    document.getElementById('costCenter').innerHTML = validate(
+    document.getElementById('label').innerText = validate(project.label);
+    document.getElementById('number').innerText = validate(project.number);
+
+    setDescription(document.getElementById('description'), project.description);
+
+    document.getElementById('manager').innerText = validate(project.manager);
+    document.getElementById('customer').innerText = validate(project.customer);
+    document.getElementById('costCenter').innerText = validate(
         project.costCenter
     );
     document.getElementById(
         'breadcrumb'
-    ).innerHTML = `PROJEKT ${project.number}`;
+    ).innerText = `PROJEKT ${project.number}`;
     document
         .getElementById('breadcrumb')
         .setAttribute('href', '/projects/' + project.id);
@@ -57,17 +64,29 @@ function fillMilestones(milestones) {
         return;
 
     let tbody = document.getElementById('table-milestone-body');
-    tbody.innerHTML = '';
+    tbody.innerText = '';
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < milestones.length; i++) {
         let tr = tbody.insertRow();
 
         if (milestones[i].date === null || milestones[i].date === undefined)
-            tr.insertCell().innerHTML = validate(null);
-        else tr.insertCell().innerHTML = formatDate(milestones[i].date);
+            tr.insertCell().innerText = validate(null);
+        else tr.insertCell().innerText = formatDate(milestones[i].date);
 
-        tr.insertCell().innerHTML = validate(milestones[i].label);
-        tr.insertCell().innerHTML = validate(milestones[i].description);
+        tr.insertCell().innerText = validate(milestones[i].label);
+        setDescription(tr.insertCell(), milestones[i].description);
+    }
+}
+
+function setDescription(element, description) {
+    if (
+        description === null ||
+        description === undefined ||
+        description === ''
+    ) {
+        element.innerHTML = '&ndash;';
+    } else {
+        element.innerText = description;
     }
 }

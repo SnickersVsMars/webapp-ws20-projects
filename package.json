@@ -28,11 +28,13 @@
         "config": "^3.3.2",
         "express": "^4.17.1",
         "express-validator": "^6.7.0",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "pm2": "^4.5.1",
+        "url-parse": "^1.4.7"
     },
     "devDependencies": {
         "cypress": "^6.1.0",
         "nodemon": "^2.0.6",
-        "prettier": "^2.2.0"
+        "prettier": "^2.2.1"
     }
 }

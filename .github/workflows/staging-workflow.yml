@@ -1,0 +1,34 @@
+name: CI-Staging
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push
+  push:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  staging-deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Declare some variables
+        id: vars
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Show branch name
+        run: echo running on branch ${GITHUB_REF##*/}
+      - name: Staging Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: cd ${{ secrets.PROJECT_PATH }} && cd continuous_delivery && ./branch_hosting.sh ${{ steps.vars.outputs.branch }}

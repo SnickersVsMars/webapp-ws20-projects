@@ -53,14 +53,6 @@
             <div class="card">
                 <div class="card-body row">
                     <div class="form-group col-md-6">
-                        <label for="input-number">Nummer</label>
-                        <input type="text" class="form-control" id="input-number" name="number" placeholder="PR20-0001"
-                            pattern="PR\d{2}-\d{4}" maxlength="20" required />
-                        <div class="invalid-feedback">
-                            Feld ist verpflichtend. Folgendes Format verwenden: PR20-0001
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
                         <label for="input-manager">Leiter</label>
                         <input type="text" class="form-control" id="input-manager" name="manager"
                             placeholder="Projektleiter" required maxlength="50" />
@@ -75,8 +67,6 @@
                         <div class="invalid-feedback">
                             Feld ist verpflichtend. Maximal 50 Zeichen
                         </div>
-                    </div>
-                    <div class="col-md-6">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="input-label">Bezeichnung</label>
@@ -123,7 +113,8 @@
                     <div class="card-body row">
                         <div class="form-group col-sm-6">
                             <label>Datum</label>
-                            <input type="date" required class="form-control mb-1 mt-1 milestone-date" name="milestones[][date]" />
+                            <input type="date" required class="form-control mb-1 mt-1 milestone-date"
+                                name="milestones[][date]" />
                             <div class="invalid-feedback">
                                 Feld ist verpflichtend.
                             </div>
@@ -136,8 +127,9 @@
                         </div>
                         <div class="form-group col-12">
                             <label>Beschreibung</label>
-                            <textarea class="form-control mb-1 mt-1 milestone-description" placeholder="Meilenstein Beschreibung"
-                                maxlength="250" name="milestones[][description]"></textarea>
+                            <textarea class="form-control mb-1 mt-1 milestone-description"
+                                placeholder="Meilenstein Beschreibung" maxlength="250"
+                                name="milestones[][description]"></textarea>
                             <div class="invalid-feedback">
                                 Maximal 250 Zeichen
                             </div>
@@ -149,7 +141,8 @@
                     <div class="card-body row">
                         <div class="form-group col-sm-6">
                             <label>Datum</label>
-                            <input type="date" required class="form-control mb-1 mt-1 milestone-date" name="milestones[][date]" />
+                            <input type="date" required class="form-control mb-1 mt-1 milestone-date"
+                                name="milestones[][date]" />
                             <div class="invalid-feedback">
                                 Feld ist verpflichtend.
                             </div>
@@ -162,8 +155,9 @@
                         </div>
                         <div class="form-group col-12">
                             <label>Beschreibung</label>
-                            <textarea class="form-control mb-1 mt-1 milestone-description" placeholder="Meilenstein Beschreibung"
-                                maxlength="250" name="milestones[][description]"></textarea>
+                            <textarea class="form-control mb-1 mt-1 milestone-description"
+                                placeholder="Meilenstein Beschreibung" maxlength="250"
+                                name="milestones[][description]"></textarea>
                             <div class="invalid-feedback">
                                 Maximal 250 Zeichen
                             </div>

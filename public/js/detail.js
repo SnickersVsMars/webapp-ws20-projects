@@ -80,6 +80,7 @@ function fillMilestones(milestones) {
 }
 
 function setDescription(element, description) {
+    element.classList.add('table-truncate');
     if (
         description === null ||
         description === undefined ||

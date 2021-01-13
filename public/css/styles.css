@@ -252,6 +252,13 @@ table tbody tr td:last-of-type {
     margin-top: 0;
 }
 
+.custom-control-label {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .btn i {
     vertical-align: middle;
     line-height: initial;
@@ -281,4 +288,10 @@ table tr td input:nth-of-type(2) {
 
 .milestone-label {
     min-width: 10rem;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

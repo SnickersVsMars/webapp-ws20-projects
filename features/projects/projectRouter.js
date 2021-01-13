@@ -12,11 +12,11 @@ function buildPath(fileName) {
 const viewRouter = express.Router();
 
 viewRouter.get('/pdf', (req, res) => {
-    let success = (error, path) => {
+    let success = (error, html) => {
         if (error) {
             return next(error);
         }
-        res.sendFile(path);
+        res.send(html);
     };
 
     pdfGenerator.generateListPdf(success);

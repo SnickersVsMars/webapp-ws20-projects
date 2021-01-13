@@ -49,18 +49,15 @@
         </ul>
     </div>
 </div>
-<h1 id="getme">Test</h1>
-<!--<main class="container">
+<!------------------------------------------------------------------------------>
+<main class="container">
     <form class="needs-validation" novalidate>
         <div class="card">
             <div class="card-body row">
                 <div class="form-group col-md-6">
                     <label for="input-number">Nummer</label>
                     <input type="text" class="form-control" id="input-number" name="number" placeholder="PR20-0001"
-                           pattern="PR\d{2}-\d{4}" maxlength="20" required />
-                    <div class="invalid-feedback">
-                        Feld ist verpflichtend. Folgendes Format verwenden: PR20-0001
-                    </div>
+                           readonly />
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input-manager">Leiter</label>
@@ -109,7 +106,7 @@
                     <div id="employee-container">
                     </div>
                     <button type="button" id="add-employee" title="Mitarbeiter hinzufügen" class="btn btn-primary"
-                            onclick="addEmployeeField();">
+                            onclick="addEmployeeField('');">
                         <i class="material-icons ">add</i>
                     </button>
                 </div>
@@ -185,12 +182,12 @@
             <button class="btn btn-lg btn-primary mb-5 mt-4 mr-2 float-right" type="submit">Projekt
                 updaten</button>
         </div>
-</main> -->
-<div id="busy-indicator">
+</main>
+<!--<div id="busy-indicator">
     <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
     </div>
-</div>
+</div> -->
 
 <!-- JQuery for Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -207,6 +204,7 @@
 <script src="/js/main.js"></script>
 <script src="/js/services/httpService.js"></script>
 <script src="/js/edit.js"></script>
+<script src="/js/form.js"></script>
 </body>
 
 </html>

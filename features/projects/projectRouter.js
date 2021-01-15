@@ -8,18 +8,33 @@ function buildPath(fileName) {
     return path.join(__dirname, fileName);
 }
 
+const createPdfResponse = (res, next, url) => {
+    pdfGenerator
+        .generatePdf(url)
+        .catch(next)
+        .then((pdfBuffer) => {
+            let header = {
+                'Content-Type': 'application/pdf',
+                'Content-Length': pdfBuffer.length,
+            };
+            res.set(header);
+            res.send(pdfBuffer);
+        });
+};
+
 // define view routes
 const viewRouter = express.Router();
 
-viewRouter.get('/pdf', (req, res) => {
-    let success = (error, html) => {
-        if (error) {
-            return next(error);
-        }
-        res.send(html);
-    };
+viewRouter.get('/:id/export', (req, res, next) => {
+    createPdfResponse(
+        res,
+        next,
+        'http://localhost:3000/projects/' + req.params.id
+    );
+});
 
-    pdfGenerator.generateListPdf(success);
+viewRouter.get('/export', (req, res, next) => {
+    createPdfResponse(res, next, 'http://localhost:3000/projects');
 });
 
 viewRouter.get('/add', (req, res) => {

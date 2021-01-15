@@ -236,6 +236,13 @@ table tbody tr td:last-of-type {
 
 .filter {
     padding-left: 8px;
+    max-height: 300px;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+#filter-row > .dropdown {
+    margin: 0 10px;
 }
 
 .dropdown-menu {
@@ -253,10 +260,45 @@ table tbody tr td:last-of-type {
 }
 
 .custom-control-label {
+    position: unset;
     max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.custom-control-label:before {
+    top: 8px;
+    left: 0;
+}
+
+.custom-control-label:after {
+    top: 8px;
+    left: 0;
+}
+
+#clear-filter-btn {
+    margin: 0 10px;
+    display: none;
+}
+
+#clear-date-btn {
+    margin: 0 10px 0 0;
+    display: none;
+}
+
+#reportrange {
+    margin: 0 10px;
+    background-color: white;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 0.25rem;
+    align-items: center;
+    display: flex;
+}
+
+.calendar-icon {
+    font-size: 18px;
 }
 
 .btn i {

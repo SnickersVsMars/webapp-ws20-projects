@@ -3,6 +3,7 @@ let template = document.getElementById('card-template');
 let projects;
 
 $('#search-box').val('');
+$('.filter-search').val('');
 
 HttpService.get('projects')
     .then((projects) => {
@@ -80,49 +81,6 @@ function populateData(list) {
 
     // TODO why you not work?!
     $('[data-toggle="tooltip"]').tooltip();
-}
-
-function createFilters(numbers, managers, labels, customers) {
-    createFilter(numbers, 'number-filter');
-    createFilter(managers, 'manager-filter');
-    createFilter(labels, 'label-filter');
-    createFilter(customers, 'customer-filter');
-}
-
-function createFilter(list, id) {
-    $(list).each(function (i, val) {
-        if (val === '&ndash;') {
-            val = '-';
-        }
-        $('#' + id).append(
-            `<div class="custom-control custom-checkbox dropdown-item">
-                <input type="checkbox"
-                       class="custom-control-input"
-                       id="${id}-${i}">
-                <label class="custom-control-label"
-                       id="${id}-${i}-label"
-                       for="${id}-${i}">
-                </label>
-            </div>`
-        );
-        $(`#${id}-${i}-label`).text(val);
-    });
-}
-
-$('#search-box').on('input', function () {
-    let text = $(this).val().toLowerCase();
-
-    $('#card-container .card').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().includes(text));
-    });
-});
-
-$('.dropdown-menu').on('click', function (e) {
-    e.stopPropagation();
-});
-
-function filterProjects() {
-    console.log(projects);
 }
 
 function showDetail(id) {

@@ -16,6 +16,10 @@
           rel="stylesheet">
     <link rel="stylesheet"
           href="/css/styles.css">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- favicon -->
     <link rel="icon"
           type="image/vnd.microsoft.icon"
@@ -93,7 +97,8 @@
                 <div class="dropdown-menu">
                     <input class="form-control filter-search"
                            type="text"
-                           placeholder="Suche..">
+                           placeholder="Suche.."
+                           oninput="searchFilter(this, 'number-filter')">
                     <div class="dropdown-divider"></div>
                     <div class="filter"
                          id="number-filter">
@@ -112,14 +117,15 @@
                 <div class="dropdown-menu">
                     <input class="form-control filter-search"
                            type="text"
-                           placeholder="Suche..">
+                           placeholder="Suche.."
+                           oninput="searchFilter(this, 'manager-filter')">
                     <div class="dropdown-divider"></div>
                     <div class="filter"
                          id="manager-filter">
                     </div>
                 </div>
             </div>
-            <div class="btn-group">
+            <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle"
                         type="button"
                         data-toggle="dropdown"
@@ -130,14 +136,16 @@
                 <div class="dropdown-menu">
                     <input class="form-control filter-search"
                            type="text"
-                           placeholder="Suche..">
+                           placeholder="Suche.."
+                           oninput="searchFilter(this, 'label-filter')">
                     <div class="dropdown-divider"></div>
                     <div class="filter"
                          id="label-filter">
                     </div>
                 </div>
             </div>
-            <div class="btn-group">
+
+            <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle"
                         type="button"
                         data-toggle="dropdown"
@@ -148,13 +156,35 @@
                 <div class="dropdown-menu">
                     <input class="form-control filter-search"
                            type="text"
-                           placeholder="Suche..">
+                           placeholder="Suche.."
+                           oninput="searchFilter(this, 'customer-filter')">
                     <div class="dropdown-divider"></div>
                     <div class="filter"
                          id="customer-filter">
                     </div>
                 </div>
             </div>
+
+            <div id="reportrange">
+                <i class="material-icons calendar-icon">date_range</i>
+                <span></span>
+                <i class="material-icons calendar-icon">arrow_drop_down</i>
+            </div>
+
+            <button class="btn btn-secondary"
+                    id="clear-date-btn"
+                    onclick="clearDate()"
+                    data-toggle="tooltip"
+                    title="Datum leeren">
+                <i class="material-icons">event_busy</i>
+            </button>
+
+            <button type="button"
+                    id="clear-filter-btn"
+                    class="btn btn-secondary"
+                    onclick="clearAllFilters();">
+                Filter leeren
+            </button>
         </div>
     </div>
 
@@ -218,10 +248,16 @@
             crossorigin="anonymous"></script>
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Daterangepicker (with moment since it's required by the picker) -->
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <!-- Custom JS -->
     <script src="/js/main.js"></script>
     <script src="/js/services/httpService.js"></script>
+    <script src="/js/filter.js"></script>
     <script src="/js/list.js"></script>
 </body>
 

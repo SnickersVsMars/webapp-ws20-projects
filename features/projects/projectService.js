@@ -173,30 +173,48 @@ class ProjectService {
                         ids.push(employees[i].id);
                     }
 
-                    for (let i = 0; i < project.employees.length; i++) {
-                        if (project.employees[i].id === undefined) {
-                            project.employees[i].project_id = id;
+                    if (project.employees !== undefined) {
+                        for (let i = 0; i < project.employees.length; i++) {
+                            if (project.employees[i].id === undefined) {
+                                project.employees[i].project_id = id;
 
-                            dbConnection.insert(
-                                'INSERT INTO employees SET ?',
-                                project.employees[i],
-                                () => {}
-                            );
-                            continue;
+                                dbConnection.insert(
+                                    'INSERT INTO employees SET ?',
+                                    project.employees[i],
+                                    () => {}
+                                );
+                                continue;
+                            }
+
+                            let idAsNumber = parseInt(project.employees[i].id);
+                            let index = ids.indexOf(idAsNumber);
+
+                            if (index > -1) {
+                                ids.splice(index, 1);
+
+                                // check if employee was updated
+                                let emp = employees.find((x) => {
+                                    return x.id === idAsNumber;
+                                });
+                                if (emp.name !== project.employees[i].name) {
+                                    emp.name = project.employees[i].name;
+
+                                    dbConnection.update(
+                                        `UPDATE employees SET ? WHERE id = ${idAsNumber}`,
+                                        emp,
+                                        () => {}
+                                    );
+                                }
+                            }
                         }
 
-                        let index = ids.indexOf(project.employees[i].id);
-                        if (index > -1) {
-                            ids.splice(index, 1);
-                        }
-                    }
-
-                    if (ids.length > 0) {
-                        for (let i = 0; i < ids.length; i++) {
-                            dbConnection.delete(
-                                `DELETE FROM employees WHERE id = ${ids[i]}`,
-                                () => {}
-                            );
+                        if (ids.length > 0) {
+                            for (let i = 0; i < ids.length; i++) {
+                                dbConnection.delete(
+                                    `DELETE FROM employees WHERE id = ${ids[i]}`,
+                                    () => {}
+                                );
+                            }
                         }
                     }
                 }
@@ -257,12 +275,12 @@ class ProjectService {
             //         if (error) {
             //             return success(error, null);
             //         }
-            //         success(null, result);
+            //         success(null, result.insertedId);
             //     }
             // );
 
             // TODO remove once implementation is done
-            success(null, toUpdate);
+            success(null, parseInt(id));
         });
     }
 }

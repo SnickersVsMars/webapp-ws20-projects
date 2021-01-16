@@ -32,7 +32,10 @@
     );
 })();
 const handleSubmitResult = (res) => {
+    console.log(res);
+    console.log(typeof res === 'number');
     if (typeof res === 'number') {
+        console.log('should be here ma boi');
         location.href = '/projects/' + res;
         return;
     }
@@ -81,9 +84,12 @@ const handleSubmitResult = (res) => {
 };
 
 const handleFormSubmit = (form) => {
-    data = $(form).serializeJSON({
-        skipFalsyValuesForTypes: ['string'],
-    });
+    data = $(form)
+        .find('input')
+        .not('[value="undefined"]')
+        .serializeJSON({
+            skipFalsyValuesForTypes: ['string'],
+        });
     if (data.hasOwnProperty('projectId')) {
         HttpService.put('projects/' + data.projectId, data).always(
             handleSubmitResult

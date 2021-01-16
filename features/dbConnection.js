@@ -63,6 +63,24 @@ function DbConnection() {
             });
         });
     };
+
+    this.delete = (query, success) => {
+        pool.getConnection((error, connection) => {
+            if (error) {
+                return success(error, null);
+            }
+
+            connection.query(query, (error, results, field) => {
+                if (error) {
+                    return success(error, null);
+                }
+
+                success(null, results);
+                connection.release();
+            });
+        });
+    };
+
     // closes the connection to the database
     this.close = () => {
         pool.end();

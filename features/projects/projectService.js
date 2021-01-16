@@ -143,6 +143,7 @@ class ProjectService {
         );
     }
 
+    //------------------------------update employee field----------------------------------------------
     update(id, project, success) {
         if (id == null || project == null) {
             return null;
@@ -152,12 +153,14 @@ class ProjectService {
             if (error) {
                 return success(error, null);
             }
+
             let toUpdate = result;
 
             // TODO map properties
             // --> overwrite old values with new values (map properties)
-            // e.g. oldProject.manager = project.manager, ...
+            // e.g. toUpdate.manager = project.manager, ...
             // DO NOT MAP ID AND NUMBER (they are unchangable)
+
             dbConnection.select(
                 `SELECT id, name FROM employees WHERE project_id = ${id}`,
                 (error, employees) => {
@@ -165,24 +168,13 @@ class ProjectService {
                         return success(error, null);
                     }
 
-                    // TODO change to ids
-                    let names = [];
+                    let ids = [];
                     for (let i = 0; i < employees.length; i++) {
-                        // TODO change to ids (employees[i].id)
-                        names.push(employees[i].name);
+                        ids.push(employees[i].id);
                     }
 
                     for (let i = 0; i < project.employees.length; i++) {
-                        // insert if employees[i].id === undefined
-
-                        // TODO change to ids
-                        let index = names.indexOf(project.employees[i].name);
-                        if (index > -1) {
-                            // TODO change to ids
-                            names.splice(index, 1);
-                        }
-                        // move this up and remove else
-                        else {
+                        if (project.employees[i].id === undefined) {
                             project.employees[i].project_id = id;
 
                             dbConnection.insert(
@@ -190,15 +182,19 @@ class ProjectService {
                                 project.employees[i],
                                 () => {}
                             );
+                            continue;
+                        }
+
+                        let index = ids.indexOf(project.employees[i].id);
+                        if (index > -1) {
+                            ids.splice(index, 1);
                         }
                     }
 
-                    // TODO change to ids
-                    if (names.length > 0) {
-                        for (let i = 0; i < names.length; i++) {
+                    if (ids.length > 0) {
+                        for (let i = 0; i < ids.length; i++) {
                             dbConnection.delete(
-                                // TODO change to ids (WHERE id = ${ids[i]})
-                                `DELETE FROM employees WHERE name = "${names[i]}" AND project_id = ${id}`,
+                                `DELETE FROM employees WHERE id = ${ids[i]}`,
                                 () => {}
                             );
                         }
@@ -210,6 +206,48 @@ class ProjectService {
             // --> new milestones have no id -> insert them into the database
             // --> go through list of milestone ids and delete milestones
             // that are in the database but weren't in the new project
+
+            //-------------------------------update Milestones field-------------------------------------------
+
+            // dbConnection.select(
+            //     `SELECT id, name FROM milestones WHERE project_id = ${id}`,
+            //     (error, milestones) => {
+            //         if (error) {
+            //             return success(error, null);
+            //         }
+            //
+            //         let names_milestones = [];
+            //         for (let i = 0; i < milestones.length; i++) {
+            //             names_milestones.push(milestones[i].name);
+            //         }
+            //
+            //         for (let i = 0; i < project.employees.length; i++) {
+            //             let index = names_milestones.indexOf(
+            //                 project.employees[i].name
+            //             );
+            //             if (index > -1) {
+            //                 names_milestones.splice(index, 1);
+            //             } else {
+            //                 project.employees[i].project_id = id;
+            //
+            //                 dbConnection.insert(
+            //                     'INSERT INTO milestones SET ?',
+            //                     project.employees[i],
+            //                     () => {}
+            //                 );
+            //             }
+            //         }
+            //
+            //         if (names_milestones.length > 0) {
+            //             for (let i = 0; i < names_milestones.length; i++) {
+            //                 dbConnection.delete(
+            //                     `DELETE FROM milestones WHERE name = "${names_milestones[i]}" AND project_id = ${id}`,
+            //                     () => {}
+            //                 );
+            //             }
+            //         }
+            //     }
+            // );
 
             // TODO 4. update project in db
             // dbConnection.update(

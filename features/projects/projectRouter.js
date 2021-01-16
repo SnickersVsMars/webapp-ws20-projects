@@ -2,13 +2,42 @@ const express = require('express');
 const path = require('path');
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
+const pdfGenerator = require('./pdf/pdf-generator');
 
 function buildPath(fileName) {
     return path.join(__dirname, fileName);
 }
 
+const createPdfResponse = (req, res, next, id) => {
+    var url = req.protocol + '://' + req.get('host') + '/projects';
+
+    if (id) {
+        url = url + '/' + id;
+    }
+
+    pdfGenerator
+        .generatePdf(url)
+        .catch(next)
+        .then((pdfBuffer) => {
+            let header = {
+                'Content-Type': 'application/pdf',
+                'Content-Length': pdfBuffer.length,
+            };
+            res.set(header);
+            res.send(pdfBuffer);
+        });
+};
+
 // define view routes
 const viewRouter = express.Router();
+
+viewRouter.get('/:id/export', (req, res, next) => {
+    createPdfResponse(req, res, next, req.params.id);
+});
+
+viewRouter.get('/export', (req, res, next) => {
+    createPdfResponse(req, res, next);
+});
 
 viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));

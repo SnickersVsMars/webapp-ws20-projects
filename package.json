@@ -30,6 +30,7 @@
         "express-validator": "^6.7.0",
         "mysql": "^2.18.1",
         "pm2": "^4.5.1",
+        "puppeteer": "^5.5.0",
         "url-parse": "^1.4.7"
     },
     "devDependencies": {

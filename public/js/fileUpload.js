@@ -61,8 +61,7 @@ uploadField.onchange = function (e) {
      theErrorMessage.classList.add('hide');
      theSuccessMessage.classList.add('hide');
 	
-     if (theFile.size > 500000) {
-         console.log('File too large');
+     if (theFile.size > 5000000) {
          theErrorMessage.innerHTML = "File too large, cannot be more than 500KB...";
          theErrorMessage.classList.remove('hide');
          return false;
@@ -91,9 +90,10 @@ uploadForm.onsubmit = function (e) {
 			}
 		})
 		.done(function (resp) {
-			if(resp === "UPLOADED") {
-				theSuccessMessage.innerHTML = "Image uploaded successfully";
-				theSuccessMessage.classList.remove('hide');
+			if(resp !== undefined) {
+				theSuccessMessage.innerHTML = "Erfolgreich!";
+                theSuccessMessage.classList.remove('hide');
+                addFile({filename:fileName, id:resp});
 			}
 		});
 	}
@@ -105,6 +105,7 @@ function handleUploadedFile(file) {
 	var reader = new FileReader();
 	reader.readAsDataURL(file);
 	reader.onload = function (evt) {
+        console.log(evt.target);
 		fileContent = evt.target.result;
 	}
 	reader.onerror = function (evt) {

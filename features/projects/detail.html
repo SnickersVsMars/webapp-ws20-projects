@@ -18,6 +18,11 @@
 </head>
 
 <body>
+    <template id="action-buttons-template">        
+        <button type="button" class="btn btn-primary btn-sm openBtn" name="openBtn"><i class="material-icons">cloud_download</i></button>
+        <button type="button" class="btn btn-danger btn-sm deleteBtn" name="deleteBtn"><i class="material-icons">delete_outline</i></button>
+    </template>
+
     <div class="container">
         <nav class="navbar navbar-expand-md navbar-light">
             <a href="/" class="navbar-brand">
@@ -107,6 +112,21 @@
 		
 		<div class="card card-fluid">
 			<div class="card-body">
+                <h4>Dateien</h4>
+                <table class="table table-hover table-striped table-responsive-md">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="col-sm-8">Dateiname</th>
+                            <th class="col-sm-4">Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-files-body">
+                        <tr>
+                            <td colspan="3">Keine Dateien vorhanden</td>
+                        </tr>
+                    </tbody>
+                </table>
+
 				<form id="uploadForm">
 					<label for="uploadField" id="uploadContainer">
 						<input type="file" id="uploadField">

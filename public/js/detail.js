@@ -32,6 +32,7 @@ function populateData(project) {
 
     fillEmployess(project.employees);
     fillMilestones(project.milestones);
+    fillFiles(project.files);
     document.getElementById('project_id').value = project.id;
 
     document.getElementById('busy-indicator').hidden = true;
@@ -54,6 +55,55 @@ function fillEmployess(employees) {
         // Add it to the list:
         ul.appendChild(item);
     }
+}
+
+function fillFiles(files) {
+    if (
+        files === null ||
+        files === undefined ||
+        files.length < 1
+    )
+        return;
+
+    let tbody = document.getElementById('table-files-body');
+    tbody.innerText = '';
+
+    // ADD JSON DATA TO THE TABLE AS ROWS.
+    for (let i = 0; i < files.length; i++) {
+        let tr = tbody.insertRow();
+        addFile(files[i]);
+    }
+}
+
+function addFile(file) {
+    let tbody = document.getElementById('table-files-body');
+    let tr = tbody.insertRow();
+    tr.classList.add("tr-file-"+file.id);
+
+    let col = tr.insertCell();     
+    col.innerText = validate(file.filename);
+
+    let buttons = document.getElementById('action-buttons-template').content.cloneNode(true);
+    
+    buttons.querySelector('.openBtn').onclick = function(e) {
+        e.preventDefault();  //stop the browser from following
+        window.location.href = '../download/'+file.id;
+    };
+    buttons.querySelector('.deleteBtn').onclick = function(e) {
+        e.preventDefault();  //stop the browser from following
+        jQuery.ajax({
+			method: 'DELETE',
+			url: '/deleteFile/'+file.id
+		})
+		.done(function (resp, status) {
+            if (status==="success") {
+                let trDelete = tbody.querySelector('.tr-file-'+file.id);
+                tbody.removeChild(trDelete);
+            }
+		});
+    };
+    let col2 = tr.insertCell();   
+    col2.appendChild(buttons);
 }
 
 function fillMilestones(milestones) {

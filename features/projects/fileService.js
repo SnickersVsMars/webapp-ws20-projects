@@ -2,10 +2,37 @@ const dbConnection = require('../dbConnection');
 
 class FileService {
     get(success) {
-        let selectQuery = `SELECT id, project_id, filename, content
+        let selectQuery = `SELECT id, project_id, filename, mimeType, content
         FROM files`;
 
         dbConnection.select(selectQuery, success);
+    }
+
+    delete(id, success) {
+        console.log('delete');
+
+        if (id == null) {
+            return null;
+        }
+
+        if (typeof id == 'string') {
+            id = parseInt(id);
+        }
+
+        if (typeof id !== 'number' || isNaN(id)) {
+            return null;
+        }
+
+        dbConnection.insert(
+            `DELETE FROM files WHERE id = ${id}`,
+            (error) => {
+                if (error) {
+                    return success(error, null);
+                }
+
+                success();
+            }
+        );
     }
 
     find(id, success) {
@@ -46,6 +73,7 @@ class FileService {
                     }
 
                     file = file[0];
+                    success(null, file);
                 }
             }
         );

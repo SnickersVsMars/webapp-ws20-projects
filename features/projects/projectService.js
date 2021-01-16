@@ -74,7 +74,18 @@ class ProjectService {
                                 }
 
                                 project.milestones = result;
-                                success(null, project);
+
+                                dbConnection.select(
+                                    `SELECT id, filename FROM files WHERE project_id = ${id} ORDER BY id ASC`,
+                                    (error, result) => {
+                                        if (error) {
+                                            return success(error, null);
+                                        }
+        
+                                        project.files = result;
+                                        success(null, project);
+                                    }
+                                );
                             }
                         );
                     }

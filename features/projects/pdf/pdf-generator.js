@@ -17,10 +17,10 @@ const generatePdf = async (url) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url, navigationOptions);
-    let pdf = await page.pdf(pdfOptions);
+    let pdfBuffer = await page.pdf(pdfOptions);
     await browser.close();
 
-    return pdf;
+    return pdfBuffer;
 };
 
 module.exports = { generatePdf };

@@ -8,7 +8,13 @@ function buildPath(fileName) {
     return path.join(__dirname, fileName);
 }
 
-const createPdfResponse = (res, next, url) => {
+const createPdfResponse = (req, res, next, id) => {
+    var url = req.protocol + '://' + req.get('host') + '/projects';
+
+    if (id) {
+        url = url + '/' + id;
+    }
+
     pdfGenerator
         .generatePdf(url)
         .catch(next)
@@ -26,15 +32,11 @@ const createPdfResponse = (res, next, url) => {
 const viewRouter = express.Router();
 
 viewRouter.get('/:id/export', (req, res, next) => {
-    createPdfResponse(
-        res,
-        next,
-        'http://localhost:3000/projects/' + req.params.id
-    );
+    createPdfResponse(req, res, next, req.params.id);
 });
 
 viewRouter.get('/export', (req, res, next) => {
-    createPdfResponse(res, next, 'http://localhost:3000/projects');
+    createPdfResponse(req, res, next);
 });
 
 viewRouter.get('/add', (req, res) => {

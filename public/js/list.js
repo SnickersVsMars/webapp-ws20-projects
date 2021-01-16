@@ -2,8 +2,22 @@ let overview = document.getElementById('card-container');
 let template = document.getElementById('card-template');
 let projects;
 
-$('#search-box').val('');
-$('.filter-search').val('');
+if ($('#filter-toggle-btn').is(':visible')) {
+    $('#filter-container').addClass('collapse');
+    $('#filter-container').children('div').removeClass('row');
+    $('#filter-container').css('padding-left', '65px');
+    $('#filter-row').css('justify-content', 'start');
+} else {
+    $('#filter-container').removeClass('collapse');
+}
+
+$('#filter-toggle-btn').on('click', function () {
+    if ($('#expander').text() === 'expand_more') {
+        $('#expander').text('expand_less');
+    } else {
+        $('#expander').text('expand_more');
+    }
+});
 
 HttpService.get('projects')
     .then((projects) => {
@@ -86,3 +100,12 @@ function populateData(list) {
 function showDetail(id) {
     location.href = 'projects/' + id;
 }
+
+$('#filter-toggle-btn').on('visibilitychange', function () {
+    console.log();
+    if (document.visibilityState === 'visible') {
+        console.log('visible');
+    } else {
+        console.log('not visible');
+    }
+});

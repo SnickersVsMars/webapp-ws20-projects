@@ -185,7 +185,6 @@ table tbody tr td:last-of-type {
 }
 
 .header-row {
-    height: 50px;
     background-color: #384046;
 }
 
@@ -198,7 +197,7 @@ table tbody tr td:last-of-type {
 }
 
 .search {
-    margin: 0 40px 0 0;
+    margin: 0 40px 0 40px;
 }
 
 .search i {
@@ -241,8 +240,8 @@ table tbody tr td:last-of-type {
     overflow-y: scroll;
 }
 
-#filter-row > .dropdown {
-    margin: 0 10px;
+#filter-container .dropdown {
+    margin: 10px;
 }
 
 .dropdown-menu {
@@ -277,18 +276,23 @@ table tbody tr td:last-of-type {
     left: 0;
 }
 
-#clear-filter-btn {
-    margin: 0 10px;
+.filter-toggle {
+    padding-bottom: 10px;
+}
+
+.clear-btn {
+    height: 37px;
+    margin: 10px;
     display: none;
 }
 
-#clear-date-btn {
-    margin: 0 10px 0 0;
-    display: none;
+.clear-btn > i {
+    font-size: 18px;
 }
 
 #reportrange {
-    margin: 0 10px;
+    height: 37px;
+    margin: 10px;
     background-color: white;
     cursor: pointer;
     padding: 6px 12px;

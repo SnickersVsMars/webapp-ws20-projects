@@ -6,6 +6,9 @@ let dateSelected = false;
 let start = moment();
 let end = moment().add(30, 'days');
 
+$('#search-box').val('');
+$('.filter-search').val('');
+
 function createFilters(numbers, managers, labels, customers) {
     createFilter(numbers, 'number-filter');
     createFilter(managers, 'manager-filter');
@@ -143,6 +146,8 @@ function clearDate() {
     dateSelected = false;
 
     cb(start, end);
+    // in case there are other filters active
+    applyFilters();
 
     $('#clear-date-btn').css('display', 'none');
     if (

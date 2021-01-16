@@ -67,11 +67,13 @@
         <div class="container">
             <div id="breadcrumb-row"
                  class="row">
-                <ul>
-                    <li><a href="/">FH JOANNEUM</a></li>
-                    <li><a href="/projects">PROJEKTE</a></li>
-                </ul>
-                <div class="search">
+                <div class="col-md">
+                    <ul>
+                        <li><a href="/">FH JOANNEUM</a></li>
+                        <li><a href="/projects">PROJEKTE</a></li>
+                    </ul>
+                </div>
+                <div class="search col-md-4">
                     <i class="material-icons">search</i>
                     <input type="text"
                            id="search-box"
@@ -79,112 +81,130 @@
                            maxlength="255" />
                 </div>
             </div>
+
         </div>
     </div>
 
-    <div class="header-row container-fluid">
+    <div class="container-fluid header-row">
         <div class="row"
              id="filter-row">
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle"
+            <nav class="col-12 navbar-expand-lg filter-toggle">
+                <button class="navbar-toggler btn btn-secondary"
+                        id="filter-toggle-btn"
                         type="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Projektnummer
+                        data-toggle="collapse"
+                        data-target="#filter-container"
+                        aria-controls="filter-container"
+                        aria-expanded="false"
+                        aria-label="Toggle filter">
+                    <i class="material-icons"
+                       id="expander">expand_more</i>
                 </button>
-                <div class="dropdown-menu">
-                    <input class="form-control filter-search"
-                           type="text"
-                           placeholder="Suche.."
-                           oninput="searchFilter(this, 'number-filter')">
-                    <div class="dropdown-divider"></div>
-                    <div class="filter"
-                         id="number-filter">
+            </nav>
+
+            <div id="filter-container">
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Projektnummer
+                        </button>
+                        <div class="dropdown-menu">
+                            <input class="form-control filter-search"
+                                   type="text"
+                                   placeholder="Suche.."
+                                   oninput="searchFilter(this, 'number-filter')">
+                            <div class="dropdown-divider"></div>
+                            <div class="filter"
+                                 id="number-filter">
+                            </div>
+                        </div>
                     </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Projektleiter
+                        </button>
+
+                        <div class="dropdown-menu">
+                            <input class="form-control filter-search"
+                                   type="text"
+                                   placeholder="Suche.."
+                                   oninput="searchFilter(this, 'manager-filter')">
+                            <div class="dropdown-divider"></div>
+                            <div class="filter"
+                                 id="manager-filter">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Bezeichnung
+                        </button>
+                        <div class="dropdown-menu">
+                            <input class="form-control filter-search"
+                                   type="text"
+                                   placeholder="Suche.."
+                                   oninput="searchFilter(this, 'label-filter')">
+                            <div class="dropdown-divider"></div>
+                            <div class="filter"
+                                 id="label-filter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            Kunde
+                        </button>
+                        <div class="dropdown-menu">
+                            <input class="form-control filter-search"
+                                   type="text"
+                                   placeholder="Suche.."
+                                   oninput="searchFilter(this, 'customer-filter')">
+                            <div class="dropdown-divider"></div>
+                            <div class="filter"
+                                 id="customer-filter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="reportrange">
+                        <i class="material-icons calendar-icon">date_range</i>
+                        <span></span>
+                        <i class="material-icons calendar-icon">arrow_drop_down</i>
+                    </div>
+
+                    <button class="btn btn-secondary clear-btn"
+                            id="clear-date-btn"
+                            onclick="clearDate()"
+                            data-toggle="tooltip"
+                            title="Datum leeren">
+                        <i class="material-icons">event_busy</i>
+                    </button>
+
+                    <button type="button"
+                            id="clear-filter-btn"
+                            class="btn btn-secondary clear-btn"
+                            onclick="clearAllFilters();">
+                        Filter leeren
+                    </button>
                 </div>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle"
-                        type="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Projektleiter
-                </button>
-
-                <div class="dropdown-menu">
-                    <input class="form-control filter-search"
-                           type="text"
-                           placeholder="Suche.."
-                           oninput="searchFilter(this, 'manager-filter')">
-                    <div class="dropdown-divider"></div>
-                    <div class="filter"
-                         id="manager-filter">
-                    </div>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle"
-                        type="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Bezeichnung
-                </button>
-                <div class="dropdown-menu">
-                    <input class="form-control filter-search"
-                           type="text"
-                           placeholder="Suche.."
-                           oninput="searchFilter(this, 'label-filter')">
-                    <div class="dropdown-divider"></div>
-                    <div class="filter"
-                         id="label-filter">
-                    </div>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle"
-                        type="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    Kunde
-                </button>
-                <div class="dropdown-menu">
-                    <input class="form-control filter-search"
-                           type="text"
-                           placeholder="Suche.."
-                           oninput="searchFilter(this, 'customer-filter')">
-                    <div class="dropdown-divider"></div>
-                    <div class="filter"
-                         id="customer-filter">
-                    </div>
-                </div>
-            </div>
-
-            <div id="reportrange">
-                <i class="material-icons calendar-icon">date_range</i>
-                <span></span>
-                <i class="material-icons calendar-icon">arrow_drop_down</i>
-            </div>
-
-            <button class="btn btn-secondary"
-                    id="clear-date-btn"
-                    onclick="clearDate()"
-                    data-toggle="tooltip"
-                    title="Datum leeren">
-                <i class="material-icons">event_busy</i>
-            </button>
-
-            <button type="button"
-                    id="clear-filter-btn"
-                    class="btn btn-secondary"
-                    onclick="clearAllFilters();">
-                Filter leeren
-            </button>
         </div>
     </div>
 

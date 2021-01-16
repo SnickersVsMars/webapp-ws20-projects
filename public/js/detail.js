@@ -1,6 +1,8 @@
 const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
+$('#download-pdf').attr('href', window.location.href + '/export');
+
 HttpService.get('projects/' + id)
     .then((project) => {
         populateData(project);

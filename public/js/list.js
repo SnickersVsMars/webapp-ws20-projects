@@ -2,33 +2,24 @@ let overview = document.getElementById('card-container');
 let template = document.getElementById('card-template');
 let projects;
 
-if ($('#filter-toggle-btn').is(':visible')) {
-    $('#filter-container').addClass('collapse');
-    $('#filter-container').children('div').removeClass('row');
-    $('#filter-container').css('padding-left', '65px');
-    $('#filter-row').css('justify-content', 'start');
-} else {
-    $('#filter-container').removeClass('collapse');
-}
+// initial load
+buildFilterRow();
 
-$('#filter-toggle-btn').on('click', function () {
-    if ($('#expander').text() === 'expand_more') {
-        $('#expander').text('expand_less');
-    } else {
-        $('#expander').text('expand_more');
-    }
+// on resize
+window.addEventListener('resize', buildFilterRow);
+
+$(document).ready(() => {
+    HttpService.get('projects')
+        .then((projects) => {
+            populateData(projects);
+        })
+        .catch((res) => {
+            if (res.status === 404 || res.status === 500) {
+                let page = document.getElementsByTagName('html')[0];
+                page.innerHTML = res.responseText;
+            }
+        });
 });
-
-HttpService.get('projects')
-    .then((projects) => {
-        populateData(projects);
-    })
-    .catch((res) => {
-        if (res.status === 404 || res.status === 500) {
-            let page = document.getElementsByTagName('html')[0];
-            page.innerHTML = res.responseText;
-        }
-    });
 
 function populateData(list) {
     let numbers = [];
@@ -99,6 +90,29 @@ function populateData(list) {
 
 function showDetail(id) {
     location.href = 'projects/' + id;
+}
+
+function buildFilterRow() {
+    if ($('#filter-toggle-btn').is(':visible')) {
+        $('#filter-container').addClass('collapse');
+        $('#filter-container').children('div').removeClass('row');
+        $('#filter-container').css('padding-left', '65px');
+        $('#filter-row').css('justify-content', 'start');
+    } else {
+        $('#filter-container').removeClass('collapse');
+        $('#filter-container').children('div').addClass('row');
+        $('#filter-container').css('padding-left', 'unset');
+        $('#filter-container').removeClass('collapse');
+        $('#filter-row').css('justify-content', 'center');
+    }
+
+    $('#filter-toggle-btn').on('click', function () {
+        if ($('#expander').text() === 'expand_more') {
+            $('#expander').text('expand_less');
+        } else {
+            $('#expander').text('expand_more');
+        }
+    });
 }
 
 $('#filter-toggle-btn').on('visibilitychange', function () {

@@ -38,7 +38,7 @@ function createFilter(list, id) {
 }
 
 $('#search-box').on('input', function () {
-    let text = $(this).val().toLowerCase();
+    let text = $(this).val().toLowerCase().trim();
 
     $('#card-container .card').filter(function () {
         $(this).toggle($(this).text().toLowerCase().includes(text));
@@ -54,7 +54,7 @@ $('.dropdown-item .custom-control-input').on('checked', function (e) {
 });
 
 function searchFilter(el, filterID) {
-    var text = $(el).val();
+    var text = $(el).val().toLowerCase().trim();
     $(`#${filterID} .dropdown-item`).filter(function () {
         $(this).toggle(
             $(this)

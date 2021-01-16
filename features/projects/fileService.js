@@ -9,8 +9,6 @@ class FileService {
     }
 
     delete(id, success) {
-        console.log('delete');
-
         if (id == null) {
             return null;
         }

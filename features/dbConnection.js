@@ -19,7 +19,7 @@ function DbConnection() {
                 return success(error, null);
             }
 
-            connection.query(query, (error, results, fields) => {
+            connection.query(query, (error, results) => {
                 if (error) {
                     return success(error, null);
                 }
@@ -36,7 +36,7 @@ function DbConnection() {
                 return success(error, null);
             }
 
-            connection.query(query, values, (error, results, fields) => {
+            connection.query(query, values, (error, results) => {
                 if (error) {
                     return success(error, null);
                 }
@@ -53,7 +53,7 @@ function DbConnection() {
                 return success(error, null);
             }
 
-            connection.query(query, values, (error, results, field) => {
+            connection.query(query, values, (error, results) => {
                 if (error) {
                     return success(error, null);
                 }
@@ -70,7 +70,7 @@ function DbConnection() {
                 return success(error, null);
             }
 
-            connection.query(query, (error, results, field) => {
+            connection.query(query, (error, results) => {
                 if (error) {
                     return success(error, null);
                 }

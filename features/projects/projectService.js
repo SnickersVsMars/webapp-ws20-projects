@@ -105,7 +105,7 @@ class ProjectService {
         delete project.employees;
 
         dbConnection.insert(
-            'INSERT INTO projects SET ?    ',
+            'INSERT INTO projects SET ?',
             project,
             (error, result) => {
                 if (error) {
@@ -148,18 +148,16 @@ class ProjectService {
             return null;
         }
 
-        let findSuccess = (error, result) => {
+        this.find(id, (error, result) => {
             if (error) {
                 return success(error, null);
             }
-            let oldProject = result;
-            //console.log(oldProject);
+            let toUpdate = result;
 
-            //var employees = this.find(`employees WHERE project_id = ${id}`);
-
-            //das alte Projekt mit dem neuen Projekt überschreiben
-            //ausser Nr und projekt id
-            // 1.employees  rausholen ->
+            // TODO map properties
+            // --> overwrite old values with new values (map properties)
+            // e.g. oldProject.manager = project.manager, ...
+            // DO NOT MAP ID AND NUMBER (they are unchangable)
             dbConnection.select(
                 `SELECT id, name FROM employees WHERE project_id = ${id}`,
                 (error, employees) => {
@@ -167,16 +165,24 @@ class ProjectService {
                         return success(error, null);
                     }
 
+                    // TODO change to ids
                     let names = [];
                     for (let i = 0; i < employees.length; i++) {
+                        // TODO change to ids (employees[i].id)
                         names.push(employees[i].name);
                     }
 
                     for (let i = 0; i < project.employees.length; i++) {
+                        // insert if employees[i].id === undefined
+
+                        // TODO change to ids
                         let index = names.indexOf(project.employees[i].name);
                         if (index > -1) {
+                            // TODO change to ids
                             names.splice(index, 1);
-                        } else {
+                        }
+                        // move this up and remove else
+                        else {
                             project.employees[i].project_id = id;
 
                             dbConnection.insert(
@@ -187,9 +193,11 @@ class ProjectService {
                         }
                     }
 
+                    // TODO change to ids
                     if (names.length > 0) {
                         for (let i = 0; i < names.length; i++) {
                             dbConnection.delete(
+                                // TODO change to ids (WHERE id = ${ids[i]})
                                 `DELETE FROM employees WHERE name = "${names[i]}" AND project_id = ${id}`,
                                 () => {}
                             );
@@ -198,23 +206,26 @@ class ProjectService {
                 }
             );
 
-            //2. vergleichen die alten employees mit den neuen!
-            //monetane Id und welche im neuen if im neunen welche weg sind löschen
-            // sonst welche hinzufügen
-            //3. milestones dasselbe
-            //4. ausführen von db Conn // neue properties in die db+
+            // TODO 3. add check for milestones (see employees)
+            // --> new milestones have no id -> insert them into the database
+            // --> go through list of milestone ids and delete milestones
+            // that are in the database but weren't in the new project
+
+            // TODO 4. update project in db
             // dbConnection.update(
             //     `UPDATE projects SET ? WHERE id = ${project.id}`,
-            //     project,
+            //     toUpdate,
             //     (error, result) => {
             //         if (error) {
             //             return success(error, null);
             //         }
-            //         //
+            //         success(null, result);
             //     }
             // );
-        };
-        this.find(id, findSuccess);
+
+            // TODO remove once implementation is done
+            success(null, toUpdate);
+        });
     }
 }
 

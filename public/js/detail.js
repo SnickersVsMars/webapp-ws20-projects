@@ -30,16 +30,16 @@ function populateData(project) {
         .getElementById('breadcrumb')
         .setAttribute('href', '/projects/' + project.id);
 
-    fillEmployess(project.employees);
+    fillEmployees(project.employees);
     fillMilestones(project.milestones);
 
     document.getElementById('busy-indicator').hidden = true;
-    document.getElementById('edit').addEventListener('click', () =>
-        showDetail(project.id)
-    );
+    document
+        .getElementById('edit')
+        .addEventListener('click', () => showDetail(project.id));
 }
 
-function fillEmployess(employees) {
+function fillEmployees(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
         return;
 
@@ -96,6 +96,5 @@ function setDescription(element, description) {
 }
 
 function showDetail(id) {
-    location.href = id +'/edit/';
+    location.href = id + '/edit/';
 }
-

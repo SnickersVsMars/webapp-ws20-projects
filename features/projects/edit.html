@@ -4,212 +4,313 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
     <!-- favicon -->
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/img/favicon.ico">
+    <link rel="icon"
+          type="image/vnd.microsoft.icon"
+          href="/img/favicon.ico">
 
     <title>FH JOANNEUM Projekte</title>
-    <meta name="description" content="Detail site of a project of the FH-Joanneum" />
+    <meta name="description"
+          content="Detail site of a project of the FH-Joanneum" />
 </head>
 
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-md navbar-light">
-        <a href="/" class="navbar-brand">
-            <img src="/img/FHJ_Logo_100mm_rgb_web.png" width="140" height="60" alt="Logo-Fh-Joanneum">
-        </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" aria-label="toggle navbar"
-                data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a href="/projects" class="nav-link">Projekte</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/projects/add" class="nav-link">Neues Projekt</a>
-                </li>
+    <div class="container">
+        <nav class="navbar navbar-expand-md navbar-light">
+            <a href="/"
+               class="navbar-brand">
+                <img src="/img/FHJ_Logo_100mm_rgb_web.png"
+                     width="140"
+                     height="60"
+                     alt="Logo-Fh-Joanneum">
+            </a>
+            <button type="button"
+                    class="navbar-toggler"
+                    data-toggle="collapse"
+                    aria-label="toggle navbar"
+                    data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse"
+                 id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a href="/projects"
+                           class="nav-link">Projekte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/add"
+                           class="nav-link">Neues Projekt</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="breadcrumb bg-dark">
+        <div class="container">
+            <ul>
+                <li><a href="/">FH JOANNEUM</a></li>
+                <li><a href="/projects">PROJEKTE</a></li>
+                <li><a id="breadcrumb"
+                       href=""></a></li>
             </ul>
         </div>
-    </nav>
-</div>
-
-<div class="breadcrumb bg-dark">
-    <div class="container">
-        <ul>
-            <li><a href="/">FH JOANNEUM</a></li>
-            <li><a href="/projects">PROJEKTE</a></li>
-            <li><a id="breadcrumb" href=""></a></li>
-        </ul>
     </div>
-</div>
-<!------------------------------------------------------------------------------>
-<main class="container">
-    <form class="needs-validation" novalidate>
-        <div class="card">
-            <div class="card-body row">
-                <div class="form-group col-md-6">
-                    <label for="input-number">Nummer</label>
-                    <input type="text" class="form-control" id="input-number" name="number" placeholder="PR20-0001"
-                           readonly />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-manager">Leiter</label>
-                    <input type="text" class="form-control" id="input-manager" name="manager"
-                           placeholder="Projektleiter" required maxlength="50" />
-                    <div class="invalid-feedback">
-                        Feld ist verpflichtend. Maximal 50 Zeichen
+
+    <!-- FORM -->
+    <!-- ---------------------------------------------------------------------------------- -->
+    <main class="container">
+        <form class="needs-validation"
+              novalidate>
+            <div class="card">
+                <div class="card-body row">
+                    <div class="form-group col-md-6">
+                        <label for="input-number">Nummer</label>
+                        <input type="text"
+                               class="form-control"
+                               id="input-number"
+                               name="number"
+                               placeholder="PR20-0001"
+                               readonly />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input-manager">Leiter</label>
+                        <input type="text"
+                               class="form-control"
+                               id="input-manager"
+                               name="manager"
+                               placeholder="Projektleiter"
+                               required
+                               maxlength="50" />
+                        <div class="invalid-feedback">
+                            Feld ist verpflichtend. Maximal 50 Zeichen
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input-customer">Kunde</label>
+                        <input type="text"
+                               class="form-control"
+                               id="input-customer"
+                               name="customer"
+                               placeholder="Kunde"
+                               required
+                               maxlength="50" />
+                        <div class="invalid-feedback">
+                            Feld ist verpflichtend. Maximal 50 Zeichen
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input-label">Bezeichnung</label>
+                        <input type="text"
+                               maxlength="50"
+                               class="form-control"
+                               id="input-label"
+                               name="label"
+                               required
+                               placeholder="Projekt Bezeichnung" />
+                        <div class="invalid-feedback">
+                            Feld ist verpflichtend. Maximal 50 Zeichen
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input-costcenter">Kostenstelle</label>
+                        <input type="text"
+                               maxlength="20"
+                               class="form-control"
+                               id="input-costcenter"
+                               name="costCenter"
+                               placeholder="Kostenstelle"
+                               required />
+                        <div class="invalid-feedback">
+                            Feld ist verpflichtend. Maximal 20 Zeichen
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for="input-description">Beschreibung</label>
+                        <textarea class="form-control"
+                                  id="input-description"
+                                  name="description"
+                                  rows="5"
+                                  placeholder="Beschreibung"
+                                  maxlength="500"></textarea>
+                        <div class="invalid-feedback">
+                            Maximal 500 Zeichen
+                        </div>
+                    </div>
+
+                    <!-- EMPLOYEES -->
+                    <!-- --------------------------------------------------------------------------------------- -->
+                    <div class="form-group col-sm-6">
+                        <label>Mitarbeiter</label>
+                        <div id="employee-container">
+                        </div>
+                        <button type="button"
+                                id="add-employee"
+                                title="Mitarbeiter hinzufügen"
+                                class="btn btn-primary"
+                                onclick="addEmployeeField('');">
+                            <i class="material-icons ">add</i>
+                        </button>
+                    </div>
+
+                    <div class="col-12"
+                         id="lastChange">
+                        <p class="float-right">Projekt zuletzt geändert am: -</p>
                     </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="input-customer">Kunde</label>
-                    <input type="text" class="form-control" id="input-customer" name="customer" placeholder="Kunde"
-                           required maxlength="50" />
-                    <div class="invalid-feedback">
-                        Feld ist verpflichtend. Maximal 50 Zeichen
+            </div>
+
+            <!-- MILESTONES -->
+            <!-- --------------------------------------------------------------------------------------- -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Meilensteine</h4>
+                    <div id="milestone-error"></div>
+                </div>
+
+                <div id="milestone-container">
+                    <div class="card-body row">
+                        <div class="form-group col-sm-6">
+                            <label>Datum</label>
+                            <input type="date"
+                                   id="start-date"
+                                   required
+                                   class="form-control mb-1 mt-1 milestone-date"
+                                   name="milestones[][date]" />
+                            <div class="invalid-feedback">
+                                Feld ist verpflichtend.
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Bezeichnung</label>
+                            <input type="text"
+                                   required
+                                   readonly
+                                   value="Projekt Start"
+                                   class="form-control mb-1 mt-1 milestone-label"
+                                   placeholder="Meilenstein Bezeichnung"
+                                   name="milestones[][label]" />
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Beschreibung</label>
+                            <textarea class="form-control mb-1 mt-1 milestone-description"
+                                      id="start-description"
+                                      placeholder="Meilenstein Beschreibung"
+                                      maxlength="250"
+                                      name="milestones[][description]"></textarea>
+                            <div class="invalid-feedback">
+                                Maximal 250 Zeichen
+                            </div>
+                            <input type="hidden"
+                                   id="start-id"
+                                   name="milestones[][id]"
+                                   value="">
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="card-body row">
+                        <div class="form-group col-sm-6">
+                            <label>Datum</label>
+                            <input type="date"
+                                   id="end-date"
+                                   required
+                                   class="form-control mb-1 mt-1 milestone-date"
+                                   name="milestones[][date]" />
+                            <div class="invalid-feedback">
+                                Feld ist verpflichtend.
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Bezeichnung</label>
+                            <input type="text"
+                                   required
+                                   readonly
+                                   value="Projekt Ende"
+                                   class="form-control mb-1 mt-1 milestone-label"
+                                   placeholder="Meilenstein Bezeichnung"
+                                   name="milestones[][label]" />
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Beschreibung</label>
+                            <textarea class="form-control mb-1 mt-1 milestone-description"
+                                      id="end-description"
+                                      placeholder="Meilenstein Beschreibung"
+                                      maxlength="250"
+                                      name="milestones[][description]"></textarea>
+                            <div class="invalid-feedback">
+                                Maximal 250 Zeichen
+                            </div>
+                        </div>
+                        <input type="hidden"
+                               id="end-id"
+                               name="milestones[][id]"
+                               value="">
                     </div>
                 </div>
-                <div class="col-md-6">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-label">Bezeichnung</label>
-                    <input type="text" maxlength="50" class="form-control" id="input-label" name="label" required
-                           placeholder="Projekt Bezeichnung" />
-                    <div class="invalid-feedback">
-                        Feld ist verpflichtend. Maximal 50 Zeichen
-                    </div>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="input-costcenter">Kostenstelle</label>
-                    <input type="text" maxlength="20" class="form-control" id="input-costcenter" name="costCenter"
-                           placeholder="Kostenstelle" required />
-                    <div class="invalid-feedback">
-                        Feld ist verpflichtend. Maximal 20 Zeichen
-                    </div>
-                </div>
-                <div class="form-group col-lg-12">
-                    <label for="input-description">Beschreibung</label>
-                    <textarea class="form-control" id="input-description" name="description" rows="5"
-                              placeholder="Beschreibung" maxlength="500"></textarea>
-                    <div class="invalid-feedback">
-                        Maximal 500 Zeichen
-                    </div>
-                </div>
-                <div class="form-group col-sm-6">
-                    <label>Mitarbeiter</label>
-                    <div id="employee-container">
-                    </div>
-                    <button type="button" id="add-employee" title="Mitarbeiter hinzufügen" class="btn btn-primary"
-                            onclick="addEmployeeField('');">
+
+                <div class="card-footer">
+                    <button type="button"
+                            id="add-milestone"
+                            title="Neuen Meilenstein hinzufügen"
+                            class="btn btn-primary align-content-between"
+                            onclick="addMilestoneField();">
                         <i class="material-icons ">add</i>
                     </button>
                 </div>
-                <div class="col-12" id="lastChange">
-                    <p class="float-right">Projekt zuletzt geändert am: -</p>
-                </div>
             </div>
+            <input type="hidden"
+                   id="projectId"
+                   name="projectId"
+                   value="">
+            </div>
+
+            <div class="clearfix">
+                <button class="btn btn-lg btn-primary mb-5 mt-4 mr-2 float-right"
+                        type="submit">Projekt updaten</button>
+            </div>
+        </form>
+    </main>
+
+    <div id="busy-indicator">
+        <div class="spinner-border"
+             role="status">
+            <span class="sr-only">Loading...</span>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <h4>Meilensteine</h4>
-                <div id="milestone-error"></div>
-            </div>
-
-            <div id="milestone-container">
-                <div class="card-body row">
-                    <div class="form-group col-sm-6">
-                        <label>Datum</label>
-                        <input type="date" id="start-date" required class="form-control mb-1 mt-1 milestone-date" name="milestones[][date]" />
-                        <div class="invalid-feedback">
-                            Feld ist verpflichtend.
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label>Bezeichnung</label>
-                        <input type="text" required readonly value="Projekt Start"
-                               class="form-control mb-1 mt-1 milestone-label" placeholder="Meilenstein Bezeichnung"
-                               name="milestones[][label]" />
-                    </div>
-                    <div class="form-group col-12">
-                        <label>Beschreibung</label>
-                        <textarea class="form-control mb-1 mt-1 milestone-description" id="start-description" placeholder="Meilenstein Beschreibung"
-                                  maxlength="250" name="milestones[][description]"></textarea>
-                        <div class="invalid-feedback">
-                            Maximal 250 Zeichen
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div class="card-body row">
-                    <div class="form-group col-sm-6">
-                        <label>Datum</label>
-                        <input type="date" id="end-date" required class="form-control mb-1 mt-1 milestone-date" name="milestones[][date]" />
-                        <div class="invalid-feedback">
-                            Feld ist verpflichtend.
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label>Bezeichnung</label>
-                        <input type="text" required readonly value="Projekt Ende"
-                               class="form-control mb-1 mt-1 milestone-label" placeholder="Meilenstein Bezeichnung"
-                               name="milestones[][label]" />
-                    </div>
-                    <div class="form-group col-12">
-                        <label>Beschreibung</label>
-                        <textarea class="form-control mb-1 mt-1 milestone-description" id="end-description" placeholder="Meilenstein Beschreibung"
-                                  maxlength="250" name="milestones[][description]"></textarea>
-                        <div class="invalid-feedback">
-                            Maximal 250 Zeichen
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <button type="button" id="add-milestone" title="Neuen Meilenstein hinzufügen"
-                        class="btn btn-primary align-content-between" onclick="addMilestoneField();">
-                    <i class="material-icons ">add</i>
-                </button>
-            </div>
-            <input type="hidden" id="projectId" name="projectId" value="">
-        </div>
-
-        <div class="clearfix">
-            <button class="btn btn-lg btn-primary mb-5 mt-4 mr-2 float-right" type="submit">Projekt
-                updaten</button>
-        </div>
-</main>
-<div id="busy-indicator">
-    <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
     </div>
-</div>
 
-<!-- JQuery for Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
-<!-- AJAX -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- JQuery for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Custom JS -->
-<script src="/js/main.js"></script>
-<script src="/js/services/httpService.js"></script>
-<script src="/js/services/jquery.serializeJson.js"></script>
-<script src="/js/edit.js"></script>
-<script src="/js/form.js"></script>
+    <!-- Custom JS -->
+    <script src="/js/main.js"></script>
+    <script src="/js/services/httpService.js"></script>
+    <script src="/js/services/jquery.serializeJson.js"></script>
+    <script src="/js/edit.js"></script>
+    <script src="/js/form.js"></script>
 </body>
 
 </html>

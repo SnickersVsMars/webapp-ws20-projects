@@ -35,12 +35,12 @@ function populateData(project) {
         .getElementById('breadcrumb')
         .setAttribute('href', '/projects/' + project.id);
 
-    fillEmployess(project.employees);
+    fillEmployees(project.employees);
     fillMilestones(project.milestones);
     $('#projectId').val(id);
     document.getElementById('busy-indicator').hidden = true;
 }
-function addEmployeeField(value) {
+function addEmployeeField(value, id) {
     var employeeContainer = document.getElementById('employee-container');
 
     var newTextfield = document.createElement('input');
@@ -70,20 +70,26 @@ function addEmployeeField(value) {
         }
     });
 
+    let idField = document.createElement('input');
+    idField.type = 'hidden';
+    idField.setAttribute('name', 'employees[][id]');
+    idField.setAttribute('value', id);
+
     var container = document.createElement('div');
     container.classList = 'added-employee';
     container.appendChild(removeButton);
     container.appendChild(newTextfield);
+    container.appendChild(idField);
 
     employeeContainer.appendChild(container);
 }
 
-function fillEmployess(employees) {
+function fillEmployees(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
         return;
 
     for (let i = 0; i < employees.length; i++) {
-        addEmployeeField(employees[i].name);
+        addEmployeeField(employees[i].name, employees[i].id);
     }
 }
 
@@ -96,25 +102,15 @@ function fillMilestones(milestones) {
         return;
 
     for (let i = 0; i < milestones.length; i++) {
-        if (
-            milestones[i].label === 'Start' ||
-            milestones[i].label === 'Projekt Start'
-        ) {
-            document.getElementById('start-date').value = milestones[i].date;
-            setDescription(
-                document.getElementById('start-description'),
-                milestones[i].description
-            );
+        if (milestones[i].label === 'Projekt Start') {
+            $('#start-date').val(milestones[i].date);
+            $('#start-id').val(milestones[i].id);
+            setDescription($('#start-description'), milestones[i].description);
         }
-        if (
-            milestones[i].label === 'Ende' ||
-            milestones[i].label === 'Projekt Ende'
-        ) {
-            document.getElementById('end-date').value = milestones[i].date;
-            setDescription(
-                document.getElementById('end-description'),
-                milestones[i].description
-            );
+        if (milestones[i].label === 'Projekt Ende') {
+            $('#end-date').val(milestones[i].date);
+            $('#end-id').val(milestones[i].id);
+            setDescription($('#end-description'), milestones[i].description);
         }
         if (
             milestones[i].label !== 'Projekt Start' &&
@@ -123,7 +119,8 @@ function fillMilestones(milestones) {
             addMilestoneField(
                 milestones[i].date,
                 milestones[i].label,
-                milestones[i].description
+                milestones[i].description,
+                milestones[i].id
             );
         }
     }
@@ -158,7 +155,7 @@ function createRemoveButton(title, onclick) {
     return buttonRemove;
 }
 
-function addMilestoneField(date, label, description) {
+function addMilestoneField(date, label, description, id) {
     let milestonesContainer = document.getElementById('milestone-container');
 
     let cardBody = document.createElement('div');
@@ -199,6 +196,12 @@ function addMilestoneField(date, label, description) {
         description
     );
     cardBody.appendChild(descriptionColumn);
+
+    let idField = document.createElement('input');
+    idField.type = 'hidden';
+    idField.setAttribute('name', 'milestones[][id]');
+    idField.setAttribute('value', id);
+    cardBody.appendChild(idField);
 
     var removeButton = createRemoveButton(
         'Milestone Zeile entfernen',

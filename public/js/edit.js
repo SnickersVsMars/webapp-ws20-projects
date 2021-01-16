@@ -16,10 +16,15 @@ function populateData(project) {
     document.getElementById('input-label').value = validate(project.label);
     document.getElementById('input-number').value = validate(project.number);
 
-    setDescription(document.getElementById('input-description'), project.description);
+    setDescription(
+        document.getElementById('input-description'),
+        project.description
+    );
 
     document.getElementById('input-manager').value = validate(project.manager);
-    document.getElementById('input-customer').value = validate(project.customer);
+    document.getElementById('input-customer').value = validate(
+        project.customer
+    );
     document.getElementById('input-costcenter').value = validate(
         project.costCenter
     );
@@ -32,7 +37,7 @@ function populateData(project) {
 
     fillEmployess(project.employees);
     fillMilestones(project.milestones);
-
+    $('#projectId').val(id);
     document.getElementById('busy-indicator').hidden = true;
 }
 function addEmployeeField(value) {
@@ -51,7 +56,18 @@ function addEmployeeField(value) {
     }
 
     var removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
-        $(event.target).closest('.added-employee').remove();
+        if (
+            $(event.target)
+                .closest('.added-employee')
+                .children('.input-employee')
+                .val() !== ''
+        ) {
+            if (confirm('Wollen Sie den Mitarbeiter wirklich löschen?')) {
+                $(event.target).closest('.added-employee').remove();
+            }
+        } else {
+            $(event.target).closest('.added-employee').remove();
+        }
     });
 
     var container = document.createElement('div');
@@ -61,7 +77,6 @@ function addEmployeeField(value) {
 
     employeeContainer.appendChild(container);
 }
-
 
 function fillEmployess(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
@@ -81,18 +96,36 @@ function fillMilestones(milestones) {
         return;
 
     for (let i = 0; i < milestones.length; i++) {
-        if (milestones[i].label === "Start" || milestones[i].label === "Projekt Start"){
+        if (
+            milestones[i].label === 'Start' ||
+            milestones[i].label === 'Projekt Start'
+        ) {
             document.getElementById('start-date').value = milestones[i].date;
-            setDescription(document.getElementById('start-description'), milestones[i].description);
+            setDescription(
+                document.getElementById('start-description'),
+                milestones[i].description
+            );
         }
-        if (milestones[i].label === "Ende" || milestones[i].label === "Projekt Ende" ){
+        if (
+            milestones[i].label === 'Ende' ||
+            milestones[i].label === 'Projekt Ende'
+        ) {
             document.getElementById('end-date').value = milestones[i].date;
-            setDescription(document.getElementById('end-description'), milestones[i].description);
+            setDescription(
+                document.getElementById('end-description'),
+                milestones[i].description
+            );
         }
-        if(milestones[i].label !== "Projekt Start" && milestones[i].label !== "Projekt Ende") {
-            addMilestoneField(milestones[i].date, milestones[i].label, milestones[i].description);
+        if (
+            milestones[i].label !== 'Projekt Start' &&
+            milestones[i].label !== 'Projekt Ende'
+        ) {
+            addMilestoneField(
+                milestones[i].date,
+                milestones[i].label,
+                milestones[i].description
+            );
         }
-
     }
 }
 
@@ -170,9 +203,26 @@ function addMilestoneField(date, label, description) {
     var removeButton = createRemoveButton(
         'Milestone Zeile entfernen',
         (event) => {
-            var cardBody = $(event.target).closest('.card-body');
-            cardBody.prev('hr').remove();
-            cardBody.remove();
+            let cardBody = $(event.target).closest('.card-body');
+            let hasValue = false;
+            $(event.target)
+                .closest('.card-body')
+                .find('.form-control')
+                .each(function () {
+                    if ($(this).val() !== '' && !hasValue) {
+                        hasValue = true;
+                    }
+                });
+            if (hasValue) {
+                if (
+                    confirm('Wollen Sie diesen Meilenstein wirklich löschen?')
+                ) {
+                    cardBody.prev('hr').remove();
+                    cardBody.remove();
+                }
+            } else {
+                cardBody.remove();
+            }
         }
     );
     removeButton.classList = 'btn btn-danger d-block';
@@ -250,4 +300,3 @@ function createFormGroup(
 
     return formGroup;
 }
-

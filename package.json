@@ -25,10 +25,11 @@
     },
     "homepage": "https://github.com/SnickersVsMars/webapp-ws20-projects#readme",
     "dependencies": {
+        "@awaitjs/express": "^0.7.0",
         "config": "^3.3.2",
         "express": "^4.17.1",
         "express-validator": "^6.7.0",
-        "mysql": "^2.18.1",
+        "mysql2": "^2.2.5",
         "pm2": "^4.5.1",
         "puppeteer": "^5.5.0",
         "url-parse": "^1.4.7"

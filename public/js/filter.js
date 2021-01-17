@@ -21,24 +21,24 @@ function createFilter(list, id) {
         if (val === '&ndash;') {
             val = '-';
         }
+
         $('#' + id).append(
-            `<div class="custom-control custom-checkbox dropdown-item">
-                <input type="checkbox"
-                       class="custom-control-input"
-                       id="${id}-${i}">
-                <label class="custom-control-label"
-                       id="${id}-${i}-label"
-                       for="${id}-${i}">
-                </label>
-            </div>`
+            $(
+                '<div class="custom-control custom-checkbox dropdown-item">'
+            ).append(
+                $(
+                    `<input type="checkbox" class="custom-control-input" id="${id}-${i}">`
+                ).click(() => handleChecked()),
+                $(
+                    `<label class="custom-control-label" id="${id}-${i}-label" for="${id}-${i}">`
+                ).text(val)
+            )
         );
-        $(`#${id}-${i}-label`).text(val);
-        $(`#${id}-${i}`).click(() => handleChecked());
     });
 }
 
 $('#search-box').on('input', function () {
-    let text = $(this).val().toLowerCase();
+    let text = $(this).val().toLowerCase().trim();
 
     $('#card-container .card').filter(function () {
         $(this).toggle($(this).text().toLowerCase().includes(text));
@@ -54,7 +54,7 @@ $('.dropdown-item .custom-control-input').on('checked', function (e) {
 });
 
 function searchFilter(el, filterID) {
-    var text = $(el).val();
+    let text = $(el).val().toLowerCase().trim();
     $(`#${filterID} .dropdown-item`).filter(function () {
         $(this).toggle(
             $(this)

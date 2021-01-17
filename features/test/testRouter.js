@@ -34,7 +34,7 @@ apiRouter.post('/', (req, res) => {
     res.json(testService.insert(req.body));
 });
 
-var testsRouter = express.Router();
+let testsRouter = express.Router();
 testsRouter.use('/api/tests', apiRouter);
 testsRouter.use('/tests', viewRouter);
 

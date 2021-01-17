@@ -13,10 +13,6 @@ body {
     padding-bottom: 0;
 }
 
-.navbar-nav {
-    height: 100%;
-}
-
 .navbar-light .navbar-nav .nav-link {
     display: flex;
     align-items: center;

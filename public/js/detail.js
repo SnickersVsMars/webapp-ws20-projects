@@ -1,60 +1,42 @@
 const split = window.location.href.split('/');
 const id = split[split.length - 1];
 
+$('#download-pdf').attr('href', window.location.href + '/export');
+
 HttpService.get('projects/' + id)
     .then((project) => {
         populateData(project);
     })
     .catch((res) => {
         if (res.status === 404 || res.status === 500) {
-            let page = document.getElementsByTagName('html')[0];
-            page.innerHTML = res.responseText;
+            $('html').html(res.responseText);
         }
     });
 
 function populateData(project) {
-    document.getElementById('label').innerText = validate(project.label);
-    document.getElementById('number').innerText = validate(project.number);
-
-    setDescription(document.getElementById('description'), project.description);
-
-    document.getElementById('manager').innerText = validate(project.manager);
-    document.getElementById('customer').innerText = validate(project.customer);
-    document.getElementById('costCenter').innerText = validate(
-        project.costCenter
-    );
-    document.getElementById(
-        'breadcrumb'
-    ).innerText = `PROJEKT ${project.number}`;
-    document
-        .getElementById('breadcrumb')
-        .setAttribute('href', '/projects/' + project.id);
+    $('#label').text(validate(project.label));
+    $('#number').text(validate(project.number));
+    setDescription($('#description'), project.description);
+    $('#manager').text(validate(project.manager));
+    $('#customer').text(validate(project.customer));
+    $('#costCenter').text(validate(project.costCenter));
+    $('#breadcrumb').text(`PROJEKT ${project.number}`);
+    $('#breadcrumb').attr('href', '/projects/' + project.id);
 
     fillEmployees(project.employees);
     fillMilestones(project.milestones);
 
-    document.getElementById('busy-indicator').hidden = true;
-    document
-        .getElementById('edit')
-        .addEventListener('click', () => showDetail(project.id));
+    $('#busy-indicator').hide();
+    $('#edit').on('click', () => showDetail(project.id));
 }
 
 function fillEmployees(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
         return;
 
-    let ul = document.getElementById('employees');
-
     for (let i = 0; i < employees.length; i++) {
-        // Create the list item:
-        let item = document.createElement('li');
-        // item.className="list-group-item"
-
-        // Set its contents:
-        item.innerText = employees[i].name;
-
-        // Add it to the list:
-        ul.appendChild(item);
+        let $employee = $('<li>').text(employees[i].name);
+        $('#employees').append($employee);
     }
 }
 
@@ -66,32 +48,41 @@ function fillMilestones(milestones) {
     )
         return;
 
-    let tbody = document.getElementById('table-milestone-body');
-    tbody.innerText = '';
+    let $tbody = $('#table-milestone-body');
+    $tbody.text('');
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < milestones.length; i++) {
-        let tr = tbody.insertRow();
+        let date;
 
-        if (milestones[i].date === null || milestones[i].date === undefined)
-            tr.insertCell().innerText = validate(null);
-        else tr.insertCell().innerText = formatDate(milestones[i].date);
+        if (milestones[i].date === null || milestones[i].date === undefined) {
+            date = validate(null);
+        } else {
+            date = formatDate(milestones[i].date);
+        }
 
-        tr.insertCell().innerText = validate(milestones[i].label);
-        setDescription(tr.insertCell(), milestones[i].description);
+        let $description = $('<td>');
+        setDescription($description, milestones[i].description);
+
+        $tbody.append(
+            $('<tr>').append(
+                $('<td>').text(date),
+                $('<td>').text(milestones[i].label),
+                $description
+            )
+        );
     }
 }
 
-function setDescription(element, description) {
-    element.classList.add('table-truncate');
+function setDescription($el, description) {
     if (
         description === null ||
         description === undefined ||
         description === ''
     ) {
-        element.innerHTML = '&ndash;';
+        $el.html('&ndash;');
     } else {
-        element.innerText = description;
+        $el.text(description);
     }
 }
 

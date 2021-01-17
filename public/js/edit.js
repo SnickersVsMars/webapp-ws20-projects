@@ -7,81 +7,26 @@ HttpService.get('projects/' + id)
     })
     .catch((res) => {
         if (res.status === 404 || res.status === 500) {
-            let page = document.getElementsByTagName('html')[0];
-            page.innerHTML = res.responseText;
+            $('html').html(res.responseText);
         }
     });
 
 function populateData(project) {
-    document.getElementById('input-label').value = validate(project.label);
-    document.getElementById('input-number').value = validate(project.number);
-
-    setDescription(
-        document.getElementById('input-description'),
-        project.description
-    );
-
-    document.getElementById('input-manager').value = validate(project.manager);
-    document.getElementById('input-customer').value = validate(
-        project.customer
-    );
-    document.getElementById('input-costcenter').value = validate(
-        project.costCenter
-    );
-    document.getElementById(
-        'breadcrumb'
-    ).innerText = `PROJEKT ${project.number}`;
-    document
-        .getElementById('breadcrumb')
-        .setAttribute('href', '/projects/' + project.id);
+    $('#input-label').val(validate(project.label));
+    $('#input-number').val(validate(project.number));
+    setDescription($('#input-description'), project.description);
+    $('#input-manager').val(validate(project.manager));
+    $('#input-customer').val(validate(project.customer));
+    $('#input-costCenter').val(validate(project.costCenter));
+    $('#breadcrumb').val(`PROJEKT ${project.number}`);
+    $('#breadcrumb').attr('href', '/projects/' + project.id);
 
     fillEmployees(project.employees);
     fillMilestones(project.milestones);
+
     $('#projectId').val(id);
-    document.getElementById('busy-indicator').hidden = true;
-}
-function addEmployeeField(value, id) {
-    var employeeContainer = document.getElementById('employee-container');
 
-    var newTextfield = document.createElement('input');
-    newTextfield.setAttribute('type', 'text');
-    newTextfield.setAttribute('class', 'form-control mb-2 input-employee');
-    newTextfield.setAttribute('name', 'employees[][name]');
-    newTextfield.setAttribute('required', true);
-    newTextfield.setAttribute('maxlength', 100);
-    newTextfield.setAttribute('placeholder', 'Name des Mitarbeiters');
-    newTextfield.setAttribute('value', value);
-    if (value === '' || undefined) {
-        newTextfield.removeAttribute('value');
-    }
-
-    var removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
-        if (
-            $(event.target)
-                .closest('.added-employee')
-                .children('.input-employee')
-                .val() !== ''
-        ) {
-            if (confirm('Wollen Sie den Mitarbeiter wirklich löschen?')) {
-                $(event.target).closest('.added-employee').remove();
-            }
-        } else {
-            $(event.target).closest('.added-employee').remove();
-        }
-    });
-
-    let idField = document.createElement('input');
-    idField.type = 'hidden';
-    idField.setAttribute('name', 'employees[][id]');
-    idField.setAttribute('value', id);
-
-    var container = document.createElement('div');
-    container.classList = 'added-employee';
-    container.appendChild(removeButton);
-    container.appendChild(newTextfield);
-    container.appendChild(idField);
-
-    employeeContainer.appendChild(container);
+    $('#busy-indicator').hide();
 }
 
 function fillEmployees(employees) {
@@ -89,8 +34,19 @@ function fillEmployees(employees) {
         return;
 
     for (let i = 0; i < employees.length; i++) {
-        addEmployeeField(employees[i].name, employees[i].id);
+        addEditEmployeeField(employees[i].name, employees[i].id);
     }
+}
+
+function addEditEmployeeField(value, id) {
+    addEmployeeField(value);
+
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+    $idField.attr('name', 'employees[][id]');
+    $idField.val(id);
+
+    $('#employee-container .added-employee').append($idField);
 }
 
 function fillMilestones(milestones) {
@@ -116,7 +72,7 @@ function fillMilestones(milestones) {
             milestones[i].label !== 'Projekt Start' &&
             milestones[i].label !== 'Projekt Ende'
         ) {
-            addMilestoneField(
+            addEditMilestoneField(
                 milestones[i].date,
                 milestones[i].label,
                 milestones[i].description,
@@ -126,180 +82,12 @@ function fillMilestones(milestones) {
     }
 }
 
-function setDescription(element, description) {
-    if (
-        description === null ||
-        description === undefined ||
-        description === ''
-    ) {
-        element.innerHTML = '&ndash;';
-    } else {
-        element.innerText = description;
-    }
-}
+function addEditMilestoneField(date, label, description, id) {
+    addMilestoneField(date, label, description);
 
-function createRemoveButton(title, onclick) {
-    let icon = document.createElement('i');
-    icon.classList = 'material-icons';
-    icon.innerText = 'remove';
-
-    let buttonRemove = document.createElement('button');
-    buttonRemove.setAttribute('type', 'button');
-    buttonRemove.classList = 'btn btn-danger mt-1 mb-1 remove-button';
-    buttonRemove.setAttribute('title', title);
-
-    buttonRemove.appendChild(icon);
-
-    buttonRemove.onclick = onclick;
-
-    return buttonRemove;
-}
-
-function addMilestoneField(date, label, description, id) {
-    let milestonesContainer = document.getElementById('milestone-container');
-
-    let cardBody = document.createElement('div');
-    cardBody.classList = 'card-body row';
-
-    var dateColumn = createFormGroup(
-        'Datum',
-        'input',
-        'date',
-        'date',
-        null,
-        true,
-        null,
-        date
-    );
-    cardBody.appendChild(dateColumn);
-
-    var labelColumn = createFormGroup(
-        'Bezeichnung',
-        'input',
-        'text',
-        'label',
-        'Meilenstein Bezeichnung',
-        true,
-        50,
-        label
-    );
-    cardBody.appendChild(labelColumn);
-
-    var descriptionColumn = createFormGroup(
-        'Beschreibung',
-        'textarea',
-        null,
-        'description',
-        'Meilenstein Beschreibung',
-        false,
-        250,
-        description
-    );
-    cardBody.appendChild(descriptionColumn);
-
-    let idField = document.createElement('input');
-    idField.type = 'hidden';
-    idField.setAttribute('name', 'milestones[][id]');
-    idField.setAttribute('value', id);
-    cardBody.appendChild(idField);
-
-    var removeButton = createRemoveButton(
-        'Milestone Zeile entfernen',
-        (event) => {
-            let cardBody = $(event.target).closest('.card-body');
-            let hasValue = false;
-            $(event.target)
-                .closest('.card-body')
-                .find('.form-control')
-                .each(function () {
-                    if ($(this).val() !== '' && !hasValue) {
-                        hasValue = true;
-                    }
-                });
-            if (hasValue) {
-                if (
-                    confirm('Wollen Sie diesen Meilenstein wirklich löschen?')
-                ) {
-                    cardBody.prev('hr').remove();
-                    cardBody.remove();
-                }
-            } else {
-                cardBody.remove();
-            }
-        }
-    );
-    removeButton.classList = 'btn btn-danger d-block';
-    let removeContainer = document.createElement('div');
-    removeContainer.classList = 'col';
-    let emptyLabel = document.createElement('label');
-    emptyLabel.innerHTML = '&nbsp;';
-    removeContainer.appendChild(emptyLabel);
-    removeContainer.appendChild(removeButton);
-    cardBody.append(removeContainer);
-
-    milestonesContainer.appendChild(document.createElement('hr'));
-    milestonesContainer.appendChild(cardBody);
-}
-
-function createFormGroup(
-    labelString,
-    tag,
-    type,
-    property,
-    placeholder,
-    isRequired,
-    maxlength,
-    value
-) {
-    let formGroup = document.createElement('div');
-    formGroup.classList = 'form-group col-sm-6';
-
-    let label = document.createElement('label');
-    label.innerText = labelString;
-    formGroup.appendChild(label);
-
-    let control = document.createElement(tag);
-    control.setAttribute('class', 'form-control milestone-' + property);
-    control.setAttribute('name', 'milestones[][' + property + ']');
-
-    if (type) {
-        control.setAttribute('type', type);
-    }
-
-    let validationMessage;
-
-    if (isRequired) {
-        control.setAttribute('required', true);
-        validationMessage = 'Feld ist verpflichtend.';
-    }
-
-    if (maxlength > 1) {
-        control.setAttribute('maxlength', maxlength);
-        let maxlengthMessage = 'Maximal ' + maxlength + ' Zeichen';
-
-        if (validationMessage != undefined) {
-            validationMessage += ' ';
-        }
-
-        validationMessage += maxlengthMessage;
-    }
-
-    if (placeholder) {
-        control.setAttribute('placeholder', placeholder);
-    }
-
-    if (value) {
-        control.setAttribute('value', value);
-    }
-
-    formGroup.appendChild(control);
-
-    if (validationMessage) {
-        let feedback = document.createElement('div');
-        feedback.classList = 'invalid-feedback';
-        feedback.innerText = validationMessage;
-        formGroup.appendChild(feedback);
-    }
-
-    return formGroup;
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+    $idField.attr('name', 'milestones[][id]');
+    $idField.attr('value', id);
+    $cardBody.append($idField);
 }

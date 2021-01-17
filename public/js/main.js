@@ -23,3 +23,15 @@ function formatDate(date) {
         day: '2-digit',
     });
 }
+
+function setDescription($el, description) {
+    if (
+        description === null ||
+        description === undefined ||
+        description === ''
+    ) {
+        $el.html('&ndash;');
+    } else {
+        $el.text(description);
+    }
+}

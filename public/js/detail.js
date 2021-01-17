@@ -35,8 +35,7 @@ function fillEmployees(employees) {
         return;
 
     for (let i = 0; i < employees.length; i++) {
-        let $employee = $('<li>').text(employees[i].name);
-        $('#employees').append($employee);
+        $('#employees').append($('<li>').text(employees[i].name));
     }
 }
 
@@ -71,18 +70,6 @@ function fillMilestones(milestones) {
                 $description
             )
         );
-    }
-}
-
-function setDescription($el, description) {
-    if (
-        description === null ||
-        description === undefined ||
-        description === ''
-    ) {
-        $el.html('&ndash;');
-    } else {
-        $el.text(description);
     }
 }
 

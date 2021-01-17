@@ -11,7 +11,7 @@ function buildPath(fileName) {
 }
 
 const createPdfResponse = (req, res, next, id) => {
-    var url = req.protocol + '://' + req.get('host') + '/projects';
+    let url = req.protocol + '://' + req.get('host') + '/projects';
 
     if (id) {
         url = url + '/' + id;

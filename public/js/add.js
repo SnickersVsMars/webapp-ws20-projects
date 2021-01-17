@@ -1,33 +1,25 @@
 function addEmployeeField() {
-    var employeeContainer = document.getElementById('employee-container');
+    let $empInput = $('<input>');
+    $empInput.addClass('form-control mb-2 input-employee');
+    $empInput.attr('type', 'text');
+    $empInput.attr('name', 'employees[][name]');
+    $empInput.attr('required', true);
+    $empInput.attr('maxlength', 100);
+    $empInput.attr('placeholder', 'Name des Mitarbeiters');
 
-    var newTextfield = document.createElement('input');
-    newTextfield.setAttribute('type', 'text');
-    newTextfield.setAttribute('class', 'form-control mb-2 input-employee');
-    newTextfield.setAttribute('name', 'employees[][name]');
-    newTextfield.setAttribute('required', true);
-    newTextfield.setAttribute('maxlength', 100);
-    newTextfield.setAttribute('placeholder', 'Name des Mitarbeiters');
-
-    var removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
+    let $removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
         $(event.target).closest('.added-employee').remove();
     });
 
-    var container = document.createElement('div');
-    container.classList = 'added-employee';
-    container.appendChild(removeButton);
-    container.appendChild(newTextfield);
-
-    employeeContainer.appendChild(container);
+    $('#employee-container').append(
+        $('<div class="added-employee">').append($removeButton, $empInput)
+    );
 }
 
 function addMilestoneField() {
-    let milestonesContainer = document.getElementById('milestone-container');
+    let $cardBody = $('<div class="card-body row">');
 
-    let cardBody = document.createElement('div');
-    cardBody.classList = 'card-body row';
-
-    var dateColumn = createFormGroup(
+    let $dateColumn = createFormGroup(
         'Datum',
         'input',
         'date',
@@ -36,9 +28,9 @@ function addMilestoneField() {
         true,
         null
     );
-    cardBody.appendChild(dateColumn);
+    $cardBody.append($dateColumn);
 
-    var labelColumn = createFormGroup(
+    let $labelColumn = createFormGroup(
         'Bezeichnung',
         'input',
         'text',
@@ -47,9 +39,9 @@ function addMilestoneField() {
         true,
         50
     );
-    cardBody.appendChild(labelColumn);
+    $cardBody.append($labelColumn);
 
-    var descriptionColumn = createFormGroup(
+    let $descriptionColumn = createFormGroup(
         'Beschreibung',
         'textarea',
         null,
@@ -58,27 +50,24 @@ function addMilestoneField() {
         false,
         250
     );
-    cardBody.appendChild(descriptionColumn);
+    $cardBody.append($descriptionColumn);
 
-    var removeButton = createRemoveButton(
-        'Milestone Zeile entfernen',
-        (event) => {
-            var cardBody = $(event.target).closest('.card-body');
-            cardBody.prev('hr').remove();
-            cardBody.remove();
-        }
+    let $removeButton = createRemoveButton('Meilenstein entfernen', (event) => {
+        let $body = $(event.target).closest('.card-body');
+        $body.prev('hr').remove();
+        $body.remove();
+    });
+
+    $removeButton.addClass('btn btn-danger d-block');
+
+    $cardBody.append(
+        $('<div class="col">').append(
+            $('<label>').html('&nbsp;'),
+            $removeButton
+        )
     );
-    removeButton.classList = 'btn btn-danger d-block';
-    let removeContainer = document.createElement('div');
-    removeContainer.classList = 'col';
-    let emptyLabel = document.createElement('label');
-    emptyLabel.innerHTML = '&nbsp;';
-    removeContainer.appendChild(emptyLabel);
-    removeContainer.appendChild(removeButton);
-    cardBody.append(removeContainer);
 
-    milestonesContainer.appendChild(document.createElement('hr'));
-    milestonesContainer.appendChild(cardBody);
+    $('#milestone-container').append($('<hr>'), $cardBody);
 }
 
 function createFormGroup(
@@ -90,30 +79,27 @@ function createFormGroup(
     isRequired,
     maxlength
 ) {
-    let formGroup = document.createElement('div');
-    formGroup.classList = 'form-group col-sm-6';
+    let $formGroup = $('<div class="form-group col-sm-6">');
 
-    let label = document.createElement('label');
-    label.innerText = labelString;
-    formGroup.appendChild(label);
+    $formGroup.append($('<label>').text(labelString));
 
-    let control = document.createElement(tag);
-    control.setAttribute('class', 'form-control milestone-' + property);
-    control.setAttribute('name', 'milestones[][' + property + ']');
+    let $control = $('<' + tag + '>');
+    $control.addClass('form-control milestone-' + property);
+    $control.attr('name', 'milestones[][' + property + ']');
 
     if (type) {
-        control.setAttribute('type', type);
+        $control.attr('type', type);
     }
 
     let validationMessage;
 
     if (isRequired) {
-        control.setAttribute('required', true);
+        $control.attr('required', true);
         validationMessage = 'Feld ist verpflichtend.';
     }
 
     if (maxlength > 1) {
-        control.setAttribute('maxlength', maxlength);
+        $control.attr('maxlength', maxlength);
         let maxlengthMessage = 'Maximal ' + maxlength + ' Zeichen';
 
         if (validationMessage != undefined) {
@@ -124,34 +110,29 @@ function createFormGroup(
     }
 
     if (placeholder) {
-        control.setAttribute('placeholder', placeholder);
+        $control.attr('placeholder', placeholder);
     }
 
-    formGroup.appendChild(control);
+    $formGroup.append($control);
 
     if (validationMessage) {
-        let feedback = document.createElement('div');
-        feedback.classList = 'invalid-feedback';
-        feedback.innerText = validationMessage;
-        formGroup.appendChild(feedback);
+        $formGroup.append(
+            $('<div class="invalid-feedback">').text(validationMessage)
+        );
     }
 
-    return formGroup;
+    return $formGroup;
 }
 
 function createRemoveButton(title, onclick) {
-    let icon = document.createElement('i');
-    icon.classList = 'material-icons';
-    icon.innerText = 'remove';
+    let $buttonRemove = $('<button>');
+    $buttonRemove.addClass('btn btn-danger mt-1 mb-1 remove-button');
+    $buttonRemove.attr('type', 'button');
+    $buttonRemove.attr('title', title);
 
-    let buttonRemove = document.createElement('button');
-    buttonRemove.setAttribute('type', 'button');
-    buttonRemove.classList = 'btn btn-danger mt-1 mb-1 remove-button';
-    buttonRemove.setAttribute('title', title);
+    $buttonRemove.append($('<i class="material-icons">').text('remove'));
 
-    buttonRemove.appendChild(icon);
+    $buttonRemove.click((e) => onclick(e));
 
-    buttonRemove.onclick = onclick;
-
-    return buttonRemove;
+    return $buttonRemove;
 }

@@ -95,7 +95,7 @@
         });
 
         function populateData(data) {
-            var main = document.getElementById('main');
+            let main = document.getElementById('main');
             for (let i = 0; i < data.length; i++) {
                 let p = document.createElement('p')
                 p.innerHTML = data[i].id + ' | ' + data[i].label;

@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-var validationArray = [
+let validationArray = [
     body('manager')
         .trim()
         .notEmpty()
@@ -92,7 +92,7 @@ function validate(req, res) {
     };
     const errors = validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
-        var errorsMapped = errors.mapped();
+        let errorsMapped = errors.mapped();
 
         return res.status(400).json({ errors: errorsMapped });
     }

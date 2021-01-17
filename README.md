@@ -47,7 +47,6 @@ This user story calls for an overview list of components in the project manageme
 
 This user story was implemented in Sprint 1.
 
-
 #### Search -> Not implemented
 
 This user story revolves around searching and filtering in the overview list.
@@ -60,7 +59,6 @@ In this user story, a component in the project management tool should have its o
 
 This user story was implemented in Sprint 1.
 
-
 #### Add new data -> Sprint 2
 
 As part of this user story, it should be possible to add new componentes, in our case projects, to the management tool.
@@ -72,7 +70,6 @@ This user story was implemented in Sprint 2.
 Existing components should be editable after implementing this user story.
 
 This user story was not yet implemented.
-
 
 #### Frontend validation -> Sprint 2
 

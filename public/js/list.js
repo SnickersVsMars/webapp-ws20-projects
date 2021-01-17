@@ -1,5 +1,3 @@
-let overview = document.getElementById('card-container');
-let template = document.getElementById('card-template');
 let projects;
 
 // initial load
@@ -8,15 +6,14 @@ buildFilterRow();
 // on resize
 window.addEventListener('resize', buildFilterRow);
 
-$(document).ready(() => {
+$(document).ready(function () {
     HttpService.get('projects')
         .then((projects) => {
             populateData(projects);
         })
         .catch((res) => {
             if (res.status === 404 || res.status === 500) {
-                let page = document.getElementsByTagName('html')[0];
-                page.innerHTML = res.responseText;
+                $('html').html(res.responseText);
             }
         });
 });
@@ -28,64 +25,50 @@ function populateData(list) {
     let customers = [];
 
     $(list).each(function (i, project) {
-        var card = template.content.cloneNode(true);
-        card.querySelector('.project-number').innerText = validate(
-            project.number
-        );
+        let $card = $($('#card-template').html()).clone();
+
+        $card.find('.project-number').text(validate(project.number));
         if (!numbers.includes(validate(project.number))) {
             numbers.push(validate(project.number));
         }
 
-        card.querySelector('.project-manager').innerText = validate(
-            project.manager
-        );
-        card.querySelector('.project-manager').title = validate(
-            project.manager
-        );
+        $card.find('.project-manager').text(validate(project.manager));
+        $card.find('.project-manager').prop('title', validate(project.manager));
         if (!managers.includes(validate(project.manager))) {
             managers.push(validate(project.manager));
         }
 
-        card.querySelector('.project-label').innerText = validate(
-            project.label
-        );
-        card.querySelector('.project-label').title = validate(project.label);
+        $card.find('.project-label').text(validate(project.label));
+        $card.find('.project-label').prop('title', validate(project.label));
         if (!labels.includes(validate(project.label))) {
             labels.push(validate(project.label));
         }
 
         let nextMilestone = new Date(project.nextMilestone);
 
-        card.querySelector('.project-milestone').innerText = formatDate(
-            nextMilestone
-        );
+        $card.find('.project-milestone').text(formatDate(nextMilestone));
 
-        card.querySelector('.project-customer').innerText = validate(
-            project.customer
-        );
-        card.querySelector('.project-customer').title = validate(
-            project.customer
-        );
+        $card.find('.project-customer').text(validate(project.customer));
+        $card
+            .find('.project-customer')
+            .prop('title', validate(project.customer));
         if (!customers.includes(validate(project.customer))) {
             customers.push(validate(project.customer));
         }
 
-        card.querySelector('.project-employees').innerText = validate(
-            project.employeeCount
-        );
+        $card.find('.project-employees').text(validate(project.employeeCount));
 
-        overview.appendChild(card);
-        var cards = document.getElementsByClassName('card');
-        cards[cards.length - 1].addEventListener('click', () =>
-            showDetail(project.id)
-        );
+        $('#card-container').append($card);
+        $('.card')
+            .last()
+            .on('click', () => showDetail(project.id));
     });
-    document.getElementById('busy-indicator').hidden = true;
+    $('#busy-indicator').hide();
 
     createFilters(numbers, managers, labels, customers);
 
     // TODO why you not work?!
-    $('[data-toggle="tooltip"]').tooltip();
+    // $('[data-toggle="tooltip"]').tooltip();
 }
 
 function showDetail(id) {
@@ -114,12 +97,3 @@ function buildFilterRow() {
         }
     });
 }
-
-$('#filter-toggle-btn').on('visibilitychange', function () {
-    console.log();
-    if (document.visibilityState === 'visible') {
-        console.log('visible');
-    } else {
-        console.log('not visible');
-    }
-});

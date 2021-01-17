@@ -66,7 +66,6 @@ class ProjectService {
             if (project.length < 1) {
                 throw `${id} not found`;
             }
-
             project = project[0];
         }
 
@@ -90,15 +89,8 @@ class ProjectService {
             return null;
         }
 
-        // HACK: Number has to be set, because mysql throws an error if the column is set with a before trigger
-        // code: 'ER_BAD_NULL_ERROR',
-        // errno: 1048,
-        // sqlState: '23000',
-        // sqlMessage: "Column 'number' cannot be null"
-        project.number = 'placeholder';
-
-        var employees = project.employees ?? [];
-        var milestones = project.milestones ?? [];
+        let employees = project.employees ?? [];
+        let milestones = project.milestones ?? [];
 
         delete project.milestones;
         delete project.employees;
@@ -112,7 +104,7 @@ class ProjectService {
 
         let insertPromises = [];
 
-        for (var i = 0; i < employees.length; i++) {
+        for (let i = 0; i < employees.length; i++) {
             employees[i].project_id = projectId;
             let employeePromise = dbConnection.insert(
                 insertEmployeeQuery,
@@ -121,7 +113,7 @@ class ProjectService {
             insertPromises.push(employeePromise);
         }
 
-        for (var i = 0; i < milestones.length; i++) {
+        for (let i = 0; i < milestones.length; i++) {
             milestones[i].project_id = projectId;
             let milestonePromise = dbConnection.insert(
                 insertMilestoneQuery,

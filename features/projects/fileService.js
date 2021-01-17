@@ -86,16 +86,24 @@ class FileService {
             return null;
         }
 
-        dbConnection.insert(
-            'INSERT INTO files SET ?',
-            file,
-            (error, result) => {
-                if (error) {
-                    return success(error, null);
+        let selectQuery = `SELECT count(*) as count
+        FROM files where project_id = ?`;
+
+        dbConnection.insert(selectQuery, file.project_id, (error, result) => {
+            if(result[0].count >= 5)
+                return success(`Nur 5 Dateien erlaubt!`, null);
+
+            dbConnection.insert(
+                'INSERT INTO files SET ?',
+                file,
+                (error, result) => {
+                    if (error) {
+                        return success(error, null);
+                    }
+                    success(null, result.insertId);
                 }
-                success(null, result.insertId);
-            }
-        );
+            );
+        });
     }
 }
 

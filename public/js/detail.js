@@ -65,40 +65,44 @@ function fillFiles(files) {
     )
         return;
 
-    let tbody = document.getElementById('table-files-body');
-    tbody.innerText = '';
-
-    // ADD JSON DATA TO THE TABLE AS ROWS.
     for (let i = 0; i < files.length; i++) {
-        let tr = tbody.insertRow();
         addFile(files[i]);
     }
 }
 
 function addFile(file) {
-    let tbody = document.getElementById('table-files-body');
+    if(!$('#tr-files-empty').hasClass("hide"))
+    {
+        $('#tr-files-empty').addClass("hide");
+    }
+
+    let tbody = $('#table-files-body')[0];
     let tr = tbody.insertRow();
-    tr.classList.add("tr-file-"+file.id);
+    tr.id = "tr-file-"+file.id;
 
     let col = tr.insertCell();     
     col.innerText = validate(file.filename);
 
-    let buttons = document.getElementById('action-buttons-template').content.cloneNode(true);
+    let buttons = $('#action-buttons-template')[0].content.cloneNode(true);
     
-    buttons.querySelector('.openBtn').onclick = function(e) {
-        e.preventDefault();  //stop the browser from following
-        window.location.href = '../download/'+file.id;
-    };
+    buttons.querySelector('.openBtn').href = '../api/projects/download/'+file.id;
+    buttons.querySelector('.openBtn').download = file.filename;
+    
     buttons.querySelector('.deleteBtn').onclick = function(e) {
-        e.preventDefault();  //stop the browser from following
+        e.preventDefault();
         jQuery.ajax({
 			method: 'DELETE',
-			url: '/deleteFile/'+file.id
+			url: '/api/projects/deleteFile/'+file.id
 		})
 		.done(function (resp, status) {
             if (status==="success") {
-                let trDelete = tbody.querySelector('.tr-file-'+file.id);
+                trDelete = $('#tr-file-'+file.id)[0];
                 tbody.removeChild(trDelete);
+
+                if(tbody.children.length < 2 && $('#tr-files-empty').hasClass("hide"))
+                {
+                    $('#tr-files-empty').removeClass("hide");
+                }
             }
 		});
     };

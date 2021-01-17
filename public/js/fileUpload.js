@@ -1,9 +1,10 @@
-var uploadForm = document.querySelector('#uploadForm');
-var uploadField = document.querySelector('#uploadField');
-var uploadContainer = document.querySelector('#uploadContainer');
-var theErrorMessage = document.querySelector('#errorMessage');
-var theSuccessMessage = document.querySelector('#successMessage');
-var clearFileButton = document.querySelector('#clearFile');
+var uploadInfo = $('#uploadInfo');
+var uploadForm = $('#uploadForm');
+var uploadField = $('#uploadField');
+var uploadContainer = $('#uploadContainer');
+var theErrorMessage = $('#errorMessage');
+var theSuccessMessage = $('#successMessage');
+var clearFileButton = $('#clearFile');
 
 var fileName = "";
 var fileContent = "";
@@ -17,26 +18,26 @@ var fileContent = "";
     'dragleave',
     'drop' 
 ].forEach(function (dragEvent) {
-    uploadContainer.addEventListener(dragEvent, preventDragDefault);
+    uploadContainer[0].addEventListener(dragEvent, preventDragDefault);
 });
 
 ['dragover', 'dragenter'].forEach(function(dragEvent) {
-    uploadContainer.addEventListener(dragEvent, function () {
+    uploadContainer[0].addEventListener(dragEvent, function () {
         uploadContainer.classList.add('dragging');
     })
 });
 
 ['dragleave', 'dragend', 'drop'].forEach(function(dragEvent) {
-    uploadContainer.addEventListener(dragEvent, function () {
+    uploadContainer[0].addEventListener(dragEvent, function () {
         uploadContainer.classList.remove('dragging');
     })
 });
 
-clearFileButton.onclick = clearFileTag;
+clearFileButton.click(clearFileTag);
 
-uploadContainer.addEventListener('drop', function (e) {
+uploadContainer[0].addEventListener('drop', function (e) {
     if(e.dataTransfer.files.length > 1) {
-        theErrorMessage.innerHTML = "Drag only one file...";
+        theErrorMessage.innerHTML = "Bitte maximal eine Datei auswählen...";
         theErrorMessage.classList.remove('hide');
         return false;
     }
@@ -48,22 +49,22 @@ uploadContainer.addEventListener('drop', function (e) {
     }
 })
 
-uploadField.onchange = function (e) {
+uploadField.change(function (e) {
     var theFile = e.target.files[0];
 
     if(checkFileProperties(theFile)) {
         handleUploadedFile(theFile);
     }
 
-}
+});
 
  function checkFileProperties(theFile) {
-     theErrorMessage.classList.add('hide');
-     theSuccessMessage.classList.add('hide');
+     theErrorMessage.addClass('hide');
+     theSuccessMessage.addClass('hide');
 	
-     if (theFile.size > 5000000) {
-         theErrorMessage.innerHTML = "File too large, cannot be more than 500KB...";
-         theErrorMessage.classList.remove('hide');
+     if (theFile.size > 10000000) {
+         theErrorMessage.html("Die ausgewählte Datei ist zu groß. Maximal sind 10MB möglich.");
+         theErrorMessage.removeClass('hide');
          return false;
      }
 
@@ -71,33 +72,35 @@ uploadField.onchange = function (e) {
 
  }
 
-uploadForm.onsubmit = function (e) {
+uploadForm.submit(function (e) {
     e.preventDefault();
     
 	if(fileContent === "") {
-		theErrorMessage.innerHTML = "No File selected";
-		theErrorMessage.classList.remove('hide');
+		theErrorMessage.html("Keine Datei ausgewählt.");
+		theErrorMessage.removeClass('hide');
 	}
 	else
     {
 		jQuery.ajax({
 			method: 'POST',
-			url: '/upload',
+			url: '../api/projects/upload',
 			data: {
 				name: fileName,
                 content: fileContent,
-                project_id: document.getElementById('project_id').value
-			}
+                project_id: $('input#project_id').val()
+            }
 		})
 		.done(function (resp) {
 			if(resp !== undefined) {
-				theSuccessMessage.innerHTML = "Erfolgreich!";
-                theSuccessMessage.classList.remove('hide');
+                clearFileTag();
+				theSuccessMessage.html("Erfolgreich!");
+                theSuccessMessage.removeClass('hide');
                 addFile({filename:fileName, id:resp});
+                fileName = "";
 			}
 		});
 	}
-}
+});
 
 function handleUploadedFile(file) {
 	clearFileTag();
@@ -109,17 +112,15 @@ function handleUploadedFile(file) {
 		fileContent = evt.target.result;
 	}
 	reader.onerror = function (evt) {
-		theErrorMessage.innerHTML = "Error while uploading";
-		theErrorMessage.classList.remove('hide');
+		theErrorMessage.html("Fehler beim Hochladen!");
+		theErrorMessage.removeClass('hide');
 	}
 	
-	var fileTag = document.createElement("p");
- 	fileTag.setAttribute('id', 'fileTag');
-	fileTag.innerHTML = fileName;
+	var fileTag = $("<p></p>").attr("id","fileTag").html(fileName);
 	uploadContainer.prepend(fileTag);
-	uploadInfo.classList.add('hide');
-	clearFileButton.classList.remove('hide');
-	uploadContainer.classList.add('uploadContainer-filled');
+	uploadInfo.addClass('hide');
+	clearFileButton.removeClass('hide');
+	uploadContainer.addClass('uploadContainer-filled');
 }
 
 function clearFileTag(e) {
@@ -127,18 +128,18 @@ function clearFileTag(e) {
         e.preventDefault();
     }
 
-    var fileTag = document.querySelector('#fileTag');
+    var fileTag = $('#fileTag');
 
     if(fileTag) {
-        uploadContainer.removeChild(fileTag);
-        uploadField.value = null;
+        fileTag.remove();
+        uploadField.val(null);
     }
 
-	uploadInfo.classList.remove('hide');
-	clearFileButton.classList.add('hide');
-	uploadContainer.classList.remove('uploadContainer-filled');
-    theErrorMessage.classList.add('hide');
-    theSuccessMessage.classList.add('hide');
+	uploadInfo.removeClass('hide');
+	clearFileButton.addClass('hide');
+	uploadContainer.removeClass('uploadContainer-filled');
+    theErrorMessage.addClass('hide');
+    theSuccessMessage.addClass('hide');
 }
 
 

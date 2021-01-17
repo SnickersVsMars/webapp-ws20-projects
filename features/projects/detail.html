@@ -18,8 +18,8 @@
 </head>
 
 <body>
-    <template id="action-buttons-template">        
-        <button type="button" class="btn btn-primary btn-sm openBtn" name="openBtn"><i class="material-icons">cloud_download</i></button>
+    <template id="action-buttons-template">
+        <a class="btn btn-primary btn-sm openBtn" href="#" role="button"><i class="material-icons">cloud_download</i></a>        
         <button type="button" class="btn btn-danger btn-sm deleteBtn" name="deleteBtn"><i class="material-icons">delete_outline</i></button>
     </template>
 
@@ -121,8 +121,8 @@
                         </tr>
                     </thead>
                     <tbody id="table-files-body">
-                        <tr>
-                            <td colspan="3">Keine Dateien vorhanden</td>
+                        <tr id="tr-files-empty">
+                            <td colspan="2">Keine Dateien vorhanden</td>
                         </tr>
                     </tbody>
                 </table>
@@ -132,7 +132,7 @@
 						<input type="file" id="uploadField">
 						<input type="hidden" id="project_id" value="">
 						<p id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</p>
-						<button id="clearFile" type="button" class="btn btn-outline-danger hide">x</button>
+						<button id="clearFile" type="button" class="btn btn-outline-danger hide"><i class="material-icons">close</i></button>
 					</label>
 					<p id="errorMessage" class="hide"></p>
 					<p id="successMessage" class="hide"></p>

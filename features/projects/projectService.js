@@ -124,7 +124,7 @@ class ProjectService {
         for (var i = 0; i < milestones.length; i++) {
             milestones[i].project_id = projectId;
             let milestonePromise = dbConnection.insert(
-                milestones,
+                insertMilestoneQuery,
                 milestones[i]
             );
             insertPromises.push(milestonePromise);

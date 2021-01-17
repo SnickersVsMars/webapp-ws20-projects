@@ -66,7 +66,6 @@ class ProjectService {
             if (project.length < 1) {
                 throw `${id} not found`;
             }
-
             project = project[0];
         }
 

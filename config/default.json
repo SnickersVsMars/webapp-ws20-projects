@@ -4,7 +4,7 @@
         "host": "snickersvsmars.online",
         "user": "user",
         "password": "IleXTrUegYPhopECTAL",
-        "database": "webapp_prod"
+        "database": "webapp_dev"
     },
 
     "port": 3000

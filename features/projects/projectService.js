@@ -127,7 +127,6 @@ class ProjectService {
         return projectId;
     }
 
-  
     update(id, project, success) {
         if (id == null || project == null) {
             return null;
@@ -139,12 +138,11 @@ class ProjectService {
             }
 
             let toUpdate = result;
-    //------------------------------update project field----------------------------------------------------
-    // lastchanged = Date.now(); 
-   
+            //------------------------------update project field----------------------------------------------------
+            // lastchanged = Date.now();
 
-  //------------------------------update employee field---------------------------------------------
-              // TODO map properties
+            //------------------------------update employee field---------------------------------------------
+            // TODO map properties
             // --> overwrite old values with new values (map properties)
             // e.g. toUpdate.manager = project.manager, ...
             // DO NOT MAP ID AND NUMBER (they are unchangable)
@@ -214,83 +212,90 @@ class ProjectService {
 
             //-------------------------------update Milestones field-------------------------------------------
 
-        
-                    dbConnection.select(
-                        `SELECT id, date, label, description FROM milestones WHERE project_id = ${id}`,
-                        (error, milestones) => {
-                            if (error) {
-                                return success(error, null);
+            dbConnection.select(
+                `SELECT id, date, label, description FROM milestones WHERE project_id = ${id}`,
+                (error, milestones) => {
+                    if (error) {
+                        return success(error, null);
+                    }
+
+                    let ids = [];
+                    for (let i = 0; i < milestones.length; i++) {
+                        ids.push(milestones[i].id);
+                    }
+                    //console.log(milestones.ids)
+
+                    if (project.milestones !== undefined) {
+                        for (let i = 0; i < project.milestones.length; i++) {
+                            if (project.milestones[i].id === undefined) {
+                                project.milestones[i].project_id = id;
+
+                                dbConnection.insert(
+                                    'INSERT INTO milestones SET ?',
+                                    project.milestones[i],
+                                    () => {}
+                                );
+                                continue;
                             }
-        
-                            let ids = [];
-                            for (let i = 0; i < milestones.length; i++) {
-                                ids.push(milestones[i].id);
-                            }
-                            //console.log(milestones.ids)
-        
-                            if (project.milestones !== undefined) {
-                                for (let i = 0; i < project.milestones.length; i++) {
-                                    if (project.milestones[i].id === undefined) {
-                                        project.milestones[i].project_id = id;
-        
-                                        dbConnection.insert(
-                                            'INSERT INTO milestones SET ?',
-                                            project.milestones[i],
-                                            () => {}
-                                        );
-                                        continue;
-                                    }
-        
-                                    let idAsNumber = parseInt(project.milestones[i].id);
-                                    let index = ids.indexOf(idAsNumber);
-        
-                                    if (index > -1) {
-                                        ids.splice(index, 1);
-        
-                                        // check if milestones was updated
-                                        let oldMile = milestones.find((x) => {
-                                            return x.id === idAsNumber;
-                                        });
 
-                                        let changed = false;
+                            let idAsNumber = parseInt(project.milestones[i].id);
+                            let index = ids.indexOf(idAsNumber);
 
-                                        if (oldMile.date !== project.milestones[i].date) {
-                                            oldMile.date = project.milestones[i].date;
-                                            changed = true; 
-                                        }
+                            if (index > -1) {
+                                ids.splice(index, 1);
 
-                                        if (oldMile.label !== project.milestones[i].label) {
-                                            oldMile.label = project.milestones[i].label;
-                                            changed = true; 
-                                        } 
+                                // check if milestones was updated
+                                let oldMile = milestones.find((x) => {
+                                    return x.id === idAsNumber;
+                                });
 
-                                        if (oldMile.description !== project.milestones[i].description) {
-                                            oldMile.description = project.milestones[i].description;
-                                            changed = true; 
-                                        }
+                                let changed = false;
 
-                                        if (changed) {
-
-                                            dbConnection.update(
-                                                `UPDATE milestones SET ? WHERE id = ${idAsNumber}`,
-                                                oldMile,
-                                                () => {}
-                                            );
-                                        }
-                                    }
+                                if (
+                                    oldMile.date !== project.milestones[i].date
+                                ) {
+                                    oldMile.date = project.milestones[i].date;
+                                    changed = true;
                                 }
-        
-                                if (ids.length > 0) {
-                                    for (let i = 0; i < ids.length; i++) {
-                                        dbConnection.delete(
-                                            `DELETE FROM milestones WHERE id = ${ids[i]}`,
-                                            () => {}
-                                        );
-                                    }
+
+                                if (
+                                    oldMile.label !==
+                                    project.milestones[i].label
+                                ) {
+                                    oldMile.label = project.milestones[i].label;
+                                    changed = true;
+                                }
+
+                                if (
+                                    oldMile.description !==
+                                    project.milestones[i].description
+                                ) {
+                                    oldMile.description =
+                                        project.milestones[i].description;
+                                    changed = true;
+                                }
+
+                                if (changed) {
+                                    dbConnection.update(
+                                        `UPDATE milestones SET ? WHERE id = ${idAsNumber}`,
+                                        oldMile,
+                                        () => {}
+                                    );
                                 }
                             }
                         }
-                    );
+
+                        if (ids.length > 0) {
+                            for (let i = 0; i < ids.length; i++) {
+                                dbConnection.delete(
+                                    `DELETE FROM milestones WHERE id = ${ids[i]}`,
+                                    () => {}
+                                );
+                            }
+                        }
+                    }
+                }
+            );
 
             // TODO remove once implementation is done
             success(null, parseInt(id));

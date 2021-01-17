@@ -1,7 +1,7 @@
-let http = require('http');
-let Url = require('url-parse');
-let mysql = require('mysql');
-let con = mysql.createConnection({
+const http = require('http');
+const Url = require('url-parse');
+const mysql = require('mysql');
+const con = mysql.createConnection({
     host: 'snickersvsmars.online',
     user: 'user',
     password: 'IleXTrUegYPhopECTAL',

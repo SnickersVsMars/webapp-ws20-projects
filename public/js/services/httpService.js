@@ -33,5 +33,13 @@ const HttpService = (function () {
                 cache: false,
             });
         },
+
+        delete: function (path) {
+            return $.ajax({
+                url: pathPrefix + path,
+                type: 'DELETE',
+                cache: false,
+            });
+        },
     };
 })();

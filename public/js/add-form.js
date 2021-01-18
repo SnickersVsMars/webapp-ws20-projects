@@ -47,7 +47,6 @@ const handleFormSubmit = (form) => {
                         value +
                         '</div>'
                 );
-
                 return;
             }
 

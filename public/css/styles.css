@@ -332,8 +332,66 @@ table tr td input:nth-of-type(2) {
     min-width: 10rem;
 }
 
+#uploadForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#uploadContainer {
+    height: 150px;
+    width: 280px;
+    border: 3px dashed darkgray;
+    background-color: #fafafa;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 40px;
+    color: darkgrey;
+    cursor: pointer;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.uploadContainer-filled
+{
+	border: 3px solid darkgray !important;
+	color: black !important;
+}
+
+#uploadField {
+    display: none;
+}
+
+#errorMessage, #successMessage {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+#errorMessage {
+    color: red;
+}
+
+#successMessage {
+    color: green;
+}
+
+#uploadContainer.dragging {
+    border-color: green;
+    border-width: 10px;
+    opacity: .3;
+}
+
 .truncate {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.clear-file-button
+{
+    margin: 5px;
 }

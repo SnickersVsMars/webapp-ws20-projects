@@ -30,7 +30,6 @@
         "express": "^4.17.1",
         "express-fileupload": "^1.2.0",
         "express-validator": "^6.9.2",
-        "fs": "0.0.1-security",
         "mysql2": "^2.2.5",
         "pm2": "^4.5.1",
         "puppeteer": "^5.5.0",

@@ -42,6 +42,13 @@ const insertProjectQuery = 'INSERT INTO projects SET ?';
 const insertEmployeeQuery = 'INSERT INTO employees SET ?';
 const insertMilestoneQuery = 'INSERT INTO milestones SET ?';
 
+const updateProjectQuery = `UPDATE projects SET ? WHERE id = ?`;
+const updateEmployeeQuery = `UPDATE employees SET ? WHERE id = ?`;
+const updateMilestoneQuery = `UPDATE milestones SET ? WHERE id = ?`;
+
+const deleteEmployeeQuery = `DELETE FROM employees WHERE id = ?`;
+const deleteMilestoneQuery = `DELETE FROM milestones WHERE id = ?`;
+
 class ProjectService {
     async get() {
         let projects = await dbConnection.select(getProjectsQuery);
@@ -127,179 +134,154 @@ class ProjectService {
         return projectId;
     }
 
-    update(id, project, success) {
+    //let toUpdate = result;
+    //------------------------------update project field----------------------------------------------------
+    // lastchanged = Date.now();
+
+    // TODO 3. add check for milestones (see employees)
+    // --> new milestones have no id -> insert them into the database
+    // --> go through list of milestone ids and delete milestones
+    // that are in the database but weren't in the new project
+
+    async update(id, project) {
         if (id == null || project == null) {
             return null;
         }
+        let dbProject = await this.find(id);
 
-        this.find(id, (error, result) => {
-            if (error) {
-                return success(error, null);
+        let employees = project.employees ?? [];
+        let dbEmployees = dbProject.employees ?? [];
+        let milestones = project.milestones ?? [];
+        let dbMilestones = dbProject.milestones ?? [];
+
+        delete dbProject.milestones;
+        delete dbProject.employees;
+
+        dbProject.manager = project.manager ?? null;
+        dbProject.label = project.label ?? null;
+        dbProject.description = project.description ?? null;
+        dbProject.customer = project.customer ?? null;
+        dbProject.costCenter = project.costCenter ?? null;
+
+        await dbConnection.update(updateProjectQuery, [
+            dbProject,
+            dbProject.id,
+        ]);
+
+        //------------------------------update employee field---------------------------------------------
+        // TODO map properties
+        // --> overwrite old values with new values (map properties)
+        // e.g. toUpdate.manager = project.manager, ...
+        // DO NOT MAP ID AND NUMBER (they are unchangable)
+        //findEmployeesByProjectQuery     'SELECT id, name FROM employees WHERE project_id = ? ORDER BY name ASC';
+        //findEmployeesByProjectQuery
+
+        //new project employee data
+
+        let ids = [];
+
+        for (let i = 0; i < dbEmployees.length; i++) {
+            ids.push(dbEmployees[i].id);
+        }
+        // new employees !!!!!
+        for (let i = 0; i < employees.length; i++) {
+            if (employees[i].id === undefined) {
+                employees[i].project_id = id;
+
+                await dbConnection.insert(insertEmployeeQuery, employees[i]);
+
+                continue;
             }
 
-            let toUpdate = result;
-            //------------------------------update project field----------------------------------------------------
-            // lastchanged = Date.now();
+            let idAsNumber = parseInt(employees[i].id);
+            let index = ids.indexOf(idAsNumber);
 
-            //------------------------------update employee field---------------------------------------------
-            // TODO map properties
-            // --> overwrite old values with new values (map properties)
-            // e.g. toUpdate.manager = project.manager, ...
-            // DO NOT MAP ID AND NUMBER (they are unchangable)
-            dbConnection.select(
-                `SELECT id, name FROM employees WHERE project_id = ${id}`,
-                (error, employees) => {
-                    if (error) {
-                        return success(error, null);
-                    }
+            if (index > -1) {
+                ids.splice(index, 1);
 
-                    let ids = [];
-                    for (let i = 0; i < employees.length; i++) {
-                        ids.push(employees[i].id);
-                    }
+                // check if employee was updated find -> js not
+                let emp = dbEmployees.find((x) => {
+                    return x.id === idAsNumber;
+                });
+                if (emp.name !== employees[i].name) {
+                    emp.name = employees[i].name;
 
-                    if (project.employees !== undefined) {
-                        for (let i = 0; i < project.employees.length; i++) {
-                            if (project.employees[i].id === undefined) {
-                                project.employees[i].project_id = id;
-
-                                dbConnection.insert(
-                                    'INSERT INTO employees SET ?',
-                                    project.employees[i],
-                                    () => {}
-                                );
-                                continue;
-                            }
-
-                            let idAsNumber = parseInt(project.employees[i].id);
-                            let index = ids.indexOf(idAsNumber);
-
-                            if (index > -1) {
-                                ids.splice(index, 1);
-
-                                // check if employee was updated
-                                let emp = employees.find((x) => {
-                                    return x.id === idAsNumber;
-                                });
-                                if (emp.name !== project.employees[i].name) {
-                                    emp.name = project.employees[i].name;
-
-                                    dbConnection.update(
-                                        `UPDATE employees SET ? WHERE id = ${idAsNumber}`,
-                                        emp,
-                                        () => {}
-                                    );
-                                }
-                            }
-                        }
-
-                        if (ids.length > 0) {
-                            for (let i = 0; i < ids.length; i++) {
-                                dbConnection.delete(
-                                    `DELETE FROM employees WHERE id = ${ids[i]}`,
-                                    () => {}
-                                );
-                            }
-                        }
-                    }
+                    await dbConnection.update(updateEmployeeQuery, [
+                        emp,
+                        emp.id,
+                    ]);
                 }
-            );
+            }
+        }
 
-            // TODO 3. add check for milestones (see employees)
-            // --> new milestones have no id -> insert them into the database
-            // --> go through list of milestone ids and delete milestones
-            // that are in the database but weren't in the new project
+        if (ids.length > 0) {
+            for (let i = 0; i < ids.length; i++) {
+                await dbConnection.delete(deleteEmployeeQuery, [ids[i]]);
+            }
+        }
 
-            //-------------------------------update Milestones field-------------------------------------------
+        //-------------------------------update Milestones field-------------------------------------------
 
-            dbConnection.select(
-                `SELECT id, date, label, description FROM milestones WHERE project_id = ${id}`,
-                (error, milestones) => {
-                    if (error) {
-                        return success(error, null);
-                    }
+        //new project employee data
+        let idsMiles = [];
 
-                    let ids = [];
-                    for (let i = 0; i < milestones.length; i++) {
-                        ids.push(milestones[i].id);
-                    }
-                    //console.log(milestones.ids)
+        for (let i = 0; i < dbMilestones.length; i++) {
+            idsMiles.push(dbMilestones[i].id);
+        }
 
-                    if (project.milestones !== undefined) {
-                        for (let i = 0; i < project.milestones.length; i++) {
-                            if (project.milestones[i].id === undefined) {
-                                project.milestones[i].project_id = id;
+        for (let i = 0; i < milestones.length; i++) {
+            if (milestones[i].id === undefined) {
+                milestones[i].project_id = id;
 
-                                dbConnection.insert(
-                                    'INSERT INTO milestones SET ?',
-                                    project.milestones[i],
-                                    () => {}
-                                );
-                                continue;
-                            }
+                await dbConnection.insert(insertMilestoneQuery, milestones[i]);
 
-                            let idAsNumber = parseInt(project.milestones[i].id);
-                            let index = ids.indexOf(idAsNumber);
+                continue;
+            }
 
-                            if (index > -1) {
-                                ids.splice(index, 1);
+            let idAsNumber = parseInt(milestones[i].id);
+            let index = ids.indexOf(idAsNumber);
 
-                                // check if milestones was updated
-                                let oldMile = milestones.find((x) => {
-                                    return x.id === idAsNumber;
-                                });
+            if (index > -1) {
+                idsMiles.splice(index, 1);
 
-                                let changed = false;
+                // check if milestones was updated
+                let oldMile = milestones.find((x) => {
+                    return x.id === idAsNumber;
+                });
 
-                                if (
-                                    oldMile.date !== project.milestones[i].date
-                                ) {
-                                    oldMile.date = project.milestones[i].date;
-                                    changed = true;
-                                }
+                let changed = false;
 
-                                if (
-                                    oldMile.label !==
-                                    project.milestones[i].label
-                                ) {
-                                    oldMile.label = project.milestones[i].label;
-                                    changed = true;
-                                }
-
-                                if (
-                                    oldMile.description !==
-                                    project.milestones[i].description
-                                ) {
-                                    oldMile.description =
-                                        project.milestones[i].description;
-                                    changed = true;
-                                }
-
-                                if (changed) {
-                                    dbConnection.update(
-                                        `UPDATE milestones SET ? WHERE id = ${idAsNumber}`,
-                                        oldMile,
-                                        () => {}
-                                    );
-                                }
-                            }
-                        }
-
-                        if (ids.length > 0) {
-                            for (let i = 0; i < ids.length; i++) {
-                                dbConnection.delete(
-                                    `DELETE FROM milestones WHERE id = ${ids[i]}`,
-                                    () => {}
-                                );
-                            }
-                        }
-                    }
+                if (oldMile.date !== milestones[i].date) {
+                    oldMile.date = milestones[i].date;
+                    changed = true;
                 }
-            );
 
-            // TODO remove once implementation is done
-            success(null, parseInt(id));
-        });
+                if (oldMile.label !== milestones[i].label) {
+                    oldMile.label = milestones[i].label;
+                    changed = true;
+                }
+
+                if (oldMile.description !== project.milestones[i].description) {
+                    oldMile.description = milestones[i].description;
+                    changed = true;
+                }
+
+                if (changed) {
+                    await dbConnection.update(updateMilestoneQuery, [
+                        oldMile,
+                        oldMile.id,
+                    ]);
+                }
+            }
+        }
+
+        if (ids.length > 0) {
+            for (let i = 0; i < ids.length; i++) {
+                await dbConnection.delete(deleteMilestoneQuery), [idsMiles[i]];
+            }
+        }
+
+        return parseInt(id);
     }
 }
 

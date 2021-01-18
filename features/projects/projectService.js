@@ -275,9 +275,9 @@ class ProjectService {
             }
         }
 
-        if (ids.length > 0) {
-            for (let i = 0; i < ids.length; i++) {
-                await dbConnection.delete(deleteMilestoneQuery), [idsMiles[i]];
+        if (idsMiles.length > 0) {
+            for (let i = 0; i < idsMiles.length; i++) {
+                await dbConnection.delete(deleteMilestoneQuery, [idsMiles[i]]);
             }
         }
 

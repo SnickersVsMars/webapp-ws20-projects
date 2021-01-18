@@ -86,22 +86,17 @@ apiRouter.postAsync(
     }
 );
 
-apiRouter.put(
+apiRouter.putAsync(
     '/:id',
     projectValidationService.validationArray,
-    (req, res, next) => {
+    async (req, res) => {
         let result = projectValidationService.validate(req, res);
         if (result) {
             return result;
         }
-        let success = (error, result) => {
-            if (error) {
-                return next(error);
-            }
 
-            res.json(result);
-        };
-        projectService.update(req.params.id, req.body, success);
+        let projectId = await projectService.update(req.params.id, req.body);
+        res.json(projectId);
     }
 );
 

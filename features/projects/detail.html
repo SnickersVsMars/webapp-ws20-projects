@@ -163,10 +163,12 @@
 
 				<form id="uploadForm">
 					<label for="uploadField" id="uploadContainer">
-						<input type="file" id="uploadField">
-						<input type="hidden" id="project_id" value="">
-						<p id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</p>
-						<button id="clearFile" type="button" class="btn btn-outline-danger hide"><i class="material-icons">close</i></button>
+                        <div>
+                            <input type="file" id="uploadField">
+                            <input type="hidden" id="project_id" value="">
+                            <p id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</p>
+                            <button id="clearFile" type="button" class="btn btn-outline-danger hide"><i class="material-icons">close</i></button>
+                        </div>
 					</label>
 					<p id="errorMessage" class="hide"></p>
 					<p id="successMessage" class="hide"></p>

@@ -23,13 +23,13 @@ var fileContent = "";
 
 ['dragover', 'dragenter'].forEach(function(dragEvent) {
     uploadContainer[0].addEventListener(dragEvent, function () {
-        uploadContainer.classList.add('dragging');
+        uploadContainer[0].classList.add('dragging');
     })
 });
 
 ['dragleave', 'dragend', 'drop'].forEach(function(dragEvent) {
     uploadContainer[0].addEventListener(dragEvent, function () {
-        uploadContainer.classList.remove('dragging');
+        uploadContainer[0].classList.remove('dragging');
     })
 });
 
@@ -42,7 +42,7 @@ uploadContainer[0].addEventListener('drop', function (e) {
         return false;
     }
     var theFile = e.dataTransfer.files[0];
-    uploadField.files[0] = theFile;
+    uploadField[0].files[0] = theFile;
 
     if(checkFileProperties(theFile)) {
         handleUploadedFile(theFile);

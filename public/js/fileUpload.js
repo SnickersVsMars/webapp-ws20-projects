@@ -65,7 +65,7 @@ function checkFileProperties(theFile) {
         $theErrorMessage.text(
             'Die ausgewählte Datei ist zu groß. Maximal sind 10MB möglich.'
         );
-        $theErrorMessage.hide();
+        $theErrorMessage.show();
         return false;
     }
 

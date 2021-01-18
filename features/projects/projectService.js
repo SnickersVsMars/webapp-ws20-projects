@@ -162,6 +162,10 @@ class ProjectService {
         dbProject.description = project.description ?? null;
         dbProject.customer = project.customer ?? null;
         dbProject.costCenter = project.costCenter ?? null;
+        dbProject.lastChanged = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace('T', ' ');
 
         await dbConnection.update(updateProjectQuery, [
             dbProject,

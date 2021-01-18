@@ -162,14 +162,12 @@
                 </table>
 
 				<form id="uploadForm">
+                    <input type="file" id="uploadField">
+                    <input type="hidden" id="project_id" value="">
 					<label for="uploadField" id="uploadContainer">
-                        <div>
-                            <input type="file" id="uploadField">
-                            <input type="hidden" id="project_id" value="">
                             <p id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</p>
-                            <button id="clearFile" type="button" class="btn btn-outline-danger hide"><i class="material-icons">close</i></button>
-                        </div>
-					</label>
+                    </label>                    
+                    <button id="clearFile" type="button" class="btn btn-outline-danger hide clear-file-button"><i class="material-icons">close</i></button>
 					<p id="errorMessage" class="hide"></p>
 					<p id="successMessage" class="hide"></p>
 					<button class="btn btn-outline-dark" type="submit">Upload</button>

@@ -102,7 +102,7 @@ apiRouter.postAsync('/upload', async (req, res) => {
 
 
         let file_id = await fileService.insert(file).catch((error) => {
-            res.status(500).json(error);
+            res.status(550).json(error);
         });
 
         if (file_id) {
@@ -110,7 +110,7 @@ apiRouter.postAsync('/upload', async (req, res) => {
 		}
 		else
 		{
-            res.status(500).json('Fehler beim Upload');
+            res.status(550).json('Fehler beim Upload');
 		}
 	}
 });

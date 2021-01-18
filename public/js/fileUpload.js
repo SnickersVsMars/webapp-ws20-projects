@@ -93,11 +93,20 @@ $uploadForm.submit(function (e) {
                     fileName = '';
                 }
             })
-            .fail(function (XMLHttpRequest) {
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 clearFileTag();
-                $theErrorMessage.text(
-                    XMLHttpRequest.responseText.replace(/['"]+/g, '')
-                );
+                if(XMLHttpRequest.status == 550) //custom error
+                {
+                    $theErrorMessage.text(
+                        XMLHttpRequest.responseText.replace(/['"]+/g, '')
+                    );
+                }
+                else
+                {
+                    $theErrorMessage.text(
+                        "Fehler beim Upload!"
+                    );
+                }
                 $theErrorMessage.show();
                 fileName = '';
             });

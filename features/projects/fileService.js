@@ -1,14 +1,7 @@
 const dbConnection = require('../dbConnection');
 
 class FileService {
-    get(success) {
-        let selectQuery = `SELECT id, project_id, filename, mimeType, content
-        FROM files`;
-
-        dbConnection.select(selectQuery, success);
-    }
-
-    delete(id, success) {
+    async delete(id) {
         if (id == null) {
             return null;
         }
@@ -21,19 +14,18 @@ class FileService {
             return null;
         }
 
-        dbConnection.insert(
-            `DELETE FROM files WHERE id = ${id}`,
-            (error) => {
-                if (error) {
-                    return success(error, null);
-                }
-
-                success();
-            }
+        let result = await dbConnection.insert(
+            `DELETE FROM files WHERE id = ?`,
+            [id]
         );
+
+        if(result.affectedRows == 0)
+            throw 'Not found';
+
+        return "";
     }
 
-    find(id, success) {
+    async find(id) {
         if (id == null) {
             return null;
         }
@@ -46,38 +38,31 @@ class FileService {
             return null;
         }
 
-        dbConnection.select(
-            `SELECT * FROM files WHERE id = ${id}`,
-            (error, result) => {
-                if (error) {
-                    return success(error, null);
-                }
-
-                if (!result) {
-                    return success(`${id} not found`, null);
-                }
-
-                let file = result;
-                if (Array.isArray(file)) {
-                    if (file.length > 1) {
-                        return success(
-                            `${id} returns more that one value`,
-                            null
-                        );
-                    }
-
-                    if (file.length < 1) {
-                        return success(`${id} not found`, null);
-                    }
-
-                    file = file[0];
-                    success(null, file);
-                }
-            }
+        let file = await dbConnection.select(
+            `SELECT * FROM files WHERE id = ?`,
+            [id]
         );
+
+        
+        if (!file) {
+            throw `${id} not found`;
+        }
+
+        if (Array.isArray(file)) {
+            if (file.length > 1) {
+                throw `${id} returns more that one value`;
+            }
+
+            if (file.length < 1) {
+                throw `${id} not found`;
+            }
+            file = file[0];
+        }
+
+        return file;
     }
 
-    insert(file, success) {
+    async insert(file) {
         if (file == null) {
             return null;
         }
@@ -86,25 +71,22 @@ class FileService {
             return null;
         }
 
-        let selectQuery = `SELECT count(*) as count
-        FROM files where project_id = ?`;
+        let result = await dbConnection.select(
+            `SELECT count(*) as count
+                FROM files where project_id = ?`,
+            [file.project_id]
+        );
 
-        dbConnection.insert(selectQuery, file.project_id, (error, result) => {
-            if(result[0].count >= 5)
-                return success(`Nur 5 Dateien erlaubt!`, null);
+        if(result[0].count >= 5)
+            throw `Nur 5 Dateien erlaubt!`;
 
-            dbConnection.insert(
-                'INSERT INTO files SET ?',
-                file,
-                (error, result) => {
-                    if (error) {
-                        return success(error, null);
-                    }
-                    success(null, result.insertId);
-                }
-            );
-        });
-    }
+        let inserted_id = await dbConnection.insert(
+           'INSERT INTO files SET ?',
+            [file]
+        );
+        return inserted_id;
+    };
+    
 }
 
 module.exports = new FileService();

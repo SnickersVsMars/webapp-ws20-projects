@@ -95,10 +95,15 @@ uploadForm.submit(function (e) {
                 clearFileTag();
 				theSuccessMessage.html("Erfolgreich!");
                 theSuccessMessage.removeClass('hide');
-                addFile({filename:fileName, id:resp});
+                addFile({filename:fileName, id:resp.insertId});
                 fileName = "";
 			}
-		});
+        }).fail(function (XMLHttpRequest)  {
+            clearFileTag();
+            theErrorMessage.html(XMLHttpRequest.responseText.replace(/['"]+/g, ''));
+            theErrorMessage.removeClass('hide');
+            fileName = "";
+        });
 	}
 });
 
@@ -108,7 +113,6 @@ function handleUploadedFile(file) {
 	var reader = new FileReader();
 	reader.readAsDataURL(file);
 	reader.onload = function (evt) {
-        console.log(evt.target);
 		fileContent = evt.target.result;
 	}
 	reader.onerror = function (evt) {

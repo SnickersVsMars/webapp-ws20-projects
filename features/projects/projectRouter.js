@@ -83,7 +83,7 @@ apiRouter.postAsync(
     }
 );
 
-apiRouter.post('/upload', (req, res) => {
+apiRouter.postAsync('/upload', async (req, res) => {
 	if(req.body.theFile !== "") {
 		let content = req.body.content;
 		let filename = req.body.name;
@@ -92,62 +92,52 @@ apiRouter.post('/upload', (req, res) => {
 		let base64ContentArray = content.split(",");
 		let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
 		let base64Data = base64ContentArray[1];
-		let success = (error, result) => {
-            if (error) {
-                res.status(500).json(error);
-			}
-			else
-			{
-				res.status(200).json(result);
-			}            
-		};
 		
 		let file = {
 			project_id: project_id,
 			filename: filename,
 			content: base64Data,
 			mimeType: mimeType
-		};
+        };
+        
 
-        fileService.insert(file, success);
+        let file_id = await fileService.insert(file).catch((error) => {
+            res.status(500).json(error);
+        });
+
+        if (file_id) {
+			res.status(200).json(file_id);
+		}
+		else
+		{
+            res.status(500).json('Fehler beim Upload');
+		}  
 	}
 });
 
-apiRouter.delete('/deleteFile/:id', (req, res) => {
-    let success = (error, result) => {
-        if (error) {
-            res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
-        }
-		else
-		{
-			res.status(200).end();
-		}
-    };
+apiRouter.deleteAsync('/deleteFile/:id', async (req, res) => {
+    await fileService.delete(req.params.id).catch(() => {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+    });
 
-	fileService.delete(req.params.id, success);
+    res.status(200).end();      
 });
 
-apiRouter.get('/download/:id', (req, res) => {
-    let success = (error, result) => {
-        if (error) {
-            res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
-        }
-		else
-		{
-			const download = Buffer.from(result.content.toString('utf-8'), 'base64');
-			res.writeHead(200, {
-				'Content-Type': result.mimeType,
-				'Content-Disposition': 'attachment; filename="'+result.filename+'"'
-			  });	
-			  res.end(download);
-		}
-    };
-
-	var result = fileService.find(req.params.id, success);
-
-    if (result === null) {
-        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+apiRouter.getAsync('/download/:id', async (req, res) => {
+    var file = await fileService.find(req.params.id);
+    
+    if (file) {
+        const download = Buffer.from(file.content.toString('utf-8'), 'base64');
+        res.writeHead(200, {
+            'Content-Type': file.mimeType,
+            'Content-Disposition': 'attachment; filename="'+file.filename+'"'
+          });	
+          res.end(download);
     }
+    else
+    {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+    }    
 });
 
 // define project router

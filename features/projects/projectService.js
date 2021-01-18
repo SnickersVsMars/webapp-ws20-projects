@@ -22,6 +22,9 @@ const findEmployeesByProjectQuery =
 const findMilestonesByProjectQuery =
     'SELECT id, date, label, description FROM milestones WHERE project_id = ? ORDER BY date ASC';
 
+const findFilesByProjectQuery =
+'SELECT id, filename, project_id FROM files WHERE project_id = ? ORDER BY id ASC';
+
 const parseToNumber = (id) => {
     if (id == null) {
         return null;
@@ -77,6 +80,11 @@ class ProjectService {
             findMilestonesByProjectQuery,
             [id]
         );
+        project.files = await dbConnection.select(
+            findFilesByProjectQuery,
+            [id]
+        );
+
         return project;
     }
 

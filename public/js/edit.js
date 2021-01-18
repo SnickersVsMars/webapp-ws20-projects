@@ -17,9 +17,12 @@ function populateData(project) {
     setDescription($('#input-description'), project.description);
     $('#input-manager').val(validate(project.manager));
     $('#input-customer').val(validate(project.customer));
-    $('#input-costCenter').val(validate(project.costCenter));
-    $('#breadcrumb').val(`PROJEKT ${project.number}`);
+    $('#input-cost-center').val(validate(project.costCenter));
+    $('#last-change-text').text(formatDate(project.lastChanged));
+    $('#breadcrumb').text(`PROJEKT ${project.number}`);
     $('#breadcrumb').attr('href', '/projects/' + project.id);
+
+    console.log(project.description);
 
     fillEmployees(project.employees);
     fillMilestones(project.milestones);
@@ -34,19 +37,8 @@ function fillEmployees(employees) {
         return;
 
     for (let i = 0; i < employees.length; i++) {
-        addEditEmployeeField(employees[i].name, employees[i].id);
+        addEmployeeField(employees[i].name, employees[i].id);
     }
-}
-
-function addEditEmployeeField(value, id) {
-    addEmployeeField(value);
-
-    let $idField = $('<input>');
-    $idField.attr('type', 'hidden');
-    $idField.attr('name', 'employees[][id]');
-    $idField.val(id);
-
-    $('#employee-container .added-employee').append($idField);
 }
 
 function fillMilestones(milestones) {
@@ -72,7 +64,7 @@ function fillMilestones(milestones) {
             milestones[i].label !== 'Projekt Start' &&
             milestones[i].label !== 'Projekt Ende'
         ) {
-            addEditMilestoneField(
+            addMilestoneField(
                 milestones[i].date,
                 milestones[i].label,
                 milestones[i].description,
@@ -80,14 +72,4 @@ function fillMilestones(milestones) {
             );
         }
     }
-}
-
-function addEditMilestoneField(date, label, description, id) {
-    addMilestoneField(date, label, description);
-
-    let $idField = $('<input>');
-    $idField.attr('type', 'hidden');
-    $idField.attr('name', 'milestones[][id]');
-    $idField.attr('value', id);
-    $cardBody.append($idField);
 }

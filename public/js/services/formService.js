@@ -1,4 +1,4 @@
-function addEmployeeField(value) {
+function addEmployeeField(value, id) {
     let $empInput = $('<input>');
     $empInput.addClass('form-control mb-2 input-employee');
     $empInput.attr('type', 'text');
@@ -26,12 +26,24 @@ function addEmployeeField(value) {
         }
     });
 
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+
+    if (id) {
+        $idField.attr('name', 'employees[][id]');
+        $idField.val(id);
+    }
+
     $('#employee-container').append(
-        $('<div class="added-employee">').append($removeButton, $empInput)
+        $('<div class="added-employee">').append(
+            $removeButton,
+            $empInput,
+            $idField
+        )
     );
 }
 
-function addMilestoneField(date, label, description) {
+function addMilestoneField(date, label, description, id) {
     let $cardBody = $('<div class="card-body row">');
 
     let $dateColumn = createFormGroup(
@@ -95,10 +107,19 @@ function addMilestoneField(date, label, description) {
 
     $removeButton.addClass('btn btn-danger d-block');
 
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+
+    if (id) {
+        $idField.attr('name', 'milestones[][id]');
+        $idField.attr('value', id);
+    }
+
     $cardBody.append(
         $('<div class="col">').append(
             $('<label>').html('&nbsp;'),
-            $removeButton
+            $removeButton,
+            $idField
         )
     );
 

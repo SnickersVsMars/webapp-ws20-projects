@@ -45,12 +45,12 @@ const insertProjectQuery = 'INSERT INTO projects SET ?';
 const insertEmployeeQuery = 'INSERT INTO employees SET ?';
 const insertMilestoneQuery = 'INSERT INTO milestones SET ?';
 
-const updateProjectQuery = `UPDATE projects SET ? WHERE id = ?`;
-const updateEmployeeQuery = `UPDATE employees SET ? WHERE id = ?`;
-const updateMilestoneQuery = `UPDATE milestones SET ? WHERE id = ?`;
+const updateProjectQuery = 'UPDATE projects SET ? WHERE id = ?';
+const updateEmployeeQuery = 'UPDATE employees SET ? WHERE id = ?';
+const updateMilestoneQuery = 'UPDATE milestones SET ? WHERE id = ?';
 
-const deleteEmployeeQuery = `DELETE FROM employees WHERE id = ?`;
-const deleteMilestoneQuery = `DELETE FROM milestones WHERE id = ?`;
+const deleteEmployeeQuery = 'DELETE FROM employees WHERE id = ?';
+const deleteMilestoneQuery = 'DELETE FROM milestones WHERE id = ?';
 
 class ProjectService {
     async get() {
@@ -108,6 +108,7 @@ class ProjectService {
 
         delete project.milestones;
         delete project.employees;
+        delete project.files;
 
         let projectResult = await dbConnection.insert(
             insertProjectQuery,
@@ -141,15 +142,6 @@ class ProjectService {
         return projectId;
     }
 
-    //let toUpdate = result;
-    //------------------------------update project field----------------------------------------------------
-    // lastchanged = Date.now();
-
-    // TODO 3. add check for milestones (see employees)
-    // --> new milestones have no id -> insert them into the database
-    // --> go through list of milestone ids and delete milestones
-    // that are in the database but weren't in the new project
-
     async update(id, project) {
         if (id == null || project == null) {
             return null;
@@ -161,8 +153,9 @@ class ProjectService {
         let milestones = project.milestones ?? [];
         let dbMilestones = dbProject.milestones ?? [];
 
-        delete dbProject.milestones;
         delete dbProject.employees;
+        delete dbProject.files;
+        delete dbProject.milestones;
 
         dbProject.manager = project.manager ?? null;
         dbProject.label = project.label ?? null;
@@ -176,25 +169,23 @@ class ProjectService {
 
         await dbConnection.update(updateProjectQuery, [
             dbProject,
-            dbProject.id,
+            parseInt(id),
         ]);
 
-        //------------------------------update employee field---------------------------------------------
-        // TODO map properties
-        // --> overwrite old values with new values (map properties)
-        // e.g. toUpdate.manager = project.manager, ...
-        // DO NOT MAP ID AND NUMBER (they are unchangable)
-        //findEmployeesByProjectQuery     'SELECT id, name FROM employees WHERE project_id = ? ORDER BY name ASC';
-        //findEmployeesByProjectQuery
+        await this.updateEmployees(dbEmployees, employees, id);
 
-        //new project employee data
+        await this.updateMilestones(dbMilestones, milestones, id);
 
+        return parseInt(id);
+    }
+
+    async updateEmployees(dbEmployees, employees, id) {
         let ids = [];
 
         for (let i = 0; i < dbEmployees.length; i++) {
             ids.push(dbEmployees[i].id);
         }
-        // new employees !!!!!
+
         for (let i = 0; i < employees.length; i++) {
             if (employees[i].id === undefined) {
                 employees[i].project_id = id;
@@ -210,7 +201,6 @@ class ProjectService {
             if (index > -1) {
                 ids.splice(index, 1);
 
-                // check if employee was updated find -> js not
                 let emp = dbEmployees.find((x) => {
                     return x.id === idAsNumber;
                 });
@@ -219,7 +209,7 @@ class ProjectService {
 
                     await dbConnection.update(updateEmployeeQuery, [
                         emp,
-                        emp.id,
+                        idAsNumber,
                     ]);
                 }
             }
@@ -230,14 +220,13 @@ class ProjectService {
                 await dbConnection.delete(deleteEmployeeQuery, [ids[i]]);
             }
         }
+    }
 
-        //-------------------------------update Milestones field-------------------------------------------
-
-        //new project employee data
-        let idsMiles = [];
+    async updateMilestones(dbMilestones, milestones, id) {
+        let ids = [];
 
         for (let i = 0; i < dbMilestones.length; i++) {
-            idsMiles.push(dbMilestones[i].id);
+            ids.push(dbMilestones[i].id);
         }
 
         for (let i = 0; i < milestones.length; i++) {
@@ -253,46 +242,43 @@ class ProjectService {
             let index = ids.indexOf(idAsNumber);
 
             if (index > -1) {
-                idsMiles.splice(index, 1);
+                ids.splice(index, 1);
 
-                // check if milestones was updated
-                let oldMile = milestones.find((x) => {
+                let mile = dbMilestones.find((x) => {
                     return x.id === idAsNumber;
                 });
 
                 let changed = false;
 
-                if (oldMile.date !== milestones[i].date) {
-                    oldMile.date = milestones[i].date;
+                if (mile.date !== milestones[i].date) {
+                    mile.date = milestones[i].date;
                     changed = true;
                 }
 
-                if (oldMile.label !== milestones[i].label) {
-                    oldMile.label = milestones[i].label;
+                if (mile.label !== milestones[i].label) {
+                    mile.label = milestones[i].label;
                     changed = true;
                 }
 
-                if (oldMile.description !== project.milestones[i].description) {
-                    oldMile.description = milestones[i].description;
+                if (mile.description !== milestones[i].description) {
+                    mile.description = milestones[i].description;
                     changed = true;
                 }
 
                 if (changed) {
                     await dbConnection.update(updateMilestoneQuery, [
-                        oldMile,
-                        oldMile.id,
+                        mile,
+                        idAsNumber,
                     ]);
                 }
             }
         }
 
-        if (idsMiles.length > 0) {
-            for (let i = 0; i < idsMiles.length; i++) {
-                await dbConnection.delete(deleteMilestoneQuery, [idsMiles[i]]);
+        if (ids.length > 0) {
+            for (let i = 0; i < ids.length; i++) {
+                await dbConnection.delete(deleteMilestoneQuery, [ids[i]]);
             }
         }
-
-        return parseInt(id);
     }
 }
 

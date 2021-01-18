@@ -80,12 +80,9 @@ const handleSubmitResult = (res) => {
 };
 
 const handleFormSubmit = (form) => {
-    data = $(form)
-        .find('input')
-        .not('[value="undefined"]')
-        .serializeJSON({
-            skipFalsyValuesForTypes: ['string'],
-        });
+    data = $(form).serializeJSON({
+        skipFalsyValuesForTypes: ['string'],
+    });
     if (data.hasOwnProperty('projectId')) {
         HttpService.put('projects/' + data.projectId, data).always(
             handleSubmitResult

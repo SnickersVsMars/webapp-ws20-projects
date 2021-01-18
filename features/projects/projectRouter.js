@@ -46,6 +46,10 @@ viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));
 });
 
+viewRouter.get('/:id/edit', (req, res) => {
+    res.sendFile(buildPath('edit.html'));
+});
+
 viewRouter.get('/', (req, res) => {
     res.sendFile(buildPath('list.html'));
 });
@@ -83,6 +87,20 @@ apiRouter.postAsync(
     }
 );
 
+apiRouter.putAsync(
+    '/:id',
+    projectValidationService.validationArray,
+    async (req, res) => {
+        let result = projectValidationService.validate(req, res);
+        if (result) {
+            return result;
+        }
+
+        let projectId = await projectService.update(req.params.id, req.body);
+        res.json(projectId);
+    }
+);
+
 apiRouter.postAsync('/upload', async (req, res) => {
     if (req.body.theFile !== '') {
         let content = req.body.content;
@@ -107,7 +125,7 @@ apiRouter.postAsync('/upload', async (req, res) => {
         });
 
         if (file_id) {
-            res.status(200).json(file_id);
+            res.json(file_id);
         } else {
             res.status(500).json('Fehler beim Upload');
         }
@@ -119,7 +137,7 @@ apiRouter.deleteAsync('/deleteFile/:id', async (req, res) => {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     });
 
-    res.status(200).end();
+    res.end();
 });
 
 apiRouter.getAsync('/download/:id', async (req, res) => {

@@ -87,6 +87,12 @@
     </div>
 
     <main class="container">
+        <div class="clearfix">
+            <button class="btn btn-primary mb-3 mt-4 mr-2 float-right"
+                    id="edit">
+                Projekt bearbeiten
+            </button>
+        </div>
         <div class="card">
             <div class="card-body row">
                 <div class="col-sm-6 col-lg-4">
@@ -112,7 +118,7 @@
                 <div class="col-sm-6 col-lg-4">
                     <p class="project-attribute-title">Kostenstelle</p>
                     <p class="project-attribute-text"
-                       id="costCenter">&nbsp;</p>
+                       id="cost-center">&nbsp;</p>
                 </div>
 
                 <div class="col-12">
@@ -124,6 +130,11 @@
                     <p class="project-attribute-title">Firmeninterne Mitarbeiter</p>
                     <ul id="employees"
                         class="project-attribute-text "></ul>
+                </div>
+                <div class="col-12"
+                     id="lastChange">
+                    <p>Projekt zuletzt geändert am:</p>
+                    <span id="last-change-text"></p>
                 </div>
             </div>
         </div>
@@ -173,7 +184,8 @@
                            value="">
                     <label for="uploadField"
                            id="uploadContainer">
-                        <span id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b> verwenden...</span>
+                        <span id="uploadInfo">Zum Upload <b>hier</b> klicken oder <b>Drag&Drop</b>
+                            verwenden...</span>
                     </label>
                     <button id="clearFile"
                             type="button"

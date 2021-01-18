@@ -356,17 +356,17 @@ table tr td input:nth-of-type(2) {
     overflow: hidden;
 }
 
-.uploadContainer-filled
-{
-	border: 3px solid darkgray !important;
-	color: black !important;
+.uploadContainer-filled {
+    border: 3px solid darkgray !important;
+    color: black !important;
 }
 
 #uploadField {
     display: none;
 }
 
-#errorMessage, #successMessage {
+#errorMessage,
+#successMessage {
     font-size: 18px;
     margin-bottom: 25px;
 }
@@ -382,7 +382,7 @@ table tr td input:nth-of-type(2) {
 #uploadContainer.dragging {
     border-color: green;
     border-width: 10px;
-    opacity: .3;
+    opacity: 0.3;
 }
 
 .truncate {
@@ -391,7 +391,21 @@ table tr td input:nth-of-type(2) {
     text-overflow: ellipsis;
 }
 
-.clear-file-button
-{
+.clear-file-button {
     margin: 5px;
+}
+
+#lastChange {
+    display: flex;
+    justify-content: end;
+}
+
+#lastChange > p,
+#lastChange > span {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+#last-change-text {
+    margin-left: 10px;
 }

@@ -1,0 +1,18 @@
+{
+    "MySqlConnectionPool": {
+        "connectionLimit": 5,
+        "host": "hostname.com",
+        "user": "username",
+        "password": "pw",
+        "database": "db"
+    },
+    "HostingPool": {
+        "connectionLimit": 1,
+        "host": "hostname.com",
+        "user": "username",
+        "password": "pw",
+        "database": "hosting-db"
+    },
+
+    "port": 3000
+}

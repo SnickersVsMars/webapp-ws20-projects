@@ -19,10 +19,9 @@ class FileService {
             [id]
         );
 
-        if(result.affectedRows == 0)
-            throw 'Not found';
+        if (result.affectedRows == 0) throw 'Not found';
 
-        return "";
+        return '';
     }
 
     async find(id) {
@@ -43,7 +42,6 @@ class FileService {
             [id]
         );
 
-        
         if (!file) {
             throw `${id} not found`;
         }
@@ -77,16 +75,13 @@ class FileService {
             [file.project_id]
         );
 
-        if(result[0].count >= 5)
-            throw `Nur 5 Dateien erlaubt!`;
+        if (result[0].count >= 5) throw `Nur 5 Dateien erlaubt!`;
 
-        let inserted_id = await dbConnection.insert(
-           'INSERT INTO files SET ?',
-            [file]
-        );
+        let inserted_id = await dbConnection.insert('INSERT INTO files SET ?', [
+            file,
+        ]);
         return inserted_id;
-    };
-    
+    }
 }
 
 module.exports = new FileService();

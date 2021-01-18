@@ -80,10 +80,9 @@ class ProjectService {
             findMilestonesByProjectQuery,
             [id]
         );
-        project.files = await dbConnection.select(
-            findFilesByProjectQuery,
-            [id]
-        );
+        project.files = await dbConnection.select(findFilesByProjectQuery, [
+            id,
+        ]);
 
         return project;
     }

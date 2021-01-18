@@ -379,10 +379,6 @@ table tr td input:nth-of-type(2) {
     color: green;
 }
 
-.hide {
-    display: none;
-}
-
 #uploadContainer.dragging {
     border-color: green;
     border-width: 10px;

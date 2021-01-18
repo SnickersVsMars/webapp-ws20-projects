@@ -23,7 +23,7 @@ const findMilestonesByProjectQuery =
     'SELECT id, date, label, description FROM milestones WHERE project_id = ? ORDER BY date ASC';
 
 const findFilesByProjectQuery =
-'SELECT id, filename, project_id FROM files WHERE project_id = ? ORDER BY id ASC';
+    'SELECT id, filename, project_id FROM files WHERE project_id = ? ORDER BY id ASC';
 
 const parseToNumber = (id) => {
     if (id == null) {

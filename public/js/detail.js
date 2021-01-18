@@ -54,24 +54,21 @@ function fillFiles(files) {
 }
 
 function addFile(file) {
-    if(!$('#tr-files-empty').hasClass("hide"))
-    {
-        $('#tr-files-empty').addClass("hide");
-    }
+    $('#tr-files-empty').hide();
 
-    let tbody = $('#table-files-body')[0];
-    let tr = tbody.insertRow();
-    tr.id = "tr-file-"+file.id;
+    let $tbody = $('#table-files-body')[0];
+    let $tr = $tbody.insertRow();
+    $tr.id = "tr-file-"+file.id;
 
-    let col = tr.insertCell();     
-    col.innerText = validate(file.filename);
+    let $col = $tr.insertCell();
+    $col.innerText = validate(file.filename);
 
-    let buttons = $('#action-buttons-template')[0].content.cloneNode(true);
-    
-    buttons.querySelector('.openBtn').href = '../api/projects/download/'+file.id;
-    buttons.querySelector('.openBtn').download = file.filename;
-    
-    buttons.querySelector('.deleteBtn').onclick = function(e) {
+    let $buttons = $('#action-buttons-template')[0].content.cloneNode(true);
+
+    $buttons.querySelector('.openBtn').href = '../api/projects/download/'+file.id;
+    $buttons.querySelector('.openBtn').download = file.filename;
+
+    $buttons.querySelector('.deleteBtn').onclick = function(e) {
         e.preventDefault();
         jQuery.ajax({
 			method: 'DELETE',
@@ -79,18 +76,18 @@ function addFile(file) {
 		})
 		.done(function (resp, status) {
             if (status==="success") {
-                trDelete = $('#tr-file-'+file.id)[0];
-                tbody.removeChild(trDelete);
+                $trDelete = $('#tr-file-'+file.id)[0];
+                $tbody.removeChild($trDelete);
 
-                if(tbody.children.length < 2 && $('#tr-files-empty').hasClass("hide"))
+                if($tbody.children.length < 2)
                 {
-                    $('#tr-files-empty').removeClass("hide");
+                    $('#tr-files-empty').show();
                 }
             }
 		});
     };
-    let col2 = tr.insertCell();   
-    col2.appendChild(buttons);
+    let $col2 = $tr.insertCell();
+    $col2.appendChild($buttons);
 }
 
 function fillMilestones(milestones) {

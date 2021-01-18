@@ -70,10 +70,8 @@ function addFile(file) {
 
     $buttons.querySelector('.deleteBtn').onclick = function(e) {
         e.preventDefault();
-        jQuery.ajax({
-			method: 'DELETE',
-			url: '/api/projects/deleteFile/'+file.id
-		})
+
+        HttpService.delete('projects/deleteFile/'+file.id)
 		.done(function (resp, status) {
             if (status==="success") {
                 $trDelete = $('#tr-file-'+file.id)[0];

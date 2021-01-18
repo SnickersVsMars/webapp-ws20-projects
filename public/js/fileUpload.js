@@ -79,15 +79,10 @@ $uploadForm.submit(function (e) {
         $theErrorMessage.text('Keine Datei ausgewählt.');
         $theErrorMessage.show();
     } else {
-        jQuery
-            .ajax({
-                method: 'POST',
-                url: '../api/projects/upload',
-                data: {
-                    name: fileName,
-                    content: fileContent,
-                    project_id: $('input#project_id').val(),
-                },
+            HttpService.post('projects/upload', {
+                name: fileName,
+                content: fileContent,
+                project_id: $('input#project_id').val(),
             })
             .done(function (resp) {
                 if (resp !== undefined) {

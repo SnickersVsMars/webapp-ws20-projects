@@ -1,31 +1,48 @@
 const http = require('http');
 const Url = require('url-parse');
-const mysql = require('mysql');
-const con = mysql.createConnection({
-    host: 'snickersvsmars.online',
-    user: 'user',
-    password: 'IleXTrUegYPhopECTAL',
-    database: 'hosting',
-});
+const mysql = require('mysql2/promise');
+const path = require('path');
 
+// get database config from config file
+process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '..', 'config');
+const config = require('config');
+
+const poolConfig = config.get('HostingPool');
+
+// create simple http server for the reverse proxy
 http.createServer(function (req, res) {
+    let pool = mysql.createPool(poolConfig);
     let url = new Url('https://' + req.headers['host'] + req.url);
     let route = url.pathname;
-    console.log('route: ' + req.protocol);
-    con.query(
-        'SELECT port FROM HostingTable WHERE route = ?',
-        [route],
-        function (err, rows) {
-            console.log('route 2: ' + route);
-            if (err) throw err;
-            if (rows.length > 0) {
-                res.writeHead(302, {
-                    Location: 'http://' + url.hostname + ':' + rows[0]['port'],
+
+    pool.getConnection()
+        .then((conn) => {
+            conn.query('SELECT port FROM HostingTable WHERE route = ?', [route])
+                .then(([rows, fields]) => {
+                    console.log('route 2: ' + route);
+                    if (rows.length > 0) {
+                        res.writeHead(302, {
+                            Location:
+                                'http://' +
+                                url.hostname +
+                                ':' +
+                                rows[0]['port'],
+                        });
+                    } else {
+                        res.write(route + ' not found in routing table');
+                    }
+                    res.end();
+                })
+                .catch((err) => {
+                    throw err;
+                })
+                .finally(() => {
+                    conn.release();
                 });
-            } else res.write(route + ' not found in routing table');
-            res.end();
-        }
-    );
+        })
+        .catch((err) => {
+            throw err;
+        });
 }).listen(8081, function (err) {
     if (err) throw err;
     console.log('up and running');

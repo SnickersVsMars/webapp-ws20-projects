@@ -4,6 +4,7 @@ const path = require('path');
 
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
+const fileService = require('./fileService.js');
 const pdfGenerator = require('./pdf/pdf-generator');
 
 function buildPath(fileName) {
@@ -99,6 +100,61 @@ apiRouter.putAsync(
         res.json(projectId);
     }
 );
+
+apiRouter.postAsync('/upload', async (req, res) => {
+    if (req.body.theFile !== '') {
+        let content = req.body.content;
+        let filename = req.body.name;
+        let project_id = req.body.project_id;
+
+        let base64ContentArray = content.split(',');
+        let mimeType = base64ContentArray[0].match(
+            /[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/
+        )[0];
+        let base64Data = base64ContentArray[1];
+
+        let file = {
+            project_id: project_id,
+            filename: filename,
+            content: base64Data,
+            mimeType: mimeType,
+        };
+
+        let file_id = await fileService.insert(file).catch((error) => {
+            res.status(500).json(error);
+        });
+
+        if (file_id) {
+            res.json(file_id);
+        } else {
+            res.status(500).json('Fehler beim Upload');
+        }
+    }
+});
+
+apiRouter.deleteAsync('/deleteFile/:id', async (req, res) => {
+    await fileService.delete(req.params.id).catch(() => {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+    });
+
+    res.end();
+});
+
+apiRouter.getAsync('/download/:id', async (req, res) => {
+    let file = await fileService.find(req.params.id);
+
+    if (file) {
+        const download = Buffer.from(file.content.toString('utf-8'), 'base64');
+        res.writeHead(200, {
+            'Content-Type': file.mimeType,
+            'Content-Disposition':
+                'attachment; filename="' + file.filename + '"',
+        });
+        res.end(download);
+    } else {
+        res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
+    }
+});
 
 // define project router
 const projectRouter = express.Router();

@@ -26,3 +26,7 @@ cypress/videos
 *.log
 
 tmp
+
+# exclude configs
+config/default.json
+**/.env.production

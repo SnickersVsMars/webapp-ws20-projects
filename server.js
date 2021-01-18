@@ -1,6 +1,5 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
-const { expressValidator } = require('express-validator');
 
 const port = process.env.PORT || require('config').get('port');
 const path = require('path');
@@ -17,13 +16,15 @@ server.use(express.static('public'));
 
 // parse application/json
 server.use(express.json());
+// parse application/x-www-form-urlencoded
+server.use(express.urlencoded({ extended: true }));
 
-server.use(fileUpload({
-	useTempFiles : true,
-	tempFileDir : '/tmp/'
-}));
-
-server.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+server.use(
+    fileUpload({
+        useTempFiles: true,
+        tempFileDir: '/tmp/',
+    })
+);
 
 server.use('/', router);
 

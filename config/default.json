@@ -6,6 +6,13 @@
         "password": "IleXTrUegYPhopECTAL",
         "database": "webapp_dev"
     },
+    "HostingPool": {
+        "connectionLimit": 1,
+        "host": "snickersvsmars.online",
+        "user": "user",
+        "password": "IleXTrUegYPhopECTAL",
+        "database": "hosting"
+    },
 
     "port": 3000
 }

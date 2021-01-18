@@ -13,10 +13,6 @@ body {
     padding-bottom: 0;
 }
 
-.navbar-nav {
-    height: 100%;
-}
-
 .navbar-light .navbar-nav .nav-link {
     display: flex;
     align-items: center;
@@ -184,6 +180,127 @@ table tbody tr td:last-of-type {
     }
 }
 
+.header-row {
+    background-color: #384046;
+}
+
+#breadcrumb-row {
+    justify-content: space-between;
+}
+
+#filter-row {
+    justify-content: center;
+}
+
+.search {
+    margin: 0 40px 0 40px;
+}
+
+.search i {
+    align-self: flex-end;
+    position: absolute;
+    margin: 14px 5px;
+}
+
+#search-box {
+    width: 100%;
+    padding: 5px 5px 5px 30px;
+    margin: 10px 0;
+
+    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+#search-box:focus {
+    outline: none;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+}
+
+#search-box:after {
+    content: 'search';
+    font-family: 'Material Icons';
+}
+
+.filter-search {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #dfdfdf;
+}
+
+.filter {
+    padding-left: 8px;
+    max-height: 300px;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+#filter-container .dropdown {
+    margin: 10px;
+}
+
+.dropdown-menu {
+    padding-top: 0;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover,
+.dropdown-item:active {
+    background-color: white;
+}
+
+.dropdown-divider {
+    margin-top: 0;
+}
+
+.custom-control-label {
+    position: unset;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-control-label:before {
+    top: 8px;
+    left: 0;
+}
+
+.custom-control-label:after {
+    top: 8px;
+    left: 0;
+}
+
+.filter-toggle {
+    padding-bottom: 10px;
+}
+
+.clear-btn {
+    height: 37px;
+    margin: 10px;
+    display: none;
+}
+
+.clear-btn > i {
+    font-size: 18px;
+}
+
+#reportrange {
+    height: 37px;
+    margin: 10px;
+    background-color: white;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 0.25rem;
+    align-items: center;
+    display: flex;
+}
+
+.calendar-icon {
+    font-size: 18px;
+}
+
 .btn i {
     vertical-align: middle;
     line-height: initial;
@@ -270,4 +387,10 @@ table tr td input:nth-of-type(2) {
     border-color: green;
     border-width: 10px;
     opacity: .3;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

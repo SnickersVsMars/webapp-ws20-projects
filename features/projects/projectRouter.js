@@ -1,15 +1,46 @@
 const express = require('express');
+const { decorateRouter } = require('@awaitjs/express');
 const path = require('path');
+
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
 const fileService = require('./fileService.js');
+const pdfGenerator = require('./pdf/pdf-generator');
 
 function buildPath(fileName) {
     return path.join(__dirname, fileName);
 }
 
+const createPdfResponse = (req, res, next, id) => {
+    let url = req.protocol + '://' + req.get('host') + '/projects';
+
+    if (id) {
+        url = url + '/' + id;
+    }
+
+    pdfGenerator
+        .generatePdf(url)
+        .catch(next)
+        .then((pdfBuffer) => {
+            let header = {
+                'Content-Type': 'application/pdf',
+                'Content-Length': pdfBuffer.length,
+            };
+            res.set(header);
+            res.send(pdfBuffer);
+        });
+};
+
 // define view routes
 const viewRouter = express.Router();
+
+viewRouter.get('/:id/export', (req, res, next) => {
+    createPdfResponse(req, res, next, req.params.id);
+});
+
+viewRouter.get('/export', (req, res, next) => {
+    createPdfResponse(req, res, next);
+});
 
 viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));
@@ -23,53 +54,32 @@ viewRouter.get('/:id', (req, res) => {
     res.sendFile(buildPath('detail.html'));
 });
 
-const apiRouter = express.Router();
-apiRouter.get('/', (req, res, next) => {
-    let success = (error, result) => {
-        if (error) {
-            return next(error);
-        }
+const apiRouter = decorateRouter(express.Router());
 
-        res.json(result);
-    };
-
-    projectService.get(success, next);
+apiRouter.getAsync('/', async (req, res) => {
+    let projects = await projectService.get();
+    res.send(projects);
 });
 
-apiRouter.get('/:id', (req, res, next) => {
-    let success = (error, result) => {
-        if (error) {
-            return next(error);
-        }
+apiRouter.getAsync('/:id', async (req, res) => {
+    let project = await projectService.find(req.params.id);
 
-        res.json(result);
-    };
-
-    var result = projectService.find(req.params.id, success, next);
-
-    if (result === null) {
+    if (project) {
+        res.json(project);
+    } else {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     }
 });
 
-apiRouter.post(
+apiRouter.postAsync(
     '/',
     projectValidationService.validationArray,
-    (req, res, next) => {
-        let result = projectValidationService.validate(req, res);
-        if (result) {
-            return result;
-        }
+    async (req, res) => {
+        let validationResult = projectValidationService.validate(req, res);
+        if (validationResult) return validationResult;
 
-        let success = (error, result) => {
-            if (error) {
-                return next(error);
-            }
-
-            res.status(201).json(result);
-        };
-
-        projectService.insert(req.body, success);
+        let projectId = await projectService.insert(req.body);
+        res.status(201).json(projectId);
     }
 );
 

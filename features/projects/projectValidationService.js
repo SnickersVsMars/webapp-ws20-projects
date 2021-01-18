@@ -1,15 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-var validationArray = [
-    body('number')
-        .trim()
-        .notEmpty()
-        .withMessage('Bitte Projektnummer eintragen')
-        .matches(/PR\d{2}-\d{4}/)
-        .withMessage('Bitte folgendes Format verwenden: PR20_xxxx')
-        .isLength({ max: 20 })
-        .withMessage('Maximale Länge überschritten'),
-
+let validationArray = [
     body('manager')
         .trim()
         .notEmpty()
@@ -101,7 +92,7 @@ function validate(req, res) {
     };
     const errors = validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
-        var errorsMapped = errors.mapped();
+        let errorsMapped = errors.mapped();
 
         return res.status(400).json({ errors: errorsMapped });
     }

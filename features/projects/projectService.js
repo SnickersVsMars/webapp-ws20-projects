@@ -1,100 +1,86 @@
 const dbConnection = require('../dbConnection');
+const projectRouter = require('./projectRouter');
+
+const getProjectsQuery = `
+    SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
+    FROM projects p
+        LEFT OUTER JOIN employees e ON p.id=e.project_id
+        LEFT OUTER JOIN
+            (
+                SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
+                FROM milestones m
+                WHERE m.date >= CURRENT_DATE()
+                GROUP BY m.project_id
+            ) nextM ON p.id = nextM.project_id
+    GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`;
+
+const findProjectByIdQuery = 'SELECT * FROM projects WHERE id = ?';
+
+const findEmployeesByProjectQuery =
+    'SELECT id, name FROM employees WHERE project_id = ? ORDER BY name ASC';
+
+const findMilestonesByProjectQuery =
+    'SELECT id, date, label, description FROM milestones WHERE project_id = ? ORDER BY date ASC';
+
+const parseToNumber = (id) => {
+    if (id == null) {
+        return null;
+    }
+
+    if (typeof id == 'string') {
+        id = parseInt(id);
+    }
+
+    if (typeof id !== 'number' || isNaN(id)) {
+        return null;
+    }
+
+    return id;
+};
+
+const insertProjectQuery = 'INSERT INTO projects SET ?';
+const insertEmployeeQuery = 'INSERT INTO employees SET ?';
+const insertMilestoneQuery = 'INSERT INTO milestones SET ?';
 
 class ProjectService {
-    get(success) {
-        let selectQuery = `SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount
-        FROM projects p
-            LEFT OUTER JOIN employees e ON p.id=e.project_id
-            LEFT OUTER JOIN
-                (
-                    SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
-                    FROM milestones m
-                    WHERE m.date >= CURRENT_DATE()
-                    GROUP BY m.project_id
-                ) nextM ON p.id = nextM.project_id
-        GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone`;
-
-        dbConnection.select(selectQuery, success);
+    async get() {
+        let projects = await dbConnection.select(getProjectsQuery);
+        return projects;
     }
 
-    find(id, success) {
-        if (id == null) {
-            return null;
+    async find(id) {
+        id = parseToNumber(id);
+        if (id === null) return null;
+
+        let project = await dbConnection.select(findProjectByIdQuery, [id]);
+
+        if (!project) {
+            throw `${id} not found`;
         }
 
-        if (typeof id == 'string') {
-            id = parseInt(id);
-        }
-
-        if (typeof id !== 'number' || isNaN(id)) {
-            return null;
-        }
-
-        dbConnection.select(
-            `SELECT * FROM projects WHERE id = ${id}`,
-            (error, result) => {
-                if (error) {
-                    return success(error, null);
-                }
-
-                if (!result) {
-                    return success(`${id} not found`, null);
-                }
-
-                let project = result;
-                if (Array.isArray(project)) {
-                    if (project.length > 1) {
-                        return success(
-                            `${id} returns more that one value`,
-                            null
-                        );
-                    }
-
-                    if (project.length < 1) {
-                        return success(`${id} not found`, null);
-                    }
-
-                    project = project[0];
-                }
-
-                dbConnection.select(
-                    `SELECT id, name FROM employees WHERE project_id = ${id} ORDER BY name ASC`,
-                    (error, result) => {
-                        if (error) {
-                            return success(error, null);
-                        }
-
-                        project.employees = result;
-
-                        dbConnection.select(
-                            `SELECT id, date, label, description FROM milestones WHERE project_id = ${id} ORDER BY date ASC`,
-                            (error, result) => {
-                                if (error) {
-                                    return success(error, null);
-                                }
-
-                                project.milestones = result;
-
-                                dbConnection.select(
-                                    `SELECT id, filename FROM files WHERE project_id = ${id} ORDER BY id ASC`,
-                                    (error, result) => {
-                                        if (error) {
-                                            return success(error, null);
-                                        }
-        
-                                        project.files = result;
-                                        success(null, project);
-                                    }
-                                );
-                            }
-                        );
-                    }
-                );
+        if (Array.isArray(project)) {
+            if (project.length > 1) {
+                throw `${id} returns more that one value`;
             }
+
+            if (project.length < 1) {
+                throw `${id} not found`;
+            }
+            project = project[0];
+        }
+
+        project.employees = await dbConnection.select(
+            findEmployeesByProjectQuery,
+            [id]
         );
+        project.milestones = await dbConnection.select(
+            findMilestonesByProjectQuery,
+            [id]
+        );
+        return project;
     }
 
-    insert(project, success) {
+    async insert(project) {
         if (project == null) {
             return null;
         }
@@ -103,49 +89,42 @@ class ProjectService {
             return null;
         }
 
-        var employees = project.employees;
-        var milestones = project.milestones;
+        let employees = project.employees ?? [];
+        let milestones = project.milestones ?? [];
 
         delete project.milestones;
         delete project.employees;
 
-        dbConnection.insert(
-            'INSERT INTO projects SET ?',
-            project,
-            (error, result) => {
-                if (error) {
-                    return success(error, null);
-                }
-
-                if (employees !== null && employees !== undefined) {
-                    for (var i = 0; i < employees.length; i++) {
-                        employees[i].project_id = result.insertId;
-                    }
-
-                    for (var i = 0; i < employees.length; i++) {
-                        dbConnection.insert(
-                            'INSERT INTO employees SET ?',
-                            employees[i],
-                            () => {}
-                        );
-                    }
-                }
-
-                for (var i = 0; i < milestones.length; i++) {
-                    milestones[i].project_id = result.insertId;
-                }
-
-                for (var i = 0; i < milestones.length; i++) {
-                    dbConnection.insert(
-                        'INSERT INTO milestones SET ?',
-                        milestones[i],
-                        () => {}
-                    );
-                }
-
-                success(null, result.insertId);
-            }
+        let projectResult = await dbConnection.insert(
+            insertProjectQuery,
+            project
         );
+
+        let projectId = projectResult.insertId;
+
+        let insertPromises = [];
+
+        for (let i = 0; i < employees.length; i++) {
+            employees[i].project_id = projectId;
+            let employeePromise = dbConnection.insert(
+                insertEmployeeQuery,
+                employees[i]
+            );
+            insertPromises.push(employeePromise);
+        }
+
+        for (let i = 0; i < milestones.length; i++) {
+            milestones[i].project_id = projectId;
+            let milestonePromise = dbConnection.insert(
+                insertMilestoneQuery,
+                milestones[i]
+            );
+            insertPromises.push(milestonePromise);
+        }
+
+        await Promise.all(insertPromises);
+
+        return projectId;
     }
 }
 

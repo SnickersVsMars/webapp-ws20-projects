@@ -26,8 +26,7 @@ function populateData(project) {
     fillEmployess(project.employees);
     fillMilestones(project.milestones);
     fillFiles(project.files);
-    document.getElementById('project_id').value = project.id;
-
+    $('#project_id').val(project.id);
     $('#busy-indicator').hide();
 }
 

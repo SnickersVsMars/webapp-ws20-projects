@@ -30,6 +30,8 @@ function populateData(project) {
     $('#project_id').val(project.id);
     $('#busy-indicator').hide();
     $('#edit').on('click', () => showDetail(project.id));
+
+    $('body').append('<div id="load-finished"></div>');
 }
 
 function fillEmployees(employees) {

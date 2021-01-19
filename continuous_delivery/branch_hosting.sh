@@ -57,12 +57,15 @@ git checkout $branch
 git reset --hard HEAD
 git pull
 
-# change db name in sql script
-sed -i "s/--DB-NAME--/webapp_${trimmed_branch}/g" "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql" 
-$(mysql -u$MYUSER -p$MYPASS < "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql")
-
 # copy the config file needed to run the webapp
 cp /var/config/default.json "${STAGING_MASTER_DIR}/${trimmed_branch}/config/"
+
+# change db name in app settings
+sed -i "s/--DB-NAME--/webapp_${trimmed_branch}/g" "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql" 
+# change db name in sql script
+sed -i "s/webapp_dev/webapp_${trimmed_branch}/g" "${STAGING_MASTER_DIR}/${trimmed_branch}/config/default.json" 
+$(mysql -u$MYUSER -p$MYPASS < "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql")
+
 
 # get npm packages
 echo 'npm start'

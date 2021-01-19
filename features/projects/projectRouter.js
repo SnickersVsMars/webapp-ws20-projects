@@ -35,8 +35,7 @@ const createPdfResponse = (req, res, next, id) => {
 const viewRouter = express.Router();
 
 viewRouter.get('/:id/export', (req, res, next) => {
-    // createPdfResponse(req, res, next, req.params.id);
-    throw 'An error happend';
+    createPdfResponse(req, res, next, req.params.id);
 });
 
 viewRouter.get('/export', (req, res, next) => {

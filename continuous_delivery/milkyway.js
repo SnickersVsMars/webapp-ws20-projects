@@ -8,6 +8,7 @@ process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '..', 'config');
 const config = require('config');
 
 const poolConfig = config.get('HostingPool');
+const port = process.env.PROXY_PORT || require('config').get('proxyPort');
 
 // create simple http server for the reverse proxy
 http.createServer(function (req, res) {
@@ -43,7 +44,7 @@ http.createServer(function (req, res) {
         .catch((err) => {
             throw err;
         });
-}).listen(8081, function (err) {
+}).listen(port, function (err) {
     if (err) throw err;
     console.log('up and running');
 });

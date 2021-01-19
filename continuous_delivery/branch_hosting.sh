@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # get vars from config file
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$DIR/../config/.env.production"
+source /var/config/.env.ci
 
 # branchname for usage with git operations
 branch=$1
@@ -42,29 +41,32 @@ cd "${STAGING_MASTER_DIR}/${trimmed_branch}"
 
 # check if a new branch is being hosted and the repo needs to be cloned
 # or if a new version needs to be pulled from an existing branch
-if [ ! -d "${STAGING_MASTER_DIR}/${trimmed_branch}/webapp/.git" ]
+if [ ! -d "${STAGING_MASTER_DIR}/${trimmed_branch}/.git" ]
 then
 	echo 'clone'
-    git clone $GIT_PATH "${STAGING_MASTER_DIR}/${branch}/webapp/"
+    git clone $GIT_PATH "${STAGING_MASTER_DIR}/${trimmed_branch}/"
 else
 	echo 'pull'
-    cd "${STAGING_MASTER_DIR}/${branch}/webapp/"
+    cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
     git pull $GIT_PATH
 fi
 
 echo 'switch branch'
-cd "${STAGING_MASTER_DIR}/${trimmed_branch}/webapp/"
+cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
 git checkout $branch
 git pull
 
-echo 'npm start'
 # get npm packages
+echo 'npm start'
 npm install
 npm audit fix
 
+# copy the config file needed to run the webapp
+cp /var/config/default.json "${STAGING_MASTER_DIR}/${trimmed_branch}/config/"
+
 # pm2 setup
-pm2 delete $branch
-PORT=$port pm2 start npm --name $branch -- start
+pm2 delete $trimmed_branch
+PORT=$port pm2 start npm --name $trimmed_branch -- start
 
 # update pm2 startup script to ensure apps are restarted after a reboot
 pm2 save

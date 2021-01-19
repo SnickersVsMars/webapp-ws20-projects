@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # get vars from config file
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$DIR/../config/.env.production"
+source /var/config/.env.ci
 
 # checkout repo
-cd "${MASTER_DIR}/webapp/"
+cd "${MASTER_DIR}"
 git checkout master
 git pull
 
@@ -13,6 +12,9 @@ git pull
 echo 'npm start'
 npm install
 npm audit fix
+
+# copy the config file needed to run the webapp
+cp /var/config/default.json "${MASTER_DIR}/config/"
 
 # pm2 setup
 pm2 delete webapp

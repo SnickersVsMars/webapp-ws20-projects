@@ -30,6 +30,8 @@ function populateData(project) {
     $('#project_id').val(project.id);
     $('#busy-indicator').hide();
     $('#edit').on('click', () => showDetail(project.id));
+
+    $('body').append('<div id="load-finished"></div>');
 }
 
 function fillEmployees(employees) {
@@ -68,19 +70,21 @@ function addFile(file) {
     $buttons.querySelector('.deleteBtn').onclick = function (e) {
         e.preventDefault();
 
-        HttpService.delete('projects/deleteFile/' + file.id).done(function (
-            resp,
-            status
-        ) {
-            if (status === 'success') {
-                $trDelete = $('#tr-file-' + file.id)[0];
-                $tbody.removeChild($trDelete);
+        if (confirm('Wollen Sie die Datei wirklich löschen?')) {
+            HttpService.delete('projects/deleteFile/' + file.id).done(function (
+                resp,
+                status
+            ) {
+                if (status === 'success') {
+                    $trDelete = $('#tr-file-' + file.id)[0];
+                    $tbody.removeChild($trDelete);
 
-                if ($tbody.children.length < 2) {
-                    $('#tr-files-empty').show();
+                    if ($tbody.children.length < 2) {
+                        $('#tr-files-empty').show();
+                    }
                 }
-            }
-        });
+            });
+        }
     };
     let $col2 = $tr.insertCell();
     $col2.appendChild($buttons);

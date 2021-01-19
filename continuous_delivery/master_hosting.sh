@@ -18,7 +18,7 @@ cp /var/config/default.json "${MASTER_DIR}/config/"
 
 # pm2 setup
 pm2 delete webapp
-pm2 start npm --name webapp -- start
+pm2 start npm --name live -- start
 
 # update pm2 startup script to ensure apps are restarted after a reboot
 pm2 save

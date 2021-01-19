@@ -5,7 +5,7 @@ const path = require('path');
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
 const fileService = require('./fileService.js');
-const pdfGenerator = require('./pdf/pdf-generator');
+const pdfGenerator = require('../pdf-generator');
 
 function buildPath(fileName) {
     return path.join(__dirname, fileName);

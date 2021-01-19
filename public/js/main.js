@@ -35,3 +35,15 @@ function setDescription($el, description) {
         $el.text(description);
     }
 }
+
+function setLastChanged($el, lastChanged) {
+    if (
+        lastChanged === null ||
+        lastChanged === undefined ||
+        lastChanged === ''
+    ) {
+        $el.html('&ndash;');
+    } else {
+        $el.text(formatDate(lastChanged));
+    }
+}

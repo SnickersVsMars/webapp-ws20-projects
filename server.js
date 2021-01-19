@@ -7,6 +7,8 @@ const path = require('path');
 const router = require('./features/router');
 const dbConnection = require('./features/dbConnection');
 
+const logger = require('./features/logger');
+
 const server = express();
 
 global.appRoot = path.resolve(__dirname);
@@ -35,21 +37,30 @@ server.use('*', (request, response) => {
 // Server Error
 server.use(function (err, req, res, next) {
     res.status(500).sendFile(path.join(__dirname, 'features/errors/500.html'));
-    console.log(err);
+    logger.error(err);
 });
 
 // Binding to a port
 server.listen(port, () => {
-    console.log('Express server listening on port ' + port);
-    console.log('http://localhost:' + port);
+    logger.info(
+        '\n\n------------------------------SERVER STARTING------------------------------'
+    );
+    logger.info('Express server listening on port ' + port);
+    logger.info('http://localhost:' + port);
 });
 
 // Handle server shutdown
 server.on('close', function () {
     dbConnection.close();
+    logger.info(
+        '\n------------------------------SERVER CLOSED------------------------------'
+    );
 });
 
 process.on('SIGINT', function () {
     dbConnection.close();
+    logger.info(
+        '\n------------------------------SERVER CLOSED------------------------------'
+    );
     process.exit(0);
 });

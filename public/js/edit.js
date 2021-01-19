@@ -18,7 +18,9 @@ function populateData(project) {
     $('#input-manager').val(validate(project.manager));
     $('#input-customer').val(validate(project.customer));
     $('#input-cost-center').val(validate(project.costCenter));
-    $('#last-change-text').text(formatDate(project.lastChanged));
+
+    setLastChanged($('#last-change-text'), project.lastChanged);
+
     $('#breadcrumb').text(`PROJEKT ${project.number}`);
     $('#breadcrumb').attr('href', '/projects/' + project.id);
 

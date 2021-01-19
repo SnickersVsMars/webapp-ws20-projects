@@ -8,6 +8,7 @@ process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '..', 'config');
 const config = require('config');
 
 const poolConfig = config.get('HostingPool');
+const logger = require('../features/logger');
 
 // create simple http server for the reverse proxy
 http.createServer(function (req, res) {
@@ -19,7 +20,7 @@ http.createServer(function (req, res) {
         .then((conn) => {
             conn.query('SELECT port FROM HostingTable WHERE route = ?', [route])
                 .then(([rows, fields]) => {
-                    console.log('route 2: ' + route);
+                    logger.info('route 2: ' + route);
                     if (rows.length > 0) {
                         res.writeHead(302, {
                             Location:
@@ -45,5 +46,5 @@ http.createServer(function (req, res) {
         });
 }).listen(8081, function (err) {
     if (err) throw err;
-    console.log('up and running');
+    logger.info('up and running');
 });

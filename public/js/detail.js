@@ -19,34 +19,30 @@ function populateData(project) {
     setDescription($('#description'), project.description);
     $('#manager').text(validate(project.manager));
     $('#customer').text(validate(project.customer));
-    $('#costCenter').text(validate(project.costCenter));
+    $('#cost-center').text(validate(project.costCenter));
+    $('#last-change-text').text(formatDate(project.lastChanged));
     $('#breadcrumb').text(`PROJEKT ${project.number}`);
     $('#breadcrumb').attr('href', '/projects/' + project.id);
 
-    fillEmployess(project.employees);
+    fillEmployees(project.employees);
     fillMilestones(project.milestones);
     fillFiles(project.files);
     $('#project_id').val(project.id);
     $('#busy-indicator').hide();
+    $('#edit').on('click', () => showDetail(project.id));
 }
 
-function fillEmployess(employees) {
+function fillEmployees(employees) {
     if (employees === null || employees === undefined || employees.length < 1)
         return;
 
     for (let i = 0; i < employees.length; i++) {
-        let $employee = $('<li>').text(employees[i].name);
-        $('#employees').append($employee);
+        $('#employees').append($('<li>').text(employees[i].name));
     }
 }
 
 function fillFiles(files) {
-    if (
-        files === null ||
-        files === undefined ||
-        files.length < 1
-    )
-        return;
+    if (files === null || files === undefined || files.length < 1) return;
 
     for (let i = 0; i < files.length; i++) {
         addFile(files[i]);
@@ -58,31 +54,33 @@ function addFile(file) {
 
     let $tbody = $('#table-files-body')[0];
     let $tr = $tbody.insertRow();
-    $tr.id = "tr-file-"+file.id;
+    $tr.id = 'tr-file-' + file.id;
 
     let $col = $tr.insertCell();
     $col.innerText = validate(file.filename);
 
     let $buttons = $('#action-buttons-template')[0].content.cloneNode(true);
 
-    $buttons.querySelector('.openBtn').href = '../api/projects/download/'+file.id;
+    $buttons.querySelector('.openBtn').href =
+        '../api/projects/download/' + file.id;
     $buttons.querySelector('.openBtn').download = file.filename;
 
-    $buttons.querySelector('.deleteBtn').onclick = function(e) {
+    $buttons.querySelector('.deleteBtn').onclick = function (e) {
         e.preventDefault();
 
-        HttpService.delete('projects/deleteFile/'+file.id)
-		.done(function (resp, status) {
-            if (status==="success") {
-                $trDelete = $('#tr-file-'+file.id)[0];
+        HttpService.delete('projects/deleteFile/' + file.id).done(function (
+            resp,
+            status
+        ) {
+            if (status === 'success') {
+                $trDelete = $('#tr-file-' + file.id)[0];
                 $tbody.removeChild($trDelete);
 
-                if($tbody.children.length < 2)
-                {
+                if ($tbody.children.length < 2) {
                     $('#tr-files-empty').show();
                 }
             }
-		});
+        });
     };
     let $col2 = $tr.insertCell();
     $col2.appendChild($buttons);
@@ -122,14 +120,6 @@ function fillMilestones(milestones) {
     }
 }
 
-function setDescription($el, description) {
-    if (
-        description === null ||
-        description === undefined ||
-        description === ''
-    ) {
-        $el.html('&ndash;');
-    } else {
-        $el.text(description);
-    }
+function showDetail(id) {
+    location.href = id + '/edit/';
 }

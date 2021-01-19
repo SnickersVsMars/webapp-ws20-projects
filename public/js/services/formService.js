@@ -1,4 +1,4 @@
-function addEmployeeField() {
+function addEmployeeField(value, id) {
     let $empInput = $('<input>');
     $empInput.addClass('form-control mb-2 input-employee');
     $empInput.attr('type', 'text');
@@ -7,16 +7,43 @@ function addEmployeeField() {
     $empInput.attr('maxlength', 100);
     $empInput.attr('placeholder', 'Name des Mitarbeiters');
 
+    if (value) {
+        $empInput.val(value);
+    }
+
     let $removeButton = createRemoveButton('Mitarbeiter entfernen', (event) => {
-        $(event.target).closest('.added-employee').remove();
+        if (
+            $(event.target)
+                .closest('.added-employee')
+                .children('.input-employee')
+                .val() !== ''
+        ) {
+            if (confirm('Wollen Sie den Mitarbeiter wirklich löschen?')) {
+                $(event.target).closest('.added-employee').remove();
+            }
+        } else {
+            $(event.target).closest('.added-employee').remove();
+        }
     });
 
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+
+    if (id) {
+        $idField.attr('name', 'employees[][id]');
+        $idField.val(id);
+    }
+
     $('#employee-container').append(
-        $('<div class="added-employee">').append($removeButton, $empInput)
+        $('<div class="added-employee">').append(
+            $removeButton,
+            $empInput,
+            $idField
+        )
     );
 }
 
-function addMilestoneField() {
+function addMilestoneField(date, label, description, id) {
     let $cardBody = $('<div class="card-body row">');
 
     let $dateColumn = createFormGroup(
@@ -26,7 +53,8 @@ function addMilestoneField() {
         'date',
         null,
         true,
-        null
+        null,
+        date
     );
     $cardBody.append($dateColumn);
 
@@ -37,7 +65,8 @@ function addMilestoneField() {
         'label',
         'Meilenstein Bezeichnung',
         true,
-        50
+        50,
+        label
     );
     $cardBody.append($labelColumn);
 
@@ -48,22 +77,49 @@ function addMilestoneField() {
         'description',
         'Meilenstein Beschreibung',
         false,
-        250
+        250,
+        description
     );
     $cardBody.append($descriptionColumn);
 
     let $removeButton = createRemoveButton('Meilenstein entfernen', (event) => {
         let $body = $(event.target).closest('.card-body');
-        $body.prev('hr').remove();
-        $body.remove();
+        let hasValue = false;
+
+        $(event.target)
+            .closest('.card-body')
+            .find('.form-control')
+            .each(function () {
+                if ($(this).val() !== '' && !hasValue) {
+                    hasValue = true;
+                }
+            });
+
+        if (hasValue) {
+            if (confirm('Wollen Sie diesen Meilenstein wirklich löschen?')) {
+                $body.prev('hr').remove();
+                $body.remove();
+            }
+        } else {
+            $body.remove();
+        }
     });
 
     $removeButton.addClass('btn btn-danger d-block');
 
+    let $idField = $('<input>');
+    $idField.attr('type', 'hidden');
+
+    if (id) {
+        $idField.attr('name', 'milestones[][id]');
+        $idField.attr('value', id);
+    }
+
     $cardBody.append(
         $('<div class="col">').append(
             $('<label>').html('&nbsp;'),
-            $removeButton
+            $removeButton,
+            $idField
         )
     );
 
@@ -77,7 +133,8 @@ function createFormGroup(
     property,
     placeholder,
     isRequired,
-    maxlength
+    maxlength,
+    value
 ) {
     let $formGroup = $('<div class="form-group col-sm-6">');
 
@@ -111,6 +168,10 @@ function createFormGroup(
 
     if (placeholder) {
         $control.attr('placeholder', placeholder);
+    }
+
+    if (value) {
+        $control.val(value);
     }
 
     $formGroup.append($control);

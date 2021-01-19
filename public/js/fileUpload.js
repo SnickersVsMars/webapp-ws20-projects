@@ -1,10 +1,10 @@
-const  $uploadInfo = $('#uploadInfo');
-const  $uploadForm = $('#uploadForm');
-const  $uploadField = $('#uploadField');
-const  $uploadContainer = $('#uploadContainer');
-const  $theErrorMessage = $('#errorMessage');
-const  $theSuccessMessage = $('#successMessage');
-const  $clearFileButton = $('#clearFile');
+const $uploadInfo = $('#uploadInfo');
+const $uploadForm = $('#uploadForm');
+const $uploadField = $('#uploadField');
+const $uploadContainer = $('#uploadContainer');
+const $theErrorMessage = $('#errorMessage');
+const $theSuccessMessage = $('#successMessage');
+const $clearFileButton = $('#clearFile');
 
 let fileName = '';
 let fileContent = '';
@@ -16,15 +16,15 @@ let fileContent = '';
     'dragover',
     'dragenter',
     'dragleave',
-    'drop'
+    'drop',
 ].forEach(function (dragEvent) {
     $uploadContainer.on(dragEvent, preventDragDefault);
 });
 
-['dragover', 'dragenter'].forEach(function(dragEvent) {
+['dragover', 'dragenter'].forEach(function (dragEvent) {
     $uploadContainer.on(dragEvent, function () {
         $uploadContainer.addClass('dragging');
-    })
+    });
 });
 
 ['dragleave', 'dragend', 'drop'].forEach(function (dragEvent) {
@@ -79,11 +79,11 @@ $uploadForm.submit(function (e) {
         $theErrorMessage.text('Keine Datei ausgewählt.');
         $theErrorMessage.show();
     } else {
-            HttpService.post('projects/upload', {
-                name: fileName,
-                content: fileContent,
-                project_id: $('input#project_id').val(),
-            })
+        HttpService.post('projects/upload', {
+            name: fileName,
+            content: fileContent,
+            project_id: $('input#project_id').val(),
+        })
             .done(function (resp) {
                 if (resp !== undefined) {
                     clearFileTag();

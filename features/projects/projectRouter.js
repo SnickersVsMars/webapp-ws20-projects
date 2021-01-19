@@ -46,6 +46,10 @@ viewRouter.get('/add', (req, res) => {
     res.sendFile(buildPath('add.html'));
 });
 
+viewRouter.get('/:id/edit', (req, res) => {
+    res.sendFile(buildPath('edit.html'));
+});
+
 viewRouter.get('/', (req, res) => {
     res.sendFile(buildPath('list.html'));
 });
@@ -83,36 +87,49 @@ apiRouter.postAsync(
     }
 );
 
+apiRouter.putAsync(
+    '/:id',
+    projectValidationService.validationArray,
+    async (req, res) => {
+        let result = projectValidationService.validate(req, res);
+        if (result) {
+            return result;
+        }
+
+        let projectId = await projectService.update(req.params.id, req.body);
+        res.json(projectId);
+    }
+);
+
 apiRouter.postAsync('/upload', async (req, res) => {
-	if(req.body.theFile !== "") {
-		let content = req.body.content;
-		let filename = req.body.name;
-		let project_id = req.body.project_id;
+    if (req.body.theFile !== '') {
+        let content = req.body.content;
+        let filename = req.body.name;
+        let project_id = req.body.project_id;
 
-		let base64ContentArray = content.split(",");
-		let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
-		let base64Data = base64ContentArray[1];
+        let base64ContentArray = content.split(',');
+        let mimeType = base64ContentArray[0].match(
+            /[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/
+        )[0];
+        let base64Data = base64ContentArray[1];
 
-		let file = {
-			project_id: project_id,
-			filename: filename,
-			content: base64Data,
-			mimeType: mimeType
+        let file = {
+            project_id: project_id,
+            filename: filename,
+            content: base64Data,
+            mimeType: mimeType,
         };
-
 
         let file_id = await fileService.insert(file).catch((error) => {
             res.status(550).json(error);
         });
 
         if (file_id) {
-			res.status(200).json(file_id);
-		}
-		else
-		{
+            res.json(file_id);
+        } else {
             res.status(550).json('Fehler beim Upload');
-		}
-	}
+        }
+    }
 });
 
 apiRouter.deleteAsync('/deleteFile/:id', async (req, res) => {
@@ -120,7 +137,7 @@ apiRouter.deleteAsync('/deleteFile/:id', async (req, res) => {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     });
 
-    res.status(200).end();
+    res.end();
 });
 
 apiRouter.getAsync('/download/:id', async (req, res) => {
@@ -130,12 +147,11 @@ apiRouter.getAsync('/download/:id', async (req, res) => {
         const download = Buffer.from(file.content.toString('utf-8'), 'base64');
         res.writeHead(200, {
             'Content-Type': file.mimeType,
-            'Content-Disposition': 'attachment; filename="'+file.filename+'"'
-          });
-          res.end(download);
-    }
-    else
-    {
+            'Content-Disposition':
+                'attachment; filename="' + file.filename + '"',
+        });
+        res.end(download);
+    } else {
         res.status(404).sendFile(path.join(__dirname, '../errors/404.html'));
     }
 });

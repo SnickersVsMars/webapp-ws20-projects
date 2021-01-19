@@ -2,12 +2,151 @@
 
 describe('The add project page', () => {
     beforeEach(() => {
-        cy.visit('/projects/add');
+        cy.intercept('GET', /\/api\/projects\/\d*/, {
+            fixture: 'project.json',
+        }).as('findProject');
+        cy.intercept('PUT', /\/api\/projects\/\d*/, {
+            fixture: 'edit-project.json',
+        }).as('putProject');
+
+        cy.visit('/projects/1/edit');
+        cy.wait('@findProject');
     });
 
-    it('stays on page on empty form submit', () => {
-        cy.contains('Projekt erstellen').click();
-        cy.url().should('contain', '/projects/add');
+    it.only('redirects to detail on submit', () => {
+        cy.contains('Speichern').click();
+        cy.url().should('contain', '/projects/1');
+    });
+
+    it.only('fills inputs with existing values', () => {
+        cy.get('#projectId').should('be.hidden');
+        cy.get('#projectId').should('have.value', '1');
+        cy.get('#input-number').should('have.value', 'PR20-0001');
+        cy.get('#input-label').should('have.value', 'Test-Projekt 1');
+        cy.get('#input-description').should(
+            'have.value',
+            'Das ist das erste Test-Projekt.'
+        );
+        cy.get('#input-manager').should('have.value', 'Christian Sitzwohl');
+        cy.get('#input-customer').should('have.value', 'FH Joanneum');
+        cy.get('#input-cost-center').should('have.value', 'Intern');
+
+        cy.get('#last-change-text').contains('2021');
+        cy.get('#last-change-text').contains('01');
+        cy.get('#last-change-text').contains('19');
+
+        cy.get('#breadcrumb').contains('PROJEKT PR20-0001');
+        cy.get('#breadcrumb').should('have.attr', 'href', '/projects/1');
+
+        cy.get('#employee-container')
+            .children('.added-employee')
+            .each(($emp, i) => {
+                switch (i) {
+                    case 0:
+                        cy.wrap($emp)
+                            .children('.input-employee')
+                            .first()
+                            .should('have.value', 'Michael Lamprecht');
+                        cy.wrap($emp)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '1');
+                        break;
+                    case 1:
+                        cy.wrap($emp)
+                            .children('.input-employee')
+                            .first()
+                            .should('have.value', 'Marian Korosec');
+                        cy.wrap($emp)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '2');
+                        break;
+                    case 2:
+                        cy.wrap($emp)
+                            .children('.input-employee')
+                            .first()
+                            .should('have.value', 'Samuel Angerer');
+                        cy.wrap($emp)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '3');
+                        break;
+                }
+            });
+
+        cy.get('#milestone-container')
+            .children('.card-body')
+            .each(($milestone, i) => {
+                switch (i) {
+                    case 0:
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .should('have.attr', 'type', 'date');
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .contains('2021');
+                        cy.wrap($milestone)
+                            .contains('Bezeichnung')
+                            .closest('.milestone-label')
+                            .should('have.value', 'Projekt Start');
+                        cy.wrap($milestone)
+                            .contains('Beschreibung')
+                            .closest('.milestone-description')
+                            .should('have.value', 'Projektstart');
+                        cy.wrap($milestone)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '2');
+                        break;
+                    case 1:
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .should('have.attr', 'type', 'date');
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .contains('2021');
+                        cy.wrap($milestone)
+                            .contains('Bezeichnung')
+                            .closest('.milestone-label')
+                            .should('have.value', 'Projekt Ende');
+                        cy.wrap($milestone)
+                            .contains('Beschreibung')
+                            .closest('.milestone-description')
+                            .should('have.value', 'Projektabschluss');
+                        cy.wrap($milestone)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '3');
+                        break;
+                    case 2:
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .should('have.attr', 'type', 'date');
+                        cy.wrap($milestone)
+                            .contains('Datum')
+                            .closest('.milestone-date')
+                            .contains('2020');
+                        cy.wrap($milestone)
+                            .contains('Bezeichnung')
+                            .closest('.milestone-label')
+                            .should('have.value', 'Kick-off');
+                        cy.wrap($milestone)
+                            .contains('Beschreibung')
+                            .closest('.milestone-description')
+                            .should('have.value', 'Kick-off Meeting');
+                        cy.wrap($milestone)
+                            .children('input:hidden')
+                            .first()
+                            .should('have.value', '1');
+                        break;
+                }
+            });
     });
 
     it('shows all validation errors on empty form submit', () => {

@@ -11,11 +11,10 @@ const server = express();
 
 global.appRoot = path.resolve(__dirname);
 server.set('port', port);
-
 server.use(express.static('public'));
 
-// parse application/json
-server.use(express.json({limit: '10mb'}));
+server.use(express.json({ limit: '10mb' })); // parse application/json
+server.use(express.urlencoded({ extended: true, limit: '10mb' })); // for parsing application/x-www-form-urlencoded
 
 server.use(
     fileUpload({
@@ -23,8 +22,6 @@ server.use(
         tempFileDir: '/tmp/',
     })
 );
-
-server.use(express.urlencoded({ extended: true, limit: '10mb' })); // for parsing application/x-www-form-urlencoded
 
 server.use('/', router);
 

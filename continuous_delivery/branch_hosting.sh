@@ -54,14 +54,14 @@ fi
 echo 'switch branch'
 cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
 git checkout $branch
-git git reset --hard HEAD
+git reset --hard HEAD
 git pull
 
 
 # change db name in sql script
 sed -i "s/[[DB-NAME]]/webapp-${trimmed_branch}/" "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql"
 script_file="${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql"
-script=$(cat "$script_file") 
+script=$(cat $script_file) 
 $(mysql -D$MYDB -u$MYUSER -p$MYPASS -se $script)
 
 # copy the config file needed to run the webapp

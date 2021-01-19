@@ -14,7 +14,7 @@ const pdfOptions = {
 };
 
 const generatePdf = async (url) => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(url, navigationOptions);
     let pdfBuffer = await page.pdf(pdfOptions);

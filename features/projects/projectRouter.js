@@ -5,7 +5,7 @@ const path = require('path');
 const projectService = require('./projectService');
 const projectValidationService = require('./projectValidationService');
 const fileService = require('./fileService.js');
-const pdfGenerator = require('./pdf/pdf-generator');
+const pdfGenerator = require('../pdf-generator');
 
 function buildPath(fileName) {
     return path.join(__dirname, fileName);
@@ -35,7 +35,8 @@ const createPdfResponse = (req, res, next, id) => {
 const viewRouter = express.Router();
 
 viewRouter.get('/:id/export', (req, res, next) => {
-    createPdfResponse(req, res, next, req.params.id);
+    // createPdfResponse(req, res, next, req.params.id);
+    throw 'An error happend';
 });
 
 viewRouter.get('/export', (req, res, next) => {

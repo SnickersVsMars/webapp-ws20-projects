@@ -1,5 +1,4 @@
 const dbConnection = require('../dbConnection');
-const projectRouter = require('./projectRouter');
 
 const getProjectsQuery = `
     SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, COUNT(e.project_id) as employeeCount

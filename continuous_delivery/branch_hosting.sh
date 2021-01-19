@@ -59,7 +59,7 @@ git pull
 
 
 # change db name in sql script
-sed -i "s/[[DB-NAME]]/webapp-${trimmed_branch}/" "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql"
+sed -i "s/--DB-NAME--/webapp-${trimmed_branch}/" "${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql"
 script_file="${STAGING_MASTER_DIR}/${trimmed_branch}/db-scripts/database.sql"
 echo $script_file
 script=$(cat $script_file) 

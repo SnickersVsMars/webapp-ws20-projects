@@ -35,51 +35,25 @@ describe('The add project page', () => {
         cy.get('#add-employee').click();
         cy.get('#add-employee').click();
         cy.get('#add-employee').click();
-        cy.get('.input-employee').then((inputs) => {
-            inputs = inputs.get();
-            expect(inputs).to.have.length(3);
-        });
+        cy.get('.input-employee').should('have.length', 3);
         cy.get('.remove-button').last().click();
-        cy.get('.input-employee').then((inputs) => {
-            inputs = inputs.get();
-            expect(inputs).to.have.length(2);
-        });
+        cy.get('.input-employee').should('have.length', 2);
         cy.get('.remove-button').last().click();
         cy.get('.remove-button').last().click();
         cy.get('.input-employee').should('not.exist');
     });
 
     it('allows to add and remove milestone fields', () => {
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(2);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 2);
         cy.get('#add-milestone').click();
         cy.get('#add-milestone').click();
         cy.get('#add-milestone').click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(5);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 5);
         cy.get('.d-block').last().click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(4);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 4);
         cy.get('.d-block').last().click();
         cy.get('.d-block').last().click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(2);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 2);
     });
 
     it('has project start and end', () => {
@@ -268,7 +242,7 @@ const random = (length) => {
     let chars =
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    // Pick characers randomly
+    // Pick characters randomly
     let str = '';
     for (let i = 0; i < length; i++) {
         str += chars.charAt(Math.floor(Math.random() * chars.length));

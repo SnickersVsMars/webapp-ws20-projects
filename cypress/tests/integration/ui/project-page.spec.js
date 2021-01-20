@@ -109,7 +109,6 @@ describe('The project page', () => {
                 cards = cards.get();
 
                 cards.forEach(() => {
-                    // since we use stubbed data we know that the S here is capitalized
                     cy.contains('snickers', { matchCase: false });
                 });
 
@@ -124,8 +123,7 @@ describe('The project page', () => {
                 cards = cards.get();
 
                 cards.forEach(() => {
-                    // since we use stubbed data we know that the p's are capitalized
-                    cy.contains('Projekt');
+                    cy.contains('projekt', { matchCase: false });
                 });
 
                 expect(cards).to.have.length(5);

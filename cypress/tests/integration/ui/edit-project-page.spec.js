@@ -334,38 +334,144 @@ describe('The add project page', () => {
     });
 
     context('with a test project', () => {
-        beforeEach(() => {
-            cy.visit('/projects/1/edit/');
+        let id;
 
+        beforeEach(() => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
                 label: 'Testlabel',
                 costCenter: 'TestCostCenter',
+                description: 'Beschreibung',
                 employees: [
                     { name: 'Thomas Test' },
                     { name: 'Peter Probe' },
                     { name: 'Ines Integration' },
                 ],
                 milestones: [
-                    { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2021-01-16', label: 'Projekt Ende' },
+                    { date: '2020-11-02', label: 'Projekt Start' },
+                    { date: '2020-11-30', label: 'Sprint 1 Ende' },
+                    { date: '2020-12-21', label: 'Sprint 2 Ende' },
+                    { date: '2021-01-25', label: 'Projekt Ende' },
                 ],
             };
 
-            cy.request('POST', '/api/projects/', body).then((res) => {
-                expect(res.status).to.equal(201);
-                expect(typeof res.body).to.equal('number');
-            });
+            cy.request('POST', '/api/projects/', body)
+                .then((res) => {
+                    expect(res.status).to.equal(201);
+                    expect(typeof res.body).to.equal('number');
+                    id = res.body;
+                })
+                .then(() => {
+                    cy.visit(`/projects/${id}/edit/`);
+                });
         });
 
-        it.only('can edit a project', () => {
+        it.only('can edit project base info', () => {
+            let number;
             let manager = 'Thomas Test';
             let customer = 'Charly Customer';
             let label = 'Updated';
             let costCenter = 'Inter';
+            let description = 'Updated Beschreibung';
+            let changed = new Date(Date.now());
+
+            console.log(changed);
+
+            cy.wait(2000);
+
+            cy.get('#input-number').then(($input) => {
+                number = $input.val();
+
+                cy.get('#input-manager')
+                    .clear()
+                    .type(manager)
+                    .should('have.value', manager);
+                cy.get('#input-customer')
+                    .clear()
+                    .type(customer)
+                    .should('have.value', customer);
+                cy.get('#input-label')
+                    .clear()
+                    .type(label)
+                    .should('have.value', label);
+                cy.get('#input-cost-center')
+                    .clear()
+                    .type(costCenter)
+                    .should('have.value', costCenter);
+                cy.get('#input-description')
+                    .clear()
+                    .type(description)
+                    .should('have.value', description);
+
+                cy.contains('Speichern').click();
+
+                cy.wait(2000);
+
+                cy.url().should('contain', `/projects/${id}`);
+                cy.url().should('not.contain', 'edit');
+
+                cy.get('#number').contains(number);
+                cy.get('#label').contains(label);
+                cy.get('#description').contains(description);
+                cy.get('#manager').contains(manager);
+                cy.get('#customer').contains(customer);
+                cy.get('#cost-center').contains(costCenter);
+
+                cy.get('#last-change-text').contains(changed.getFullYear());
+                cy.get('#last-change-text').contains(changed.getMonth());
+                cy.get('#last-change-text').contains(changed.getDate());
+
+                cy.get('#breadcrumb').contains('PROJEKT ' + number);
+                cy.get('#breadcrumb').should(
+                    'have.attr',
+                    'href',
+                    '/projects/' + id
+                );
+            });
+        });
+
+        it.only('can edit employees of a project', () => {
+            let changed = new Date(Date.now());
+
+            // wait for project from server
+            cy.wait(2000);
+
+            for (let i = 0; i < 2; i++) {
+                cy.get('#employee-container')
+                    .find('.remove-button')
+                    .last()
+                    .click();
+            }
+
+            cy.get('#add-employee').click();
+
+            cy.get('.input-employee').each(($input, i) => {
+                cy.wrap($input)
+                    .clear()
+                    .type('Test User ' + i);
+            });
+
+            cy.contains('Speichern').click();
+
+            cy.wait(2000);
+
+            cy.url().should('contain', `/projects/${id}`);
+            cy.url().should('not.contain', 'edit');
+
+            cy.get('#employees').children('li').should('have.length', 2);
+            cy.get('#employees')
+                .children('li')
+                .each(($emp, i) => {
+                    cy.wrap($emp).contains('Test User ' + i);
+                });
+
+            cy.get('#last-change-text').contains(changed.getFullYear());
+            cy.get('#last-change-text').contains(changed.getMonth());
+            cy.get('#last-change-text').contains(changed.getDate());
+        });
+
+        it.only('can edit milestones of a project', () => {
             let start = '2020-11-01';
             let startDesc = 'Updated Projektstart';
             let milestone = '2020-12-21';
@@ -373,34 +479,18 @@ describe('The add project page', () => {
             let milestoneLabel = 'Meilenstein';
             let end = '2021-01-25';
             let endDesc = 'Updated Projektende';
+            let changed = new Date(Date.now());
 
-            // wait for project from server
-            cy.wait(5000);
+            cy.wait(2000);
 
-            // TODO update properties, check IDs
+            for (let i = 0; i < 2; i++) {
+                cy.get('#milestone-container')
+                    .find('.remove-button')
+                    .last()
+                    .click();
+            }
 
-            cy.get('#input-manager')
-                .clear()
-                .type(manager)
-                .should('have.value', manager);
-            cy.get('#input-customer')
-                .clear()
-                .type(customer)
-                .should('have.value', customer);
-            cy.get('#input-label')
-                .clear()
-                .type(label)
-                .should('have.value', label);
-            cy.get('#input-cost-center')
-                .clear()
-                .type(costCenter)
-                .should('have.value', costCenter);
-
-            cy.get('.input-employee').each((input, i) => {
-                cy.wrap(input)
-                    .clear()
-                    .type('Test User ' + i);
-            });
+            cy.get('#add-milestone').click();
 
             cy.get('.milestone-date').each((input, i) => {
                 switch (i) {
@@ -429,18 +519,71 @@ describe('The add project page', () => {
                 }
             });
 
-            cy.get('.milestone-label')
-                .not('[attr="readonly"]')
-                .clear()
-                .type(milestoneLabel);
+            cy.get('.milestone-label').last().clear().type(milestoneLabel);
 
-            // cy.contains('Projekt erstellen').click();
-            // cy.intercept('PUT', '/projects/1', (req) => {
-            //     req.reply((res) => {
-            //         expect(typeof res.body).to.equal('number');
-            //     });
-            // });
-            // cy.url().should('not.contain', 'add');
+            cy.contains('Speichern').click();
+
+            cy.wait(2000);
+
+            cy.url().should('contain', `/projects/${id}`);
+            cy.url().should('not.contain', 'edit');
+
+            cy.get('#table-milestone-body')
+                .children('tr')
+                .should('have.length', 3);
+
+            cy.get('#table-milestone-body')
+                .children('tr')
+                .each(($row, i) => {
+                    switch (i) {
+                        case 0:
+                            cy.wrap($row)
+                                .children('td')
+                                .first()
+                                .contains('2020');
+                            cy.wrap($row)
+                                .children('td')
+                                .eq(1)
+                                .contains('Projekt Start');
+                            cy.wrap($row)
+                                .children('td')
+                                .last()
+                                .contains(startDesc);
+                            break;
+                        case 1:
+                            cy.wrap($row)
+                                .children('td')
+                                .first()
+                                .contains('2020');
+                            cy.wrap($row)
+                                .children('td')
+                                .eq(1)
+                                .contains(milestoneLabel);
+                            cy.wrap($row)
+                                .children('td')
+                                .last()
+                                .contains(milestoneDesc);
+                            break;
+                        case 2:
+                            cy.wrap($row)
+                                .children('td')
+                                .first()
+                                .contains('2021');
+                            cy.wrap($row)
+                                .children('td')
+                                .eq(1)
+                                .contains('Projekt Ende');
+                            cy.wrap($row)
+                                .children('td')
+                                .last()
+                                .contains(endDesc);
+                            break;
+                    }
+                });
+
+            cy.get('#last-change-text').contains(changed.getFullYear());
+            cy.get('#last-change-text').contains(changed.getMonth());
+            cy.get('#last-change-text').contains(changed.getDate());
         });
     });
 });

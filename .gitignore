@@ -6,7 +6,6 @@
 
 # exclude nodejs
 node_modules
-package-lock.json
 
 
 # Google Drive exclude

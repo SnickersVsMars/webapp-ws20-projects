@@ -3,7 +3,7 @@ const id = 1;
 
 describe('Projects API', () => {
     context('PUT /projects/:id', () => {
-        it.only('gets edited ID on committing update', () => {
+        it('gets edited ID on committing update', () => {
             cy.request('GET', `${projectsPath}/${id}`).then((res) => {
                 cy.request('PUT', `${projectsPath}/${id}`, res.body).then(
                     (res) => {
@@ -14,7 +14,7 @@ describe('Projects API', () => {
             });
         });
 
-        it.only('has the updated properties after edit', () => {
+        it('has the updated properties after edit', () => {
             // add new test project to work with
             let createdId;
             let body = {
@@ -144,7 +144,7 @@ describe('Projects API', () => {
                 });
         });
 
-        it.only('gets 400 on empty body', () => {
+        it('gets 400 on empty body', () => {
             cy.request({
                 method: 'PUT',
                 url: `${projectsPath}/${id}`,
@@ -181,7 +181,7 @@ describe('Projects API', () => {
             });
         });
 
-        it.only('gets 400 and wrong format error text on text instead of date', () => {
+        it('gets 400 and wrong format error text on text instead of date', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -204,7 +204,7 @@ describe('Projects API', () => {
             });
         });
 
-        it.only('gets 400 and wrong format error text on wrong numerical date format', () => {
+        it('gets 400 and wrong format error text on wrong numerical date format', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -232,7 +232,7 @@ describe('Projects API', () => {
             });
         });
 
-        it.only('gets 400 and wrong format error text on date before 1990', () => {
+        it('gets 400 and wrong format error text on date before 1990', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -260,7 +260,7 @@ describe('Projects API', () => {
             });
         });
 
-        it.only('gets 400 and wrong format error text on date before 2099', () => {
+        it('gets 400 and wrong format error text on date before 2099', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',

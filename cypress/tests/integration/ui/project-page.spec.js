@@ -18,6 +18,15 @@ describe('The project page', () => {
             });
         });
 
+        it('has a pdf download button', () => {
+            cy.contains('Download').should(
+                'have.attr',
+                'href',
+                '/projects/export'
+            );
+            cy.contains('Download').should('have.attr', 'target', '_blank');
+        });
+
         it('can navigate to detail', () => {
             cy.get('.card')
                 .get('.project-number')

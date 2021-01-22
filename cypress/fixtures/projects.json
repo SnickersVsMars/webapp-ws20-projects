@@ -1,7 +1,7 @@
 [
     {
         "id": "1",
-        "number": "PR20_0001",
+        "number": "PR20-0001",
         "label": "Test-Projekt 1",
         "manager": "Christian Sitzwohl",
         "employeeCount": 2,
@@ -10,7 +10,7 @@
     },
     {
         "id": "2",
-        "number": "PR20_0002",
+        "number": "PR20-0002",
         "label": "Test-Projekt 2",
         "manager": "Thorsten Mustermensch",
         "employeeCount": 3,
@@ -20,7 +20,7 @@
     },
     {
         "id": "3",
-        "number": "PR20_0003",
+        "number": "PR20-0003",
         "label": "Test-Projekt 3",
         "manager": "Karl Karlson",
         "employeeCount": 0,
@@ -30,7 +30,7 @@
     },
     {
         "id": "4",
-        "number": "PR20_0004",
+        "number": "PR20-0004",
         "label": "Test-Projekt 4",
         "manager": "Christian Sitzwohl",
         "employeeCount": 2,
@@ -40,7 +40,7 @@
     },
     {
         "id": "5",
-        "number": "PR20_0005",
+        "number": "PR20-0005",
         "label": "Test-Projekt 5",
         "manager": "Michael Lamprecht",
         "employeeCount": 5,

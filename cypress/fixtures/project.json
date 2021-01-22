@@ -1,33 +1,34 @@
 {
     "id": 1,
-    "number": "PR20_0001",
+    "number": "PR20-0001",
     "label": "Test-Projekt 1",
     "description": "Das ist das erste Test-Projekt.",
     "manager": "Christian Sitzwohl",
-    "customer": "Campus02",
+    "customer": "FH Joanneum",
     "costCenter": "Intern",
+    "lastChanged": "2021-01-19T19:40:35.000Z",
     "employees": [
-        { "id": 3, "name": "Michael Lamprecht" },
-        { "id": 4, "name": "Marian Korosec" },
-        { "id": 5, "name": "Samuel Angerer" }
+        { "id": 1, "name": "Michael Lamprecht" },
+        { "id": 2, "name": "Marian Korosec" },
+        { "id": 3, "name": "Samuel Angerer" }
     ],
     "milestones": [
         {
-            "id": 3,
+            "id": 1,
             "date": "2020-11-09",
             "label": "Kick-off",
             "description": "Kick-off Meeting"
         },
         {
-            "id": 4,
-            "date": "2020-11-08",
-            "label": "Start",
+            "id": 2,
+            "date": "2021-03-08",
+            "label": "Projekt Start",
             "description": "Projektstart"
         },
         {
-            "id": 5,
-            "date": "2021-01-09",
-            "label": "Ende",
+            "id": 3,
+            "date": "2021-12-20",
+            "label": "Projekt Ende",
             "description": "Projektabschluss"
         }
     ]

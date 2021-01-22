@@ -33,7 +33,7 @@ let fileContent = '';
     });
 });
 
-$clearFileButton.click(clearFileTag);
+$clearFileButton.on('click', clearFileTag);
 
 $uploadContainer.on('drop', function (e) {
     if (e.originalEvent.dataTransfer.files.length > 1) {
@@ -49,7 +49,7 @@ $uploadContainer.on('drop', function (e) {
     }
 });
 
-$uploadField.change(function (e) {
+$uploadField.on('change', function (e) {
     let theFile = e.target.files[0];
 
     if (checkFileProperties(theFile)) {
@@ -72,7 +72,7 @@ function checkFileProperties(theFile) {
     return true;
 }
 
-$uploadForm.submit(function (e) {
+$uploadForm.on('submit', function (e) {
     e.preventDefault();
 
     if (fileContent === '') {
@@ -95,17 +95,13 @@ $uploadForm.submit(function (e) {
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 clearFileTag();
-                if(XMLHttpRequest.status == 550) //custom error
-                {
+                if (XMLHttpRequest.status == 550) {
+                    //custom error
                     $theErrorMessage.text(
                         XMLHttpRequest.responseText.replace(/['"]+/g, '')
                     );
-                }
-                else
-                {
-                    $theErrorMessage.text(
-                        "Fehler beim Upload!"
-                    );
+                } else {
+                    $theErrorMessage.text('Fehler beim Upload!');
                 }
                 $theErrorMessage.show();
                 fileName = '';

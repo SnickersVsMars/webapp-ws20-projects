@@ -24,12 +24,10 @@ function populateData(project) {
     $('#breadcrumb').text(`PROJEKT ${project.number}`);
     $('#breadcrumb').attr('href', '/projects/' + project.id);
 
-    console.log(project.description);
-
     fillEmployees(project.employees);
     fillMilestones(project.milestones);
 
-    $('#projectId').val(id);
+    $('#projectId').val(project.id);
 
     $('#busy-indicator').hide();
 }

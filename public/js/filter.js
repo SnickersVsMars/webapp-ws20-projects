@@ -167,10 +167,23 @@ function applyFilters() {
         let customerMatch =
             customerFilter.length === 0 ||
             customerFilter.includes($(this).find('.project-customer').text());
-        let nextMilestone = new Date($(this).find('.project-milestone').text());
+
+        let nextMilestone = $(this).find('.project-milestone').text();
+        let yearRegEx = new RegExp('^\\d{4}');
+        let dateFormat;
+
+        if (navigator.languages[0] == 'en-US') {
+            dateFormat = 'MM-DD-YYYY';
+        } else if (yearRegEx.test(nextMilestone)) {
+            dateFormat = 'YYYY-MM-DD';
+        } else {
+            dateFormat = 'DD-MM-YYYY';
+        }
+
         let dateMatch =
             !dateSelected ||
-            (start < moment(nextMilestone) && end > moment(nextMilestone));
+            (start < moment(nextMilestone, dateFormat) &&
+                end > moment(nextMilestone, dateFormat));
 
         $(this).toggle(
             numberMatch &&
@@ -220,7 +233,7 @@ $('#reportrange').daterangepicker(
             ],
         },
         locale: {
-            format: 'MM.DD.YYYY',
+            format: 'DD.MM.YYYY',
             separator: ' - ',
             applyLabel: 'Bestätigen',
             cancelLabel: 'Abbrechen',

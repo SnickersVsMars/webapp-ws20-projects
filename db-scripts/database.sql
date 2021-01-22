@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS `--DB-NAME--`;
-CREATE DATABASE `--DB-NAME--`;
-USE `--DB-NAME--`;
+DROP DATABASE IF EXISTS `webapp_ci-dev`;
+CREATE DATABASE `webapp_ci-dev`;
+USE `webapp_ci-dev`;
 
 CREATE TABLE IF NOT EXISTS `projects` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -97,17 +97,17 @@ SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLE
 DELIMITER //
 CREATE TRIGGER `tg_projects_number` BEFORE INSERT ON `projects` FOR EACH ROW BEGIN
 	DECLARE next_number INT;
-	
+
 	SELECT nextNumber INTO next_number
 	FROM numbers
 	WHERE tableName = 'projects' AND `year` = YEAR(CURDATE());
-     
+
    SET NEW.number = CONCAT('PR', DATE_FORMAT(CURDATE(), '%y'), '-', LPAD(next_number, 4, '0'));
-   
+
    UPDATE numbers
    SET nextNumber = nextNumber + 1
 	WHERE tableName = 'projects' AND `year` = YEAR(CURDATE());
-   
+
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;

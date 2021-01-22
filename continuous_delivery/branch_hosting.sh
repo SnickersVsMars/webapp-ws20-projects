@@ -28,9 +28,9 @@ then
         port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT MAX(port)+1 FROM HostingTable")
         if  [ -z "$port" -o "$port" = "NULL" ]
         then
-                echo 'default port'
-                port=3001
-        fi      
+            echo 'default port'
+            port=3001
+        fi
         echo 'insert port into routing table'
         $(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")
 fi
@@ -43,19 +43,20 @@ cd "${STAGING_MASTER_DIR}/${trimmed_branch}"
 # or if a new version needs to be pulled from an existing branch
 if [ ! -d "${STAGING_MASTER_DIR}/${trimmed_branch}/.git" ]
 then
-        echo 'clone'
+    echo 'clone'
     git clone $GIT_PATH "${STAGING_MASTER_DIR}/${trimmed_branch}/"
-else
-        echo 'pull'
     cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
-    git pull $GIT_PATH
+    git checkout $branch
+    git pull
+else
+    echo 'switch branch and pull'
+    cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
+    # clean up local changes
+    git checkout $branch
+    git fetch origin
+    git reset --hard origin/$branch
+    git pull
 fi
-
-echo 'switch branch'
-cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
-git checkout $branch
-git reset --hard HEAD
-git pull
 
 # copy the config file needed to run the webapp
 cp /var/config/default.json "${STAGING_MASTER_DIR}/${trimmed_branch}/config/"
@@ -81,7 +82,7 @@ pm2 save
 pm2 unstartup
 pm2 startup
 
-# TODO 1st try - needs rework!
 # notfiy commit creator
-# params: branch, route, is_delease
-python ${MAIL_CLIENT} $branch $route false
+# note: we have to use pyhton3 here since bash does not pick up on the python alias
+# params: branch, route, is_deploy
+python3 ${MAIL_CLIENT} $branch $route false

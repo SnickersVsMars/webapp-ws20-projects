@@ -28,7 +28,7 @@ function createFilter(list, id) {
             ).append(
                 $(
                     `<input type="checkbox" class="custom-control-input" id="${id}-${i}">`
-                ).click(() => handleChecked()),
+                ).on('click', () => handleChecked()),
                 $(
                     `<label class="custom-control-label" id="${id}-${i}-label" for="${id}-${i}">`
                 ).text(val)
@@ -47,10 +47,6 @@ $('#search-box').on('input', function () {
 
 $('.dropdown-menu').on('click', function (e) {
     e.stopPropagation();
-});
-
-$('.dropdown-item .custom-control-input').on('checked', function (e) {
-    console.log($(this));
 });
 
 function searchFilter(el, filterID) {
@@ -171,9 +167,23 @@ function applyFilters() {
         let customerMatch =
             customerFilter.length === 0 ||
             customerFilter.includes($(this).find('.project-customer').text());
-        let nextMilestone = new Date($(this).find('.project-milestone').text());
+
+        let nextMilestone = $(this).find('.project-milestone').text();
+        let yearRegEx = new RegExp('^\\d{4}');
+        let dateFormat;
+
+        if (navigator.languages[0] == 'en-US') {
+            dateFormat = 'MM-DD-YYYY';
+        } else if (yearRegEx.test(nextMilestone)) {
+            dateFormat = 'YYYY-MM-DD';
+        } else {
+            dateFormat = 'DD-MM-YYYY';
+        }
+
         let dateMatch =
-            !dateSelected || (start < nextMilestone && end > nextMilestone);
+            !dateSelected ||
+            (start < moment(nextMilestone, dateFormat) &&
+                end > moment(nextMilestone, dateFormat));
 
         $(this).toggle(
             numberMatch &&
@@ -187,7 +197,6 @@ function applyFilters() {
 
 function cb(start, end) {
     if (dateSelected) {
-        console.log(dateSelected);
         $('#reportrange span').html(
             formatDate(start.toDate()) + ' - ' + formatDate(end.toDate())
         );
@@ -224,7 +233,7 @@ $('#reportrange').daterangepicker(
             ],
         },
         locale: {
-            format: 'MM.DD.YYYY',
+            format: 'DD.MM.YYYY',
             separator: ' - ',
             applyLabel: 'Bestätigen',
             cancelLabel: 'Abbrechen',

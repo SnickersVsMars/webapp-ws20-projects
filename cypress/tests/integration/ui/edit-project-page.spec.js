@@ -367,7 +367,7 @@ describe('The add project page', () => {
                 });
         });
 
-        it.only('can edit project base info', () => {
+        it('can edit project base info', () => {
             let number;
             let manager = 'Thomas Test';
             let customer = 'Charly Customer';
@@ -431,7 +431,7 @@ describe('The add project page', () => {
             });
         });
 
-        it.only('can edit employees of a project', () => {
+        it('can edit employees of a project', () => {
             let changed = new Date(Date.now());
 
             // wait for project from server
@@ -471,7 +471,7 @@ describe('The add project page', () => {
             cy.get('#last-change-text').contains(changed.getDate());
         });
 
-        it.only('can edit milestones of a project', () => {
+        it('can edit milestones of a project', () => {
             let start = '2020-11-01';
             let startDesc = 'Updated Projektstart';
             let milestone = '2020-12-21';

@@ -1,73 +1,153 @@
 const projectsPath = '/api/projects';
+const id = 1;
 
 describe('Projects API', () => {
-    context('GET /projects', () => {
-        it('gets a list of projects', () => {
-            cy.request('GET', projectsPath).then((res) => {
-                expect(res.status).to.equal(200);
-                expect(res.body).length.to.be.greaterThan(0);
-
-                for (let project of res.body) {
-                    expect(project).to.have.property('number');
-                    expect(project).to.have.property('manager');
-                    expect(project).to.have.property('label');
-                    expect(project).to.have.property('nextMilestone');
-                    expect(project).to.have.property('customer');
-                }
-            });
-        });
-    });
-
-    context('GET /projects/:id', () => {
-        it("gets a project's details", () => {
-            cy.request('GET', projectsPath + '/1').then((res) => {
-                expect(res.status).to.equal(200);
-                let project = res.body;
-
-                expect(project).to.have.property('number');
-                expect(project).to.have.property('manager');
-                expect(project).to.have.property('customer');
-                expect(project).to.have.property('label');
-                expect(project).to.have.property('milestones');
-
-                expect(project.milestones).length.to.be.gte(2);
+    context('PUT /projects/:id', () => {
+        it.only('gets edited ID on committing update', () => {
+            cy.request('GET', `${projectsPath}/${id}`).then((res) => {
+                cy.request('PUT', `${projectsPath}/${id}`, res.body).then(
+                    (res) => {
+                        expect(res.status).to.equal(200);
+                        expect(res.body).to.equal(id);
+                    }
+                );
             });
         });
 
-        it('gets error code 404 on invalid or non existant id', () => {
-            cy.request({
-                method: 'GET',
-                url: projectsPath + '/wrong-id',
-                failOnStatusCode: false,
-            })
-                .its('status')
-                .should('equal', 404);
-        });
-    });
-
-    context('POST /projects/', () => {
-        it('gets an ID on add project', () => {
+        it.only('has the updated properties after edit', () => {
+            // add new test project to work with
+            let createdId;
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
                 label: 'Testlabel',
                 costCenter: 'TestCostCenter',
+                description: 'Beschreibung',
+                employees: [
+                    { name: 'Thomas Test' },
+                    { name: 'Peter Probe' },
+                    { name: 'Ines Integration' },
+                ],
                 milestones: [
-                    { date: '2020-12-16', label: 'Projekt Start' },
-                    { date: '2021-01-16', label: 'Projekt Ende' },
+                    { date: '2020-11-02', label: 'Projekt Start' },
+                    { date: '2020-11-30', label: 'Sprint 1 Ende' },
+                    { date: '2020-12-21', label: 'Sprint 2 Ende' },
+                    { date: '2021-01-25', label: 'Projekt Ende' },
                 ],
             };
 
-            cy.request('POST', projectsPath + '/', body).then((res) => {
-                expect(res.status).to.equal(201);
-                expect(typeof res.body).to.equal('number');
-            });
+            cy.request('POST', '/api/projects/', body)
+                .then((res) => {
+                    expect(res.status).to.equal(201);
+                    expect(typeof res.body).to.equal('number');
+                    createdId = res.body;
+                })
+                .then(() => {
+                    let editBody = {
+                        id: createdId,
+                        manager: 'Editmanager',
+                        customer: 'Editcustomer',
+                        label: 'Editlabel',
+                        costCenter: 'EditCostCenter',
+                        description: 'EditDescription',
+                        employees: [
+                            { name: 'Eric Edit' },
+                            { name: 'Basti Bearbeitet' },
+                        ],
+                        milestones: [
+                            {
+                                date: '2021-02-02',
+                                label: 'Projekt Start',
+                                description: 'Projektstart',
+                            },
+                            {
+                                date: '2021-02-18',
+                                label: 'Edit Milestone',
+                                description: 'Editmeilenstein',
+                            },
+                            {
+                                date: '2021-03-31',
+                                label: 'Projekt Ende',
+                                description: 'Projektende',
+                            },
+                        ],
+                    };
+
+                    cy.request(
+                        'PUT',
+                        `${projectsPath}/${createdId}`,
+                        editBody
+                    ).then((res) => {
+                        expect(res.status).to.equal(200);
+                        expect(res.body).to.equal(createdId);
+
+                        cy.request('GET', `${projectsPath}/${createdId}`).then(
+                            (res) => {
+                                expect(res.status).to.equal(200);
+                                let project = res.body;
+
+                                expect(project).to.have.property(
+                                    'id',
+                                    createdId
+                                );
+                                expect(project).to.have.property('number');
+                                expect(project).to.have.property(
+                                    'manager',
+                                    'Editmanager'
+                                );
+                                expect(project).to.have.property(
+                                    'customer',
+                                    'Editcustomer'
+                                );
+                                expect(project).to.have.property(
+                                    'label',
+                                    'Editlabel'
+                                );
+                                expect(project).to.have.property(
+                                    'description',
+                                    'EditDescription'
+                                );
+
+                                expect(project).to.have.property('employees');
+                                expect(project.employees).to.have.length(2);
+                                for (
+                                    let i = 0;
+                                    i < project.employees.length;
+                                    i++
+                                ) {
+                                    expect(
+                                        project.employees[i]
+                                    ).to.have.property('id');
+                                    project.employees[i].name =
+                                        editBody.employees[i].name;
+                                }
+                                expect(project).to.have.property('milestones');
+                                expect(project.milestones).to.have.length(3);
+                                for (
+                                    let i = 0;
+                                    i < project.milestones.length;
+                                    i++
+                                ) {
+                                    expect(
+                                        project.milestones[i]
+                                    ).to.have.property('id');
+                                    project.milestones[i].date =
+                                        editBody.milestones[i].date;
+                                    project.milestones[i].label =
+                                        editBody.milestones[i].label;
+                                    project.milestones[i].description =
+                                        editBody.milestones[i].description;
+                                }
+                            }
+                        );
+                    });
+                });
         });
 
-        it('gets 400 on empty body', () => {
+        it.only('gets 400 on empty body', () => {
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: {},
                 failOnStatusCode: false,
             })
@@ -88,8 +168,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -101,7 +181,7 @@ describe('Projects API', () => {
             });
         });
 
-        it('gets 400 and wrong format error text on text instead of date', () => {
+        it.only('gets 400 and wrong format error text on text instead of date', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -111,8 +191,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -124,7 +204,7 @@ describe('Projects API', () => {
             });
         });
 
-        it('gets 400 and wrong format error text on wrong numerical date format', () => {
+        it.only('gets 400 and wrong format error text on wrong numerical date format', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -139,8 +219,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -152,7 +232,7 @@ describe('Projects API', () => {
             });
         });
 
-        it('gets 400 and wrong format error text on date before 1990', () => {
+        it.only('gets 400 and wrong format error text on date before 1990', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -167,8 +247,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -180,7 +260,7 @@ describe('Projects API', () => {
             });
         });
 
-        it('gets 400 and wrong format error text on date before 2099', () => {
+        it.only('gets 400 and wrong format error text on date before 2099', () => {
             let body = {
                 manager: 'Testmanager',
                 customer: 'Testcustomer',
@@ -195,8 +275,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -227,8 +307,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -263,8 +343,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {
@@ -290,8 +370,8 @@ describe('Projects API', () => {
             };
 
             cy.request({
-                method: 'POST',
-                url: projectsPath + '/',
+                method: 'PUT',
+                url: `${projectsPath}/${id}`,
                 body: body,
                 failOnStatusCode: false,
             }).then((res) => {

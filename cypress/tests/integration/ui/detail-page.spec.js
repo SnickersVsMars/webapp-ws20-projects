@@ -3,7 +3,7 @@ describe('The project detail page', () => {
         cy.visit('/projects/1');
     });
 
-    it.only('navigates to edit page when clicked', () => {
+    it('navigates to edit page when clicked', () => {
         cy.contains('Projekt bearbeiten')
             .click()
             .then(() => {

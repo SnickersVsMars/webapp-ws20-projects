@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # get vars from config file
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$DIR/../config/.env.production"
+source /var/config/.env.ci
 
 # branchname for usage with git operations
 branch=$1
@@ -15,7 +14,7 @@ trimmed_branch=$branch
 if [[ $branch =~ ^WAD\d* ]]; then
     # Jira prefix always ends with _
     substr="_"
-    trimmed_branch=${t#*$substr}; echo $rest;
+    trimmed_branch=${branch#*$substr}; echo $rest;
 fi
 
 route="/${trimmed_branch}"
@@ -26,14 +25,14 @@ port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT port FROM HostingTable WHER
 # check whether the branch was already hosted or if a new entry needs to be added to the hosting table
 if  [ -z "$port" -o "$port" = "NULL" ]
 then
-	port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT MAX(port)+1 FROM HostingTable")
-	if  [ -z "$port" -o "$port" = "NULL" ]
-	then
-		echo 'default port'
-		port=3001
-	fi	
-	echo 'insert port into routing table'
-	$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")
+        port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT MAX(port)+1 FROM HostingTable")
+        if  [ -z "$port" -o "$port" = "NULL" ]
+        then
+                echo 'default port'
+                port=3001
+        fi      
+        echo 'insert port into routing table'
+        $(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "INSERT INTO HostingTable VALUES('${route}',$port,now())")
 fi
 
 # create file structure for the staging repo
@@ -42,31 +41,39 @@ cd "${STAGING_MASTER_DIR}/${trimmed_branch}"
 
 # check if a new branch is being hosted and the repo needs to be cloned
 # or if a new version needs to be pulled from an existing branch
-if [ ! -d "${STAGING_MASTER_DIR}/${trimmed_branch}/webapp/.git" ]
+if [ ! -d "${STAGING_MASTER_DIR}/${trimmed_branch}/.git" ]
 then
-	echo 'clone'
-    git clone $GIT_PATH "${STAGING_MASTER_DIR}/${branch}/webapp/"
+        echo 'clone'
+    git clone $GIT_PATH "${STAGING_MASTER_DIR}/${trimmed_branch}/"
 else
-	echo 'pull'
-    cd "${STAGING_MASTER_DIR}/${branch}/webapp/"
+        echo 'pull'
+    cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
     git pull $GIT_PATH
 fi
 
 echo 'switch branch'
-cd "${STAGING_MASTER_DIR}/${trimmed_branch}/webapp/"
+cd "${STAGING_MASTER_DIR}/${trimmed_branch}/"
 git checkout $branch
 git pull
 
-echo 'npm start'
+# copy the config file needed to run the webapp
+cp /var/config/default.json "${STAGING_MASTER_DIR}/${trimmed_branch}/config/"
+
 # get npm packages
+echo 'npm start'
 npm install
 npm audit fix
 
 # pm2 setup
-pm2 delete $branch
-PORT=$port pm2 start npm --name $branch -- start
+pm2 delete $trimmed_branch
+PORT=$port pm2 start npm --name $trimmed_branch -- start
 
 # update pm2 startup script to ensure apps are restarted after a reboot
 pm2 save
 pm2 unstartup
 pm2 startup
+
+# TODO 1st try - needs rework!
+# notfiy commit creator
+# params: branch, route, is_delease
+python ${MAIL_CLIENT} $branch $route false

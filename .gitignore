@@ -6,7 +6,6 @@
 
 # exclude nodejs
 node_modules
-package-lock.json
 
 
 # Google Drive exclude
@@ -29,4 +28,5 @@ tmp
 
 # exclude configs
 config/default.json
-**/.env.production
+**/.env.ci
+**/.env.dev

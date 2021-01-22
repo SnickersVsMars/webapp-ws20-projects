@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-describe('The add project page', () => {
+describe('The edit project page', () => {
     context('with a stubbed project', () => {
         beforeEach(() => {
             cy.intercept('GET', /\/api\/projects\/\d*/, {

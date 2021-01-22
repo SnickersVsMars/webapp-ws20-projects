@@ -376,8 +376,6 @@ describe('The add project page', () => {
             let description = 'Updated Beschreibung';
             let changed = new Date(Date.now());
 
-            console.log(changed);
-
             cy.wait(2000);
 
             cy.get('#input-number').then(($input) => {

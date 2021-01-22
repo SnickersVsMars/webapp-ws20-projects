@@ -33,10 +33,10 @@ Other commands:
 
 ### Description
 
-The aim of this project is to allow us first insights into agile project management using the framework SCRUM as well as learning the basics of web application development and working in a team.
-The project is split in 3 sprints, each of which lasting approximately a month. Each sprint will introduce new user stories, that need do be finished until the end of the last sprint.
-Following the SCRUM principle, the user stories we chose for a sprint will be split in specific tasks and implemented by the team.
-After the implementation the developed features need to be tested by us as well as the by another team. In return our team will peer test another team's implementation as well.
+The aim of this project is to enable us to get first insights into agile project management using the framework SCRUM as well as learning the basics of web application development and working in a team.
+The project is split into 3 sprints, each of which lasting approximately a month. Each sprint will introduce new user stories that need to be finished until the end of the last sprint.  
+Following the SCRUM principle, the user stories we chose for a sprint will be split in specific tasks and implemented by the team.  
+After the implementation, the developed features need to be tested by us as well as by another team. In return our team will peer test another team's implementation.  
 At the end of each sprint every team presents the results from another group.
 
 ### User Stories
@@ -47,11 +47,11 @@ This user story calls for an overview list of components in the project manageme
 
 This user story was implemented in Sprint 1.
 
-#### Search -> Not implemented
+#### Search -> Sprint 3
 
-This user story revolves around searching and filtering in the overview list.
+This user story revolves around searching and filtering in the overview list. It allows you to filter components by their respective fields or search for any property in the component.
 
-This user story was not yet implemented.
+This user story was implemented in Sprint 3.
 
 #### Detail View -> Sprint 1
 
@@ -65,17 +65,35 @@ As part of this user story, it should be possible to add new componentes, in our
 
 This user story was implemented in Sprint 2.
 
-#### Edit existing data -> Not implemented
+#### Edit existing data -> Sprint 3
 
 Existing components should be editable after implementing this user story.
 
-This user story was not yet implemented.
+This user story was implemented in Sprint 3.
 
 #### Frontend validation -> Sprint 2
 
-This user story requires data, either added or edited, to be validated before the actual change.
+This user story requires data, either added or edited, to be validated on the front-end before the actual change.
 
 This user story was implemented in Sprint 2.
+
+#### Input validation server side -> Sprint 3
+
+This user story requires data, either added or edited, to be validated in the back-end before the actual change.
+
+Even though this user story was only introduced in the second Sprint Review, it was already implemented in Sprint 2 as part of the previous validation user story.
+
+#### Export PDF -> Sprint 3
+
+In this user story, a printable version of the component's overview and detail page should be created and then downloaded as PDF. An additional requirement was, that the PDF is generated on the server.
+
+This user story was implemented in Sprint 3.
+
+#### File upload -> Sprint 3
+
+The last user story adds the requirement to handle file uploads in the project management tool. We chose to implement that story in the way of attachments for projects.
+
+This user story was implemented in Sprint 3.
 
 ### Authors
 

@@ -4,10 +4,6 @@
 .vscode/*
 *.iml
 
-# exclude nodejs
-node_modules
-package-lock.json
-
 
 # Google Drive exclude
 desktop.ini
@@ -17,7 +13,6 @@ desktop.ini
 
 #node.js
 node_modules
-package-lock.json
 
 # cypress dummy tests
 cypress/screenshots

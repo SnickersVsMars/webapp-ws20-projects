@@ -57,8 +57,10 @@ let validationArray = [
         .trim()
         .notEmpty()
         .withMessage('Bitte Datum eintragen')
-        .matches(/\d{4}-\d{2}-\d{2}/)
-        .withMessage('Format nicht korrekt, bitte JJJJ-MM-TT verwenden'),
+        .matches(/^(199\d|20\d{2})-(0\d|1(0|1|2))-(0\d|1\d|2\d|3(0|1|))$/)
+        .withMessage(
+            'Format nicht korrekt, bitte Format JJJJ-MM-TT verwenden. Eingabedatum muss zwischen 1990-01-01 und 2099-12-31 liegen.'
+        ),
 
     body('milestones').custom((value) => {
         let startDate;

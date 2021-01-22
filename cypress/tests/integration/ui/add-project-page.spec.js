@@ -13,11 +13,6 @@ describe('The add project page', () => {
     it('shows all validation errors on empty form submit', () => {
         cy.contains('Projekt erstellen').click();
 
-        cy.get('#input-number')
-            .closest('div')
-            .contains(
-                'Feld ist verpflichtend. Folgendes Format verwenden: PR20-0001'
-            );
         cy.get('#input-manager')
             .closest('div')
             .contains('Feld ist verpflichtend. Maximal 50 Zeichen');
@@ -35,66 +30,30 @@ describe('The add project page', () => {
         });
     });
 
-    it('shows format error on wrong project format', () => {
-        cy.get('#input-number')
-            .type('i-am-invalid')
-            .should('have.value', 'i-am-invalid');
-
-        cy.contains('Projekt erstellen').click();
-
-        cy.contains('Format verwenden: PR20-0001');
-    });
-
     it('allows to add and remove employee fields', () => {
         cy.get('.input-employee').should('not.exist');
         cy.get('#add-employee').click();
         cy.get('#add-employee').click();
         cy.get('#add-employee').click();
-        cy.get('.input-employee').then((inputs) => {
-            inputs = inputs.get();
-            expect(inputs).to.have.length(3);
-        });
+        cy.get('.input-employee').should('have.length', 3);
         cy.get('.remove-button').last().click();
-        cy.get('.input-employee').then((inputs) => {
-            inputs = inputs.get();
-            expect(inputs).to.have.length(2);
-        });
+        cy.get('.input-employee').should('have.length', 2);
         cy.get('.remove-button').last().click();
         cy.get('.remove-button').last().click();
         cy.get('.input-employee').should('not.exist');
     });
 
     it('allows to add and remove milestone fields', () => {
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(2);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 2);
         cy.get('#add-milestone').click();
         cy.get('#add-milestone').click();
         cy.get('#add-milestone').click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(5);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 5);
         cy.get('.d-block').last().click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(4);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 4);
         cy.get('.d-block').last().click();
         cy.get('.d-block').last().click();
-        cy.get('#milestone-container')
-            .children('div')
-            .then((milestones) => {
-                milestones = milestones.get();
-                expect(milestones).to.have.length(2);
-            });
+        cy.get('#milestone-container').children('div').should('have.length', 2);
     });
 
     it('has project start and end', () => {
@@ -153,9 +112,6 @@ describe('The add project page', () => {
         let start = '2020-12-18';
         let end = '2021-01-21';
 
-        cy.get('#input-number')
-            .type('PR20-9999')
-            .should('have.value', 'PR20-9999');
         cy.get('#input-manager')
             .type('Max Manager')
             .should('have.value', 'Max Manager');
@@ -183,7 +139,6 @@ describe('The add project page', () => {
         });
 
         cy.url().should('not.contain', 'add');
-        cy.contains('PR20-9999');
     });
 
     it('can add a full project', () => {
@@ -192,9 +147,6 @@ describe('The add project page', () => {
         let plan = '2021-01-04';
         let implement = '2021-01-18';
 
-        cy.get('#input-number')
-            .type('PR20-5555')
-            .should('have.value', 'PR20-5555');
         cy.get('#input-manager')
             .type('Max Manager')
             .should('have.value', 'Max Manager');
@@ -283,7 +235,6 @@ describe('The add project page', () => {
         });
 
         cy.url().should('not.contain', 'add');
-        cy.contains('PR20-5555');
     });
 });
 
@@ -291,7 +242,7 @@ const random = (length) => {
     let chars =
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    // Pick characers randomly
+    // Pick characters randomly
     let str = '';
     for (let i = 0; i < length; i++) {
         str += chars.charAt(Math.floor(Math.random() * chars.length));

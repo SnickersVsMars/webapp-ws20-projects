@@ -36,7 +36,6 @@ const handleSubmitResult = (res) => {
     }
 
     for (const [key, value] of Object.entries(res.responseJSON.errors)) {
-        console.log(`${key}: ${value}`);
         if (key === 'milestones') {
             $('#milestone-error').append(
                 '<div class="alert alert-danger" role="alert">' +

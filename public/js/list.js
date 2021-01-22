@@ -64,6 +64,7 @@ function populateData(list) {
             .on('click', () => showDetail(project.id));
     });
     $('#busy-indicator').hide();
+    $('body').append('<div id="load-finished"></div>');
 
     createFilters(numbers, managers, labels, customers);
 

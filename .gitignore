@@ -30,3 +30,4 @@ tmp
 # exclude configs
 config/default.json
 **/.env.ci
+**/.env.dev

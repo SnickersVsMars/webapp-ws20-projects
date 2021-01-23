@@ -6,6 +6,7 @@
     "scripts": {
         "start": "nodemon server.js",
         "test": "./node_modules/.bin/cypress run",
+        "test:record": "./node_modules/.bin/cypress run --record",
         "cy:open": "./node_modules/.bin/cypress open"
     },
     "repository": {

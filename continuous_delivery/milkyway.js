@@ -3,12 +3,14 @@ const Url = require('url-parse');
 const mysql = require('mysql2/promise');
 const path = require('path');
 
+const logger = require('../features/logger');
+
 // get database config from config file
 process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '..', 'config');
 const config = require('config');
 
 const poolConfig = config.get('HostingPool');
-const logger = require('../features/logger');
+const port = process.env.PROXY_PORT || require('config').get('proxyPort');
 
 // create simple http server for the reverse proxy
 http.createServer(function (req, res) {
@@ -44,7 +46,7 @@ http.createServer(function (req, res) {
         .catch((err) => {
             throw err;
         });
-}).listen(8081, function (err) {
+}).listen(port, function (err) {
     if (err) throw err;
     logger.info('up and running');
 });

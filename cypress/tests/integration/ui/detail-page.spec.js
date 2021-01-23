@@ -12,11 +12,9 @@ describe('The project detail page', () => {
     });
 
     it('has a pdf download button', () => {
-        cy.contains('Download').should(
-            'have.attr',
-            'href',
-            'http://localhost:3000/projects/1/export'
-        );
+        cy.contains('Download')
+            .should('have.attr', 'href')
+            .and('contain', '/projects/1/export');
         cy.contains('Download').should('have.attr', 'target', '_blank');
     });
 

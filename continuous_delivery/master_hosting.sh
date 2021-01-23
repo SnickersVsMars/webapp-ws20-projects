@@ -25,7 +25,7 @@ npm audit fix
 # run webapp locally on port 8080 for tests
 # it is registered with pm2 so it can be stopped later
 PORT=8080 pm2 start npm --name ci-automatic-test -- start
-npm run test:record
+npm run test:ci
 test_result=$?
 
 # stop testing server after running the tests

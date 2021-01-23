@@ -31,6 +31,9 @@ test_result=$?
 # stop testing server after running the tests
 pm2 delete ci-automatic-test
 
+# change db name in app settings to production db after running the tests
+sed -i "s/webapp_unit/webapp_prod/g" "${MASTER_DIR}/config/default.json" 
+
 failed_test="false"
 
 # return code = 0 => all tests passed
@@ -45,9 +48,6 @@ fi
 
 # all tests passed, cypress videos and screenshots can be deleted
 rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
-
-# change db name in app settings to production db
-sed -i "s/webapp_unit/webapp_prod/g" "${MASTER_DIR}/config/default.json" 
 
 # pm2 setup
 pm2 delete live

@@ -55,11 +55,10 @@ pm2 delete live
 # clear live folder and move new data
 mkdir -p ../live
 rm -rf ../live/
-cp -va ./. ../live/
+cp -a ./. ../live/
 
 # change to live folder
 cd ../live
-
 
 # pm2 setup
 pm2 start npm --name live -- start

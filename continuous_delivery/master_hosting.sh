@@ -39,7 +39,7 @@ if [ $test_result -ne 0 ]; then
   echo 'tests failed, exiting the script'
   failed_test="true"
   # send mail with test failed info
-  python3 ${MAIL_CLIENT} "master" "/" true failed_test
+  python3 ${MAIL_CLIENT} "master" "/" true $failed_test
   exit 1
 fi
 

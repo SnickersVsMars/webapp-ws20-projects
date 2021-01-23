@@ -25,11 +25,14 @@ npm audit fix
 # run webapp locally on port 8080 for tests
 # it is registered with pm2 so it can be stopped later
 PORT=8080 pm2 start npm --name ci-automatic-test -- start
-npm run test:record
+npm run test:ci
 test_result=$?
 
 # stop testing server after running the tests
 pm2 delete ci-automatic-test
+
+# change db name in app settings to production db after running the tests
+sed -i "s/webapp_unit/webapp_prod/g" "${MASTER_DIR}/config/default.json" 
 
 failed_test="false"
 
@@ -45,9 +48,6 @@ fi
 
 # all tests passed, cypress videos and screenshots can be deleted
 rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
-
-# change db name in app settings to production db
-sed -i "s/webapp_unit/webapp_prod/g" "${MASTER_DIR}/config/default.json" 
 
 # pm2 delete
 pm2 delete live

@@ -1,8 +1,9 @@
-DROP DATABASE IF EXISTS `webapp_ci-dev`;
-CREATE DATABASE `webapp_ci-dev`;
-USE `webapp_ci-dev`;
+USE `--DB-NAME--`;
 
-CREATE TABLE IF NOT EXISTS `projects` (
+
+DROP TABLE `projects`;
+
+CREATE TABLE `projects` (
   `id` int NOT NULL AUTO_INCREMENT,
   `number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -22,7 +23,9 @@ INSERT INTO `projects` (`id`, `number`, `label`, `description`, `manager`, `cust
 	(5, 'PR20-0002', 'Test-Projekt 2', 'Schon wieder ein Test-Projekt.', 'Thorsten Mustermensch', 'Intern', 'Intern', NULL);
 
 
-CREATE TABLE IF NOT EXISTS `employees` (
+DROP TABLE `employees`;
+
+CREATE TABLE `employees` (
   `id` int NOT NULL AUTO_INCREMENT,
   `project_id` int NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -30,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `employees` (
   KEY `project_id` (`project_id`) USING BTREE,
   CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 INSERT INTO `employees` (`id`, `project_id`, `name`) VALUES
 	(1, 1, 'Islam Hemida'),
@@ -46,7 +48,10 @@ INSERT INTO `employees` (`id`, `project_id`, `name`) VALUES
 	(11, 5, 'Islam Hemida'),
 	(12, 5, 'Martin Guevara-Kunerth');
 
-CREATE TABLE IF NOT EXISTS `files` (
+
+DROP TABLE `files`;
+
+CREATE TABLE `files` (
   `id` int NOT NULL AUTO_INCREMENT,
   `project_id` int NOT NULL,
   `filename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -58,7 +63,9 @@ CREATE TABLE IF NOT EXISTS `files` (
 ) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-CREATE TABLE IF NOT EXISTS `milestones` (
+DROP TABLE `milestones`;
+
+CREATE TABLE `milestones` (
   `id` int NOT NULL AUTO_INCREMENT,
   `project_id` int NOT NULL,
   `date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -74,16 +81,19 @@ INSERT INTO `milestones` (`id`, `project_id`, `date`, `label`, `description`) VA
 	(2, 1, '2021-12-09', 'Projekt Ende', 'Projektabschluss'),
 	(3, 2, '2020-11-09', 'Kick-off', 'Kick-off Meeting'),
 	(4, 2, '2020-11-08', 'Projekt Start', 'Projektstart'),
-	(5, 2, '2021-01-09', 'Projekt Ende', 'Projektabschluss'),
+	(5, 2, '2021-02-09', 'Projekt Ende', 'Projektabschluss'),
 	(6, 3, '2020-11-09', 'Projekt Start', 'Projektstart'),
 	(7, 3, '2021-01-06', 'Haupt-Event', 'Veranstaltung XY'),
-	(8, 3, '2021-01-09', 'Projekt Ende', 'Projektabschluss'),
+	(8, 3, '2021-03-09', 'Projekt Ende', 'Projektabschluss'),
 	(9, 4, '2020-11-09', 'Projekt Start', 'Projektstart'),
-	(10, 4, '2021-01-09', 'Projekt Ende', 'Projektabschluss'),
+	(10, 4, '2021-05-31', 'Projekt Ende', 'Projektabschluss'),
 	(11, 5, '2020-11-09', 'Projekt Start', 'Projektstart'),
-	(12, 5, '2021-01-09', 'Projekt Ende', 'Projektabschluss');
+	(12, 5, '2021-04-01', 'Projekt Ende', 'Projektabschluss');
 
-CREATE TABLE IF NOT EXISTS `numbers` (
+
+DROP TABLE `numbers`;
+
+CREATE TABLE `numbers` (
   `tableName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0',
   `year` int NOT NULL,
   `nextNumber` int DEFAULT NULL,
@@ -91,23 +101,5 @@ CREATE TABLE IF NOT EXISTS `numbers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `numbers` (`tableName`, `year`, `nextNumber`) VALUES
-	('projects', 2021, 200);
+	('projects', 2021, 6);
 
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `tg_projects_number` BEFORE INSERT ON `projects` FOR EACH ROW BEGIN
-	DECLARE next_number INT;
-
-	SELECT nextNumber INTO next_number
-	FROM numbers
-	WHERE tableName = 'projects' AND `year` = YEAR(CURDATE());
-
-   SET NEW.number = CONCAT('PR', DATE_FORMAT(CURDATE(), '%y'), '-', LPAD(next_number, 4, '0'));
-
-   UPDATE numbers
-   SET nextNumber = nextNumber + 1
-	WHERE tableName = 'projects' AND `year` = YEAR(CURDATE());
-
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;

@@ -10,13 +10,45 @@ git fetch origin
 git reset --hard origin/master
 git pull
 
+# copy the config file needed to run the webapp
+cp /var/config/default.json "${MASTER_DIR}/config/"
+
+# change db name in app settings to testing db
+sed -i "s/--DB-NAME--/webapp_unit/g" "${MASTER_DIR}/config/default.json" 
+
 # get npm packages
 echo 'npm start'
 npm install
 npm audit fix
 
-# copy the config file needed to run the webapp
-cp /var/config/default.json "${MASTER_DIR}/config/"
+# run tests
+# run webapp locally on port 8080 for tests
+# it is registered with pm2 so it can be stopped later
+PORT=8080 pm2 start npm --name cypress -- start
+sed -i s/3000/8080/g "${MASTER_DIR}/cypress.json"
+npm test
+test_result=$?
+
+# stop testing server after running the tests
+pm2 delete cypress
+
+failed_test="false"
+
+# return code = 0 => all tests passed
+# return code != 0 => at least one test failed
+if [ $test_result -ne 0 ]; then
+  echo 'tests failed, exiting the script'
+  failed_test="true"
+  # send mail with test failed info
+  python3 ${MAIL_CLIENT} "master" "/" true failed_test
+  exit 1
+fi
+
+# all tests passed, cypress videos and screenshots can be deleted
+rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
+
+# change db name in app settings to production db
+sed -i "s/webapp_unit/webapp_prod/g" "${MASTER_DIR}/config/default.json" 
 
 # pm2 setup
 pm2 delete live
@@ -27,7 +59,9 @@ pm2 save
 pm2 unstartup
 pm2 startup
 
-# notfiy commit creator
+# notfiy the project contributors on their github mails
 # note: we have to use pyhton3 here since bash does not pick up on the python alias
-# params: branch, route, is_deploy
-python3 ${MAIL_CLIENT} "master" "/" true
+# since the script is exited on failed tests, it's safe to tell the mail client
+# that all tests passed
+# params: branch, route, is_deploy, failed_test
+python3 ${MAIL_CLIENT} "master" "/" true false

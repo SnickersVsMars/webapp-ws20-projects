@@ -126,4 +126,4 @@ fi
 # notfiy commit creator
 # note: we have to use pyhton3 here since bash does not pick up on the python alias
 # params: branch, route, is_deploy, failed_test, recipient
-python3 ${MAIL_CLIENT} $branch $route false failed_test mail_recipient 
+python3 ${MAIL_CLIENT} $branch $route false $failed_test $mail_recipient 

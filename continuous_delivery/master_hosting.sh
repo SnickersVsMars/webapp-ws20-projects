@@ -49,8 +49,19 @@ fi
 # all tests passed, cypress videos and screenshots can be deleted
 rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
 
-# pm2 setup
+# pm2 delete
 pm2 delete live
+
+# clear live folder and move new data
+mkdir -p ../live
+rm -rf ../live/
+cp -va ./. ../live/
+
+# change to live folder
+cd ../live
+
+
+# pm2 setup
 pm2 start npm --name live -- start
 
 # update pm2 startup script to ensure apps are restarted after a reboot

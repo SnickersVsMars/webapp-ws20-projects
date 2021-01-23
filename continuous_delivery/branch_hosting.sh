@@ -97,7 +97,7 @@ fi
 if [ $failed_test = "false" ]; then
   echo 'deleting test videos and screenshots'
   # all tests passed, cypress videos and screenshots can be deleted
-  rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
+  rm -r "${STAGING_MASTER_DIR}/${trimmed_branch}/cypress/screenshots" "${STAGING_MASTER_DIR}/${trimmed_branch}/cypress/videos"
 fi
 
 # remove test data from data base and populate with base data
@@ -119,7 +119,7 @@ mail_recipient=$2
 # see if there was an email address provided by the github
 # workflow, if yes use that, otherwise keep the name of the
 # person that started the workflow
-if [ -z $3 ]; then
+if [ ! -z $3 ]; then
     mail_recipient=$3
 fi
 

@@ -25,8 +25,7 @@ port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT port FROM HostingTable WHER
 # check whether the branch was already hosted or if a new entry needs to be added to the hosting table
 if  [ -z "$port" -o "$port" = "NULL" ]; then
     port=$(mysql -D$MYDB -u$MYUSER -p$MYPASS -se "SELECT MAX(port)+1 FROM HostingTable")
-    if  [ -z "$port" -o "$port" = "NULL" ]
-    then
+    if  [ -z "$port" -o "$port" = "NULL" ]; then
         echo 'default port'
         port=3001
     fi

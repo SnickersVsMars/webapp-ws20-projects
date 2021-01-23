@@ -16,14 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: print github context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Declare some variables
         id: vars
         shell: bash
         run: |
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-          echo ${GITHUB_ACTOR}          
-          ${{ toJSON(github) }}
+          echo ${GITHUB_ACTOR}
       - name: Show branch name
         run: echo running on branch ${GITHUB_REF##*/}
       - name: Staging Deploy

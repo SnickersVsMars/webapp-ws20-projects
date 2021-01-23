@@ -75,11 +75,11 @@ npm audit fix
 # run tests
 # run webapp locally on port 8080 for tests
 # it is registered with pm2 so it can be stopped later
-PORT=8080 pm2 start npm --name cypress -- start
+PORT=8080 pm2 start npm --name ci-automatic-test -- start
 npm run test:record
 test_result=$?
 
-pm2 delete cypress
+pm2 delete ci-automatic-test
 
 failed_test="false"
 

@@ -77,8 +77,7 @@ npm audit fix
 # run webapp locally on port 8080 for tests
 # it is registered with pm2 so it can be stopped later
 PORT=8080 pm2 start npm --name cypress -- start
-sed -i s/3000/8080/g "${STAGING_MASTER_DIR}/${trimmed_branch}/config/cypress.json"
-npm test
+npm run test:record
 test_result=$?
 
 pm2 delete cypress
@@ -95,7 +94,8 @@ if [ $test_result -ne 0 ]; then
   # failed during the tests on github actions
 fi
 
-if [ $failed_test -eq "false" ]; then
+if [ $failed_test = "false" ]; then
+  echo 'deleting test videos and screenshots'
   # all tests passed, cypress videos and screenshots can be deleted
   rm -r "${MASTER_DIR}/cypress/screenshots" "${MASTER_DIR}/cypress/videos"
 fi

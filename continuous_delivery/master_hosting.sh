@@ -25,8 +25,7 @@ npm audit fix
 # run webapp locally on port 8080 for tests
 # it is registered with pm2 so it can be stopped later
 PORT=8080 pm2 start npm --name cypress -- start
-sed -i s/3000/8080/g "${MASTER_DIR}/cypress.json"
-npm test
+npm run test:record
 test_result=$?
 
 # stop testing server after running the tests

@@ -23,7 +23,7 @@ jobs:
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           echo ${GITHUB_ACTOR}          
-          echo ${GITHUB_CONTEXT}
+          ${{ toJSON(github) }}
       - name: Show branch name
         run: echo running on branch ${GITHUB_REF##*/}
       - name: Staging Deploy

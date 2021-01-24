@@ -5,8 +5,8 @@ SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, IF(e
 FROM projects p
     LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS employeeCount FROM employees GROUP BY project_id) e ON p.id=e.project_id
     LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS fileCount FROM files GROUP BY project_id) f ON p.id = f.project_id
-	LEFT OUTER JOIN
-   	(
+    LEFT OUTER JOIN
+    (
         SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
         FROM milestones m
         WHERE m.date >= CURRENT_DATE()

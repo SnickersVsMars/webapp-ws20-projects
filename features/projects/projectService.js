@@ -3,15 +3,15 @@ const dbConnection = require('../dbConnection');
 const getProjectsQuery = `
 SELECT p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone, IF(e.employeeCount IS NULL,0,e.employeeCount) AS employeeCount,  IF(f.fileCount IS NULL,0,f.fileCount) AS fileCount
 FROM projects p
-	LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS employeeCount FROM employees GROUP BY project_id) e ON p.id=e.project_id
-   LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS fileCount FROM files GROUP BY project_id) f ON p.id = f.project_id
+    LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS employeeCount FROM employees GROUP BY project_id) e ON p.id=e.project_id
+    LEFT OUTER JOIN (SELECT project_id, COUNT(*) AS fileCount FROM files GROUP BY project_id) f ON p.id = f.project_id
 	LEFT OUTER JOIN
    	(
-      	SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
-         FROM milestones m
-         WHERE m.date >= CURRENT_DATE()
-         GROUP BY m.project_id
-      ) nextM ON p.id = nextM.project_id
+        SELECT m.project_id AS project_id, MIN(m.date) AS nextMilestone
+        FROM milestones m
+        WHERE m.date >= CURRENT_DATE()
+        GROUP BY m.project_id
+    ) nextM ON p.id = nextM.project_id
 GROUP BY p.id, p.number, p.label, p.manager, p.customer, nextM.nextMilestone;`;
 
 const findProjectByIdQuery = 'SELECT * FROM projects WHERE id = ?';

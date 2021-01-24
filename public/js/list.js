@@ -44,9 +44,9 @@ function populateData(list) {
             labels.push(validate(project.label));
         }
 
-        let nextMilestone = new Date(project.nextMilestone);
-
-        $card.find('.project-milestone').text(formatDate(nextMilestone));
+        $card
+            .find('.project-milestone')
+            .html(formatDate(project.nextMilestone));
 
         $card.find('.project-customer').text(validate(project.customer));
         $card
@@ -57,6 +57,7 @@ function populateData(list) {
         }
 
         $card.find('.project-employees').text(validate(project.employeeCount));
+        $card.find('.project-files').text(validate(project.fileCount));
 
         $('#card-container').append($card);
         $('.card')

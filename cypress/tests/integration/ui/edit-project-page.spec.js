@@ -33,10 +33,6 @@ describe('The edit project page', () => {
             cy.get('#input-customer').should('have.value', 'FH Joanneum');
             cy.get('#input-cost-center').should('have.value', 'Intern');
 
-            cy.get('#last-change-text').contains('2021');
-            cy.get('#last-change-text').contains('01');
-            cy.get('#last-change-text').contains('19');
-
             cy.get('#breadcrumb').contains('PROJEKT PR20-0001');
             cy.get('#breadcrumb').should('have.attr', 'href', '/projects/1');
 

@@ -21,6 +21,8 @@ http.createServer(function (req, res) {
     pool.getConnection()
         .then((conn) => {
             conn.query('SELECT port FROM HostingTable WHERE route = ?', [route])
+                // we need the [rows, fields] array here to access the port in the
+                // way we are further down
                 .then(([rows, fields]) => {
                     logger.info('route 2: ' + route);
                     if (rows.length > 0) {
@@ -37,16 +39,16 @@ http.createServer(function (req, res) {
                     res.end();
                 })
                 .catch((err) => {
-                    throw err;
+                    logger.error(err);
                 })
                 .finally(() => {
                     conn.release();
                 });
         })
         .catch((err) => {
-            throw err;
+            logger.error(err);
         });
 }).listen(port, function (err) {
-    if (err) throw err;
+    if (err) logger.error(err);
     logger.info('up and running');
 });

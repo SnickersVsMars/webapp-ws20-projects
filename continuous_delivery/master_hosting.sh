@@ -8,6 +8,7 @@ cd "${MASTER_DIR}"
 git checkout master
 git fetch origin
 git reset --hard origin/master
+git clean -fd
 git pull
 
 # copy the config file needed to run the webapp
